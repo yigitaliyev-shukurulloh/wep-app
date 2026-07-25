@@ -1,1 +1,982 @@
-salom
+<!DOCTYPE html>
+<html lang="uz" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AUTO XABARCHIM — To'liq qo'llanma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #060912;
+    --bg-grad: radial-gradient(circle at 50% -10%, #131a34 0%, #060912 55%);
+    --surface: #0F1324;
+    --surface-2: #161C36;
+    --border: #262C52;
+    --border-soft: #1B2140;
+    --accent: #6C5CE7;
+    --accent-2: #9C8CFF;
+    --accent-dim: rgba(108,92,231,.16);
+    --mint: #00D2A0;
+    --mint-dim: rgba(0,210,160,.14);
+    --amber: #FFA502;
+    --amber-dim: rgba(255,165,2,.13);
+    --danger: #FF5252;
+    --danger-dim: rgba(255,82,82,.12);
+    --text: #EDF0FC;
+    --text-muted: #8890B5;
+    --text-faint: #5C6390;
+    --radius: 18px;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  html[data-theme="light"]{
+    --bg: #F5F5FB;
+    --bg-grad: radial-gradient(circle at 50% -10%, #EDE9FF 0%, #F5F5FB 55%);
+    --surface: #FFFFFF;
+    --surface-2: #F0EFFB;
+    --border: #E1DFF3;
+    --border-soft: #E9E7F7;
+    --text: #181A2E;
+    --text-muted: #61668C;
+    --text-faint: #9498B8;
+    --accent-dim: rgba(108,92,231,.10);
+    --mint-dim: rgba(0,210,160,.12);
+    --amber-dim: rgba(255,165,2,.12);
+    --danger-dim: rgba(255,82,82,.10);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-grad);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+    min-height:100vh;
+    transition:background .3s ease, color .3s ease;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent-dim);color:var(--text);}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001s !important; transition-duration:.001s !important;} }
+
+  #progressBar{position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg, var(--accent), var(--mint)); z-index:100; transition:width .1s linear;}
+
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px;
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{
+    width:32px; height:32px; border-radius:9px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; font-size:13px; color:#fff;
+    flex-shrink:0;
+  }
+  .brand-name{font-family:var(--font-display); font-weight:600; font-size:15px; letter-spacing:.2px;}
+  .top-actions{display:flex; align-items:center; gap:8px;}
+  .status-pill{
+    display:flex; align-items:center; gap:7px;
+    font-family:var(--font-mono); font-size:11px; color:var(--mint);
+    background:var(--mint-dim); border:1px solid rgba(0,210,160,.3);
+    padding:6px 11px; border-radius:100px; white-space:nowrap;
+  }
+  .status-dot{width:6px; height:6px; border-radius:50%; background:var(--mint); animation:pulseDot 2s ease-in-out infinite;}
+  @keyframes pulseDot{0%,100%{opacity:1;} 50%{opacity:.5;}}
+  .theme-toggle{
+    width:34px; height:34px; border-radius:10px; border:1px solid var(--border-soft);
+    background:var(--surface); color:var(--text); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:border-color .2s ease;
+  }
+  .theme-toggle:hover{border-color:var(--accent);}
+  .theme-toggle svg{width:16px; height:16px;}
+
+  .nav-scroll{
+    position:sticky; top:61px; z-index:40;
+    display:flex; gap:8px; overflow-x:auto;
+    padding:12px 20px; background:color-mix(in srgb, var(--bg) 75%, transparent); backdrop-filter: blur(14px);
+    border-bottom:1px solid var(--border-soft); scrollbar-width:none;
+  }
+  .nav-scroll::-webkit-scrollbar{display:none;}
+  .nav-pill{
+    flex-shrink:0; font-size:12.5px; font-weight:500; color:var(--text-muted);
+    background:var(--surface); border:1px solid var(--border-soft);
+    padding:8px 14px; border-radius:100px; text-decoration:none;
+    transition:all .2s ease; white-space:nowrap;
+  }
+  .nav-pill:hover, .nav-pill.active{ color:var(--text); border-color:var(--accent); background:var(--accent-dim); }
+
+  main{max-width:760px; margin:0 auto; padding:0 20px;}
+
+  .hero{ position:relative; padding:56px 0 44px; text-align:center; overflow:hidden; }
+  .hero-glow{ position:absolute; inset:-80px 0 auto 0; height:340px; z-index:0; pointer-events:none;
+    background:radial-gradient(circle at 30% 20%, rgba(108,92,231,.35), transparent 60%),
+               radial-gradient(circle at 75% 10%, rgba(0,210,160,.25), transparent 55%);
+    filter:blur(10px);
+  }
+  #particles{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .particle{position:absolute; border-radius:50%; background:var(--accent-2); opacity:.5; animation:floatUp linear infinite;}
+  @keyframes floatUp{
+    0%{ transform:translateY(0) translateX(0); opacity:0; }
+    10%{ opacity:.6; }
+    90%{ opacity:.4; }
+    100%{ transform:translateY(-260px) translateX(var(--drift,20px)); opacity:0; }
+  }
+  .hero-content{position:relative; z-index:1;}
+  .logo-orbit{ position:relative; width:150px; height:150px; margin:0 auto 26px; display:flex; align-items:center; justify-content:center; }
+  .orbit-ring{ position:absolute; border:1px dashed rgba(108,92,231,.35); border-radius:50%; animation:spin 14s linear infinite; }
+  .orbit-ring.r1{width:150px; height:150px;}
+  .orbit-ring.r2{width:110px; height:110px; animation-duration:9s; animation-direction:reverse;}
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+  .orbit-dot{position:absolute; width:8px; height:8px; border-radius:50%; background:var(--mint); top:-4px; left:50%; margin-left:-4px; box-shadow:0 0 12px var(--mint);}
+  .logo-core{
+    position:relative; z-index:2; width:68px; height:68px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 6px var(--accent-dim), 0 25px 45px -12px rgba(108,92,231,.55);
+    animation:coreFloat 4s ease-in-out infinite;
+  }
+  @keyframes coreFloat{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+  .logo-core svg{width:30px; height:30px;}
+
+  .eyebrow{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:1.5px; color:var(--mint);
+    text-transform:uppercase; font-weight:600; display:inline-flex; align-items:center; gap:7px; margin-bottom:14px;
+  }
+  h1{ font-family:var(--font-display); font-weight:700; font-size:clamp(30px, 7.5vw, 44px); letter-spacing:-0.5px; line-height:1.12; margin-bottom:14px; }
+  h1 span{ background:linear-gradient(135deg, var(--accent) 10%, var(--mint) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero-content p{ color:var(--text-muted); font-size:15.5px; max-width:480px; margin:0 auto; }
+  .hero-cta{ display:flex; gap:10px; justify-content:center; margin-top:26px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--font-body); font-weight:600; font-size:14px;
+    padding:12px 20px; border-radius:100px; text-decoration:none; border:1px solid transparent; cursor:pointer;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn-primary{ background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:#fff; box-shadow:0 12px 30px -10px rgba(108,92,231,.6); }
+  .btn-primary:hover{ transform:translateY(-2px); }
+  .btn-ghost{ background:var(--surface); color:var(--text); border-color:var(--border-soft); }
+  .btn-ghost:hover{ border-color:var(--accent); }
+
+  section{padding:44px 0; border-top:1px solid var(--border-soft);}
+  section:first-of-type{border-top:none;}
+  .sec-head{margin-bottom:22px;}
+  .sec-eyebrow{ font-family:var(--font-mono); font-size:11px; letter-spacing:1.2px; color:var(--text-faint); text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+  h2{ font-family:var(--font-display); font-weight:600; font-size:23px; letter-spacing:-.2px; }
+  .sec-desc{color:var(--text-muted); font-size:14.5px; margin-top:8px; max-width:540px;}
+
+  .quickstart{display:grid; grid-template-columns:1fr; gap:12px;}
+  @media(min-width:640px){ .quickstart{grid-template-columns:repeat(3,1fr);} }
+  .qs-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:20px; position:relative; }
+  .qs-num{ font-family:var(--font-display); font-size:30px; font-weight:700; color:var(--accent); opacity:.85; margin-bottom:10px; }
+  .qs-card h3{font-family:var(--font-display); font-size:15px; font-weight:600; margin-bottom:6px;}
+  .qs-card p{color:var(--text-muted); font-size:13.5px;}
+
+  .tabs{display:flex; gap:8px; margin-bottom:18px; background:var(--surface); border:1px solid var(--border-soft); border-radius:100px; padding:5px; width:fit-content;}
+  .tab-btn{ font-family:var(--font-body); font-size:13px; font-weight:600; color:var(--text-muted); background:transparent; border:none; padding:9px 16px; border-radius:100px; cursor:pointer; transition:all .2s ease; }
+  .tab-btn.active{ background:var(--accent); color:#fff; }
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block; animation:fadeIn .3s ease;}
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .steps{display:flex; flex-direction:column; gap:2px;}
+  .step{ display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border-soft); }
+  .step:last-child{border-bottom:none;}
+  .step-num{ font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--accent); background:var(--accent-dim); border:1px solid rgba(108,92,231,.25); width:28px; height:28px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .step-body h3{font-family:var(--font-display); font-size:14.5px; font-weight:600; margin-bottom:4px;}
+  .step-body p{color:var(--text-muted); font-size:13.5px;}
+
+  .callout{ background:var(--amber-dim); border:1px solid rgba(255,165,2,.3); border-radius:var(--radius); padding:18px 20px; display:flex; gap:13px; margin-top:16px; }
+  .callout.danger{ background:var(--danger-dim); border-color:rgba(255,82,82,.3); }
+  .callout.mint{ background:var(--mint-dim); border-color:rgba(0,210,160,.3); }
+  .callout-icon{ width:32px; height:32px; border-radius:10px; flex-shrink:0; background:rgba(255,165,2,.15); border:1px solid rgba(255,165,2,.3); display:flex; align-items:center; justify-content:center; }
+  .callout.danger .callout-icon{background:rgba(255,82,82,.15); border-color:rgba(255,82,82,.3);}
+  .callout.mint .callout-icon{background:rgba(0,210,160,.15); border-color:rgba(0,210,160,.3);}
+  .callout-icon svg{width:16px; height:16px; stroke:var(--amber);}
+  .callout.danger .callout-icon svg{stroke:var(--danger);}
+  .callout.mint .callout-icon svg{stroke:var(--mint);}
+  .callout p{color:var(--text-muted); font-size:13.5px; line-height:1.6;}
+  .callout strong{color:var(--text);}
+
+  .modules{display:grid; grid-template-columns:1fr; gap:12px;}
+  @media(min-width:560px){.modules{grid-template-columns:1fr 1fr;}}
+  .module-card{
+    background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:20px;
+    position:relative; overflow:hidden; cursor:pointer; transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+    text-align:left; width:100%;
+  }
+  .module-card:hover{ border-color:var(--card-accent, var(--accent)); transform:translateY(-3px) scale(1.01); box-shadow:0 16px 34px -18px var(--card-accent, var(--accent)); }
+  .module-card::before{ content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--card-accent, var(--accent)); opacity:.8; }
+  .module-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  .module-icon{ width:38px; height:38px; border-radius:11px; background:var(--card-accent-dim, var(--accent-dim)); border:1px solid var(--card-accent-border, rgba(108,92,231,.25)); display:flex; align-items:center; justify-content:center; }
+  .module-icon svg{width:18px; height:18px; stroke:var(--card-accent, var(--accent));}
+  .module-status{ font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.5px; color:var(--card-accent, var(--accent)); text-transform:uppercase; display:flex; align-items:center; gap:5px; }
+  .module-status::before{content:''; width:5px; height:5px; border-radius:50%; background:currentColor;}
+  .module-card h3{font-family:var(--font-display); font-size:16px; font-weight:600; margin-bottom:7px;}
+  .module-card p{color:var(--text-muted); font-size:13.5px;}
+  .module-jump{font-family:var(--font-mono); font-size:11px; color:var(--card-accent, var(--accent)); margin-top:12px; display:flex; align-items:center; gap:5px;}
+
+  .detail-block{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:22px; margin-bottom:16px; scroll-margin-top:130px; }
+  .detail-head{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .detail-icon{ width:42px; height:42px; border-radius:12px; background:var(--card-accent-dim, var(--accent-dim)); border:1px solid var(--card-accent-border, rgba(108,92,231,.25)); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .detail-icon svg{width:20px; height:20px; stroke:var(--card-accent, var(--accent));}
+  .detail-head h3{font-family:var(--font-display); font-size:18px; font-weight:600;}
+  .detail-block > p.lead{color:var(--text-muted); font-size:14px; margin-bottom:16px;}
+
+  .table-wrap{overflow-x:auto; border-radius:12px; border:1px solid var(--border-soft); margin-bottom:6px;}
+  table{width:100%; border-collapse:collapse; font-size:13px; min-width:420px;}
+  thead th{ text-align:left; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.5px; text-transform:uppercase; color:var(--text-faint); background:var(--surface-2); padding:10px 14px; white-space:nowrap; }
+  tbody td{padding:11px 14px; border-top:1px solid var(--border-soft); color:var(--text-muted);}
+  tbody tr td:first-child{color:var(--text); font-weight:500;}
+  tbody code, .inline-code{ font-family:var(--font-mono); font-size:12px; background:var(--surface-2); padding:2px 7px; border-radius:6px; color:var(--accent-2); }
+
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
+  .chip{ font-size:12.5px; font-weight:500; padding:7px 13px; border-radius:100px; background:var(--surface-2); border:1px solid var(--border-soft); color:var(--text-muted); }
+
+  .accordion-item{ border:1px solid var(--border-soft); border-radius:13px; margin-bottom:8px; overflow:hidden; background:var(--surface-2); }
+  .accordion-btn{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; background:none; border:none; text-align:left; cursor:pointer; font-family:var(--font-body); font-size:13.5px; font-weight:600; color:var(--text); }
+  .accordion-btn .chevron{ width:16px; height:16px; flex-shrink:0; transition:transform .25s ease; stroke:var(--text-muted); }
+  .accordion-item.open .chevron{transform:rotate(180deg);}
+  .accordion-panel{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .accordion-item.open .accordion-panel{max-height:600px;}
+  .accordion-panel-inner{padding:0 16px 16px; font-size:13.5px; color:var(--text-muted); line-height:1.7;}
+
+  .cmd-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--surface-2); border:1px solid var(--border-soft); border-radius:12px; padding:11px 14px; margin-bottom:8px; }
+  .cmd-left{display:flex; align-items:center; gap:12px; min-width:0;}
+  .cmd-code{ font-family:var(--font-mono); font-size:13px; color:var(--mint); background:var(--mint-dim); padding:5px 10px; border-radius:7px; flex-shrink:0; }
+  .cmd-desc{font-size:13px; color:var(--text-muted);}
+  .copy-btn{ flex-shrink:0; width:30px; height:30px; border-radius:8px; border:1px solid var(--border-soft); background:var(--surface); color:var(--text-muted); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s ease; }
+  .copy-btn:hover{border-color:var(--accent); color:var(--accent);}
+  .copy-btn svg{width:14px; height:14px;}
+  .copy-btn.copied{color:var(--mint); border-color:var(--mint);}
+
+  .stats-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media(min-width:560px){.stats-grid{grid-template-columns:repeat(4,1fr);}}
+  .stat-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:14px; padding:16px; }
+  .stat-icon{width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;}
+  .stat-icon svg{width:15px; height:15px;}
+  .stat-value{font-family:var(--font-display); font-size:22px; font-weight:700;}
+  .stat-label{font-size:12px; color:var(--text-muted); margin-top:2px;}
+  .limit-bar-wrap{margin-top:18px;}
+  .limit-row{margin-bottom:14px;}
+  .limit-top{display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:6px;}
+  .limit-top span:first-child{color:var(--text); font-weight:500;}
+  .limit-top span:last-child{font-family:var(--font-mono); color:var(--text-muted); font-size:11.5px;}
+  .limit-track{height:7px; border-radius:100px; background:var(--surface-2); overflow:hidden;}
+  .limit-fill{height:100%; border-radius:100px; background:linear-gradient(90deg, var(--accent), var(--mint));}
+
+  .pricing{display:grid; grid-template-columns:1fr; gap:14px;}
+  @media(min-width:700px){.pricing{grid-template-columns:repeat(3,1fr);}}
+  .price-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:22px; position:relative; }
+  .price-card.featured{ border-color:var(--accent); box-shadow:0 20px 45px -20px rgba(108,92,231,.5); }
+  .price-badge{ position:absolute; top:-11px; right:20px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#fff; font-size:11px; font-weight:600; padding:4px 12px; border-radius:100px; font-family:var(--font-mono); }
+  .price-tier{font-family:var(--font-mono); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-faint); margin-bottom:6px;}
+  .price-card h3{font-family:var(--font-display); font-size:20px; font-weight:700; margin-bottom:16px;}
+  .price-feats{display:flex; flex-direction:column; gap:10px;}
+  .price-feat{display:flex; justify-content:space-between; font-size:13px; padding-bottom:10px; border-bottom:1px solid var(--border-soft);}
+  .price-feat:last-child{border-bottom:none; padding-bottom:0;}
+  .price-feat span:first-child{color:var(--text-muted);}
+  .price-feat span:last-child{color:var(--text); font-weight:600; font-family:var(--font-mono); font-size:12.5px;}
+
+  .sec-cols{display:grid; grid-template-columns:1fr; gap:12px;}
+  @media(min-width:700px){.sec-cols{grid-template-columns:repeat(3,1fr);}}
+  .sec-col{border-radius:var(--radius); padding:18px; border:1px solid;}
+  .sec-col.forbid{background:var(--danger-dim); border-color:rgba(255,82,82,.28);}
+  .sec-col.know{background:var(--amber-dim); border-color:rgba(255,165,2,.28);}
+  .sec-col.tip{background:var(--mint-dim); border-color:rgba(0,210,160,.28);}
+  .sec-col h4{font-family:var(--font-display); font-size:14px; margin-bottom:12px; display:flex; align-items:center; gap:7px;}
+  .sec-col ul{list-style:none; display:flex; flex-direction:column; gap:9px;}
+  .sec-col li{font-size:13px; color:var(--text-muted); display:flex; gap:8px; align-items:flex-start;}
+  .sec-col li::before{content:'—'; color:var(--text-faint); flex-shrink:0;}
+
+  .disclaimer{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; font-size:13.5px; color:var(--text-muted); line-height:1.7; }
+  .disclaimer strong{color:var(--text); font-weight:600;}
+
+  .support-card{ background:linear-gradient(160deg, var(--surface-2), var(--surface)); border:1px solid var(--border); border-radius:var(--radius); padding:28px 22px; text-align:center; }
+  .support-card h2{margin-bottom:8px;}
+  .support-card p{color:var(--text-muted); font-size:14px; margin-bottom:20px;}
+  .support-btns{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+  .support-btn{ display:inline-flex; align-items:center; gap:9px; background:var(--accent); color:#fff; font-weight:600; font-size:14.5px; padding:13px 24px; border-radius:100px; text-decoration:none; transition:transform .2s ease, box-shadow .2s ease; box-shadow:0 10px 30px -8px rgba(108,92,231,.5); border:none; cursor:pointer; }
+  .support-btn:hover{ transform:translateY(-2px); }
+  .support-btn.outline{ background:transparent; color:var(--text); border:1px solid var(--border-soft); box-shadow:none; }
+  .support-btn svg{width:17px; height:17px;}
+
+  footer{ text-align:center; padding:32px 20px 10px; color:var(--text-faint); font-size:12px; font-family:var(--font-mono); }
+
+  .tip{ position:relative; border-bottom:1px dotted var(--text-faint); cursor:help; }
+  .tip .tip-bubble{
+    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px);
+    background:var(--surface-2); border:1px solid var(--border); color:var(--text); font-size:12px; font-family:var(--font-body);
+    padding:8px 11px; border-radius:9px; width:200px; text-align:left; line-height:1.5;
+    opacity:0; pointer-events:none; transition:all .18s ease; z-index:30; box-shadow:0 10px 24px -10px rgba(0,0,0,.5);
+  }
+  .tip:hover .tip-bubble{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-mark">AX</div>
+    <div class="brand-name">AUTO XABARCHIM</div>
+  </div>
+  <div class="top-actions">
+    <div class="status-pill"><span class="status-dot"></span>QO'LLANMA</div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Rejimni almashtirish" title="Kunduzgi/tungi rejim">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+  </div>
+</div>
+
+<nav class="nav-scroll" id="navScroll">
+  <a href="#hero" class="nav-pill">Bosh sahifa</a>
+  <a href="#quickstart" class="nav-pill">Tezkor boshlash</a>
+  <a href="#ulash" class="nav-pill">Akkaunt ulash</a>
+  <a href="#modullar" class="nav-pill">Modullar</a>
+  <a href="#statistika" class="nav-pill">Statistika</a>
+  <a href="#tariflar" class="nav-pill">Tariflar</a>
+  <a href="#xavfsizlik" class="nav-pill">Xavfsizlik</a>
+  <a href="#faq" class="nav-pill">FAQ</a>
+  <a href="#yordam" class="nav-pill">Yordam</a>
+</nav>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div class="hero-glow"></div>
+    <div id="particles"></div>
+    <div class="hero-content">
+      <div class="logo-orbit">
+        <div class="orbit-ring r1"><div class="orbit-dot"></div></div>
+        <div class="orbit-ring r2"></div>
+        <div class="logo-core">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2 11 13"></path><path d="M22 2 15 22 11 13 2 9 22 2Z"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="eyebrow"><span class="status-dot" style="background:var(--mint)"></span>Telegram avtomatlashtirish</div>
+      <h1>Akkauntingiz nomidan<br><span>ishlaydigan aqlli yordamchi</span></h1>
+      <p>Xabarlar, javoblar, kuzatuv va mention — barchasi avtomatik. Bir marta sozlang va bot siz uchun ishlasin.</p>
+      <div class="hero-cta">
+        <a href="#quickstart" class="btn btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18l15-9L5 3Z"/></svg>
+          Tezkor boshlash
+        </a>
+        <a href="#modullar" class="btn btn-ghost">Modullarni ko'rish</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="quickstart">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Boshlash</div>
+      <h2>3 qadamda ishga tushiring</h2>
+      <p class="sec-desc">Sozlash bir necha daqiqa vaqt oladi — keyin bot butunlay avtomatik ishlaydi.</p>
+    </div>
+    <div class="quickstart">
+      <div class="qs-card">
+        <div class="qs-num">01</div>
+        <h3>Akkaunt ulang</h3>
+        <p>"➕ Akkaunt qo'shish" orqali Telegram akkauntingizni botga ulang.</p>
+      </div>
+      <div class="qs-card">
+        <div class="qs-num">02</div>
+        <h3>Modul tanlang</h3>
+        <p>Avto xabar, Avto javob, Avto kuzatuv yoki Mention — kerakli funksiyani tanlang.</p>
+      </div>
+      <div class="qs-card">
+        <div class="qs-num">03</div>
+        <h3>Sozlang va tasdiqlang</h3>
+        <p>Kerakli sozlamalarni kiriting va "✅ Tasdiqlash" tugmasini bosing — tayyor!</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ulash">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Boshlash</div>
+      <h2>Akkaunt qanday ulanadi?</h2>
+      <p class="sec-desc">Ikkita usuldan birini tanlang — ikkalasi ham xavfsiz va bir necha soniya vaqt oladi.</p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="phone">📞 Telefon raqam</button>
+      <button class="tab-btn" data-tab="qr">📷 QR kod</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-phone">
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h3>"➕ Akkaunt qo'shish" tugmasini bosing</h3></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h3>"📞 Telefon orqali" ni tanlang</h3></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h3>Raqamingizni kiriting</h3><p>Format: <span class="inline-code">+998XXXXXXXXX</span></p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><h3>Tasdiqlash kodini yuboring</h3><p>Telegram sizga kod yuboradi — uni <span class="inline-code">1-2-3-4-5</span> formatida kiriting.</p></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><h3>2FA parolini kiriting (agar yoqilgan bo'lsa)</h3></div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-body"><h3>Tayyor!</h3><p>Akkaunt muvaffaqiyatli ulandi ✅</p></div></div>
+      </div>
+      <p style="font-size:13px; color:var(--text-faint); margin-top:12px;">Kimlar uchun qulay: <strong style="color:var(--text-muted)">ko'pchilik foydalanuvchilar uchun</strong></p>
+    </div>
+
+    <div class="tab-panel" id="tab-qr">
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h3>"➕ Akkaunt qo'shish" tugmasini bosing</h3></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h3>"📷 QR kod" ni tanlang</h3></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h3>"QR kod yaratish" ni bosing</h3></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><h3>Telefoningizda: Telegram → Sozlamalar → Qurilmalar</h3><p>"Desktop qurilmasini ulash" bo'limini oching.</p></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><h3>QR kodni skanerlang</h3></div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-body"><h3>Tayyor!</h3><p>Akkaunt muvaffaqiyatli ulandi ✅</p></div></div>
+      </div>
+      <p style="font-size:13px; color:var(--text-faint); margin-top:12px;">Kimlar uchun qulay: <strong style="color:var(--text-muted)">2FA yoqilgan foydalanuvchilar uchun</strong></p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+      <p><strong>Bir akkaunt faqat bitta foydalanuvchiga ulanishi mumkin.</strong> Agar akkaunt boshqa foydalanuvchida ulangan bo'lsa, uni qayta ulab bo'lmaydi.</p>
+    </div>
+  </section>
+
+  <section id="modullar">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Funksiyalar</div>
+      <h2>To'rtta asosiy modul</h2>
+      <p class="sec-desc">Har bir modul akkauntingiz nomidan mustaqil ishlaydi. Batafsil ko'rish uchun kartochkani bosing.</p>
+    </div>
+    <div class="modules">
+      <button class="module-card" onclick="jump('detail-xabar')" style="--card-accent:var(--accent); --card-accent-dim:var(--accent-dim); --card-accent-border:rgba(108,92,231,.25);">
+        <div class="module-top">
+          <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></div>
+          <div class="module-status">Avto xabar</div>
+        </div>
+        <h3>💌 Avto xabar</h3>
+        <p>Belgilangan vaqtda tanlangan chatlarga avtomatik xabar yuborish.</p>
+        <div class="module-jump">Batafsil ko'rish →</div>
+      </button>
+      <button class="module-card" onclick="jump('detail-javob')" style="--card-accent:var(--mint); --card-accent-dim:var(--mint-dim); --card-accent-border:rgba(0,210,160,.25);">
+        <div class="module-top">
+          <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div class="module-status">Avto javob</div>
+        </div>
+        <h3>🤖 Avto javob</h3>
+        <p>Kiruvchi xabarlarga avtomatik javob berish — 3 xil rejimda.</p>
+        <div class="module-jump">Batafsil ko'rish →</div>
+      </button>
+      <button class="module-card" onclick="jump('detail-kuzatuv')" style="--card-accent:var(--amber); --card-accent-dim:var(--amber-dim); --card-accent-border:rgba(255,165,2,.25);">
+        <div class="module-top">
+          <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/></svg></div>
+          <div class="module-status">Avto kuzatuv</div>
+        </div>
+        <h3>👀 Avto kuzatuv</h3>
+        <p>Hodisalarni (edit, delete, media) kuzatish va avtomatik reaksiya.</p>
+        <div class="module-jump">Batafsil ko'rish →</div>
+      </button>
+      <button class="module-card" onclick="jump('detail-mention')" style="--card-accent:#FF7EB6; --card-accent-dim:rgba(255,126,182,.14); --card-accent-border:rgba(255,126,182,.25);">
+        <div class="module-top">
+          <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+          <div class="module-status">Mention</div>
+        </div>
+        <h3>📣 Mention</h3>
+        <p>Guruh a'zolarini buyruqlar orqali avtomatik mention qilish.</p>
+        <div class="module-jump">Batafsil ko'rish →</div>
+      </button>
+    </div>
+
+    <div class="detail-block" id="detail-xabar">
+      <div class="detail-head" style="--card-accent:var(--accent); --card-accent-dim:var(--accent-dim); --card-accent-border:rgba(108,92,231,.25);">
+        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></div>
+        <h3>💌 Avto xabar — to'liq qo'llanma</h3>
+      </div>
+      <p class="lead">Akkauntingiz orqali tanlangan chatlarga avtomatik xabar yuborish. Siz faqat matnni, target chatlarni va vaqtni belgilaysiz — qolganini bot bajaradi.</p>
+
+      <div class="accordion-item">
+        <button class="accordion-btn">Ishlatish tartibi (10 qadam) <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <div class="table-wrap"><table>
+            <thead><tr><th>#</th><th>Harakat</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Asosiy menyudan <code>💌 Avto xabar</code> ni bosing</td></tr>
+              <tr><td>2</td><td>Ishlatmoqchi bo'lgan akkauntni tanlang</td></tr>
+              <tr><td>3</td><td><code>📝 Xabar yaratish</code> ni bosing</td></tr>
+              <tr><td>4</td><td>Kontent turini tanlang (pastdagi ro'yxatga qarang)</td></tr>
+              <tr><td>5</td><td>Xabarni bot qabul qilishi uchun yuboring</td></tr>
+              <tr><td>6</td><td>Target turini tanlang: guruh, shaxsiy chat, kanal yoki barchasi</td></tr>
+              <tr><td>7</td><td>Qaysi chatlarga yuborilishini belgilang</td></tr>
+              <tr><td>8</td><td>Yuborish intervalini tanlang</td></tr>
+              <tr><td>9</td><td>Matn stilini tanlang (Bold, Italic, Spoiler va h.k.)</td></tr>
+              <tr><td>10</td><td><code>✅ Tasdiqlang</code> — xabar ishga tushadi</td></tr>
+            </tbody>
+          </table></div>
+        </div></div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-btn">Kontent turlari <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <div class="chip-row">
+            <span class="chip">📝 Oddiy matn</span><span class="chip">🖼 Rasm</span><span class="chip">🖼 Rasm + matn</span>
+            <span class="chip">🎬 Video</span><span class="chip">🎬 Video + matn</span><span class="chip">🎨 Stiker</span><span class="chip">🎁 Gift</span>
+          </div>
+          <p>Interval variantlari: <span class="inline-code">3 daqiqa</span>, <span class="inline-code">15 daqiqa</span>, <span class="inline-code">1 soat</span> yoki <span class="inline-code">qo'lda kiritish</span>.</p>
+        </div></div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-btn">Xabar yaratilgandan keyingi boshqaruv <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Tugma</th><th>Vazifasi</th></tr></thead>
+            <tbody>
+              <tr><td>✏️ Tahrirlash</td><td>Xabar matnini o'zgartirish</td></tr>
+              <tr><td>🎨 Style</td><td>Matn ko'rinishini o'zgartirish</td></tr>
+              <tr><td>⏸️ To'xtatish</td><td>Vaqtincha to'xtatib turish</td></tr>
+              <tr><td>▶️ Davom etish</td><td>Qayta ishga tushirish</td></tr>
+              <tr><td>🔄 Qayta yuborish</td><td>Darhol yuborishni boshlash</td></tr>
+              <tr><td>🗑 O'chirish</td><td>Butunlay o'chirish</td></tr>
+              <tr><td>📊 Batafsil</td><td>To'liq statistikani ko'rish</td></tr>
+            </tbody>
+          </table></div>
+        </div></div>
+      </div>
+
+      <div class="callout mint" style="margin-top:14px;">
+        <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg></div>
+        <p>Media (rasm, video, stiker) yuborganingizda bot <span class="tip">"Bridge" tizimi<span class="tip-bubble">Xabarni avval bot o'z chatiga ko'chirib, keyin barcha targetlarga forward qiladi — bu jarayon avtomatik va sizga ko'rinmaydi.</span></span> orqali xabarni oldin o'z chatiga ko'chiradi, so'ng targetlarga forward qiladi.</p>
+      </div>
+    </div>
+
+    <div class="detail-block" id="detail-javob">
+      <div class="detail-head" style="--card-accent:var(--mint); --card-accent-dim:var(--mint-dim); --card-accent-border:rgba(0,210,160,.25);">
+        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>🤖 Avto javob — to'liq qo'llanma</h3>
+      </div>
+      <p class="lead">Tanlangan shaxsiy chatlarni kuzatib, kimdir sizga xabar yozganda avtomatik javob beradi. 3 xil rejimda ishlaydi.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Rejim</th><th>Qachon javob beradi</th><th>Misol</th></tr></thead>
+        <tbody>
+          <tr><td>🔄 Default</td><td>Har qanday xabar kelganda</td><td>"Rahmat, tez orada javob beraman"</td></tr>
+          <tr><td>🔑 Kalit so'zli</td><td>Faqat kalit so'z yozilganda</td><td>"narx" → narxlar ro'yxati</td></tr>
+          <tr><td>👋 Yangi user</td><td>Yangi user birinchi marta yozganda</td><td>"Xush kelibsiz!"</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="accordion-item" style="margin-top:14px;">
+        <button class="accordion-btn">Ishlatish tartibi <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <div class="table-wrap"><table>
+            <tbody>
+              <tr><td>1</td><td><code>🤖 Avto javob</code> ni bosing</td></tr>
+              <tr><td>2</td><td>Akkauntni tanlang</td></tr>
+              <tr><td>3</td><td><code>🤖 Javob yaratish</code> ni bosing</td></tr>
+              <tr><td>4</td><td>Javob turini tanlang</td></tr>
+              <tr><td>5</td><td>Javob matnini kiriting</td></tr>
+              <tr><td>6</td><td>Kalit so'zli bo'lsa, so'zlarni vergul bilan yozing</td></tr>
+              <tr><td>7</td><td>Target chatlarni tanlang</td></tr>
+              <tr><td>8</td><td>Stilni tanlang</td></tr>
+              <tr><td>9</td><td><code>✅ Tasdiqlang</code></td></tr>
+            </tbody>
+          </table></div>
+        </div></div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-btn">Kalit so'zli rejimda moslik turlari <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Moslik</th><th>Tavsif</th><th>Misol</th></tr></thead>
+            <tbody>
+              <tr><td>🔍 O'xshash</td><td>Kalit so'z matn ichida bo'lsa</td><td>"salom" → "assalomu alaykum"da topiladi</td></tr>
+              <tr><td>🎯 Aniq mos</td><td>To'liq mos kelganda</td><td>faqat "salom" deb yozganda</td></tr>
+              <tr><td>📐 Regex</td><td>Maxsus ifoda</td><td><code>^buyurtma \d+</code> → "buyurtma 123"</td></tr>
+            </tbody>
+          </table></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="detail-block" id="detail-kuzatuv">
+      <div class="detail-head" style="--card-accent:var(--amber); --card-accent-dim:var(--amber-dim); --card-accent-border:rgba(255,165,2,.25);">
+        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/></svg></div>
+        <h3>👀 Avto kuzatuv — to'liq qo'llanma</h3>
+      </div>
+      <p class="lead">Tanlangan chatlardagi hodisalarni kuzatib, avtomatik javob yoki reaksiya qaytaradi. 5 xil hodisani kuzatish mumkin.</p>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Hodisa</th><th>Nima bo'ladi</th></tr></thead>
+        <tbody>
+          <tr><td>✏️ Edit</td><td>Kimdir xabarni tahrirlasa → "Nega tahrirladingiz?" deb javob beradi</td></tr>
+          <tr><td>🗑 Delete</td><td>Kimdir xabarni o'chirsa → o'chirilgan xabarni ko'rsatib beradi</td></tr>
+          <tr><td>📸 Media</td><td>Rasm/video yuborsa → "Ajoyib media!" deb javob beradi</td></tr>
+          <tr><td>🤩 Stiker</td><td>Stiker yuborsa → "Zo'r stiker!" deb javob beradi</td></tr>
+          <tr><td>👍 Reaksiya</td><td>Har bir xabarga avtomatik like qo'yadi</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="accordion-item" style="margin-top:14px;">
+        <button class="accordion-btn">Ishlatish tartibi (11 qadam) <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <div class="table-wrap"><table>
+            <tbody>
+              <tr><td>1</td><td><code>👀 Avto kuzatuv</code> ni bosing</td></tr>
+              <tr><td>2</td><td>Akkauntni tanlang</td></tr>
+              <tr><td>3</td><td><code>👁 Watcher yaratish</code> ni bosing</td></tr>
+              <tr><td>4</td><td>Hodisalarni tanlang (bir nechtasini birga tanlash mumkin)</td></tr>
+              <tr><td>5</td><td>Har bir hodisa uchun javob matnini kiriting (yoki default qoldiring)</td></tr>
+              <tr><td>6</td><td>Reaksiya sozlamalarini belgilang (agar tanlangan bo'lsa)</td></tr>
+              <tr><td>7</td><td>Target rejimini tanlang: Umumiy yoki Tanlangan</td></tr>
+              <tr><td>8</td><td>Target chatlarni belgilang</td></tr>
+              <tr><td>9</td><td>Cooldown vaqtini tanlang</td></tr>
+              <tr><td>10</td><td>Stilni tanlang</td></tr>
+              <tr><td>11</td><td><code>✅ Tasdiqlang</code></td></tr>
+            </tbody>
+          </table></div>
+        </div></div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-btn">Reaksiya sozlamalari va Cooldown <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <p style="margin-bottom:10px;">100+ emoji orasidan tanlash mumkin. Ehtimollik darajasi: <span class="inline-code">25%</span>, <span class="inline-code">50%</span>, <span class="inline-code">75%</span>, <span class="inline-code">100%</span> — har bir xabarga tasodifiy reaksiya beriladi.</p>
+          <p><span class="tip">Cooldown<span class="tip-bubble">Bir xil foydalanuvchiga qayta-qayta javob bermaslik uchun kutish vaqti. Masalan, 30 soniya belgilansa — foydalanuvchi shu vaqt ichida yana yozsa, javob berilmaydi.</span></span> — bir xil foydalanuvchiga qayta-qayta javob bermaslik uchun kutish vaqti.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="detail-block" id="detail-mention">
+      <div class="detail-head" style="--card-accent:#FF7EB6; --card-accent-dim:rgba(255,126,182,.14); --card-accent-border:rgba(255,126,182,.25);">
+        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <h3>📣 Mention — to'liq qo'llanma</h3>
+      </div>
+      <p class="lead">Guruhdagi a'zolarni birma-bir mention qilish. Buyruqlar orqali to'g'ridan-to'g'ri guruh ichida ishlaydi.</p>
+
+      <div class="cmd-row">
+        <div class="cmd-left"><span class="cmd-code">.u</span><span class="cmd-desc">Barcha a'zolarni mention qilish</span></div>
+        <button class="copy-btn" data-copy=".u" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-left"><span class="cmd-code">.uo</span><span class="cmd-desc">Faqat online a'zolarni mention qilish</span></div>
+        <button class="copy-btn" data-copy=".uo" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-left"><span class="cmd-code">.su</span><span class="cmd-desc">Mentionni to'xtatish</span></div>
+        <button class="copy-btn" data-copy=".su" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-left"><span class="cmd-code">.u matn</span><span class="cmd-desc">"matn" bilan barchani mention qilish</span></div>
+        <button class="copy-btn" data-copy=".u Salom hammaga!" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <div class="cmd-row">
+        <div class="cmd-left"><span class="cmd-code">.uo matn</span><span class="cmd-desc">"matn" bilan onlaynlarni mention qilish</span></div>
+        <button class="copy-btn" data-copy=".uo Qanday ishlar?" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+
+      <div class="chip-row" style="margin-top:16px;">
+        <span class="chip">Maksimum 1000 foydalanuvchi</span>
+        <span class="chip">20 tadan batch bo'lib yuboriladi</span>
+        <span class="chip">FloodWait bo'lsa avtomatik kutadi</span>
+        <span class="chip">Har akkaunt uchun alohida sozlama</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="statistika">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Dashboard</div>
+      <h2>Statistika</h2>
+      <p class="sec-desc">Barcha ma'lumotlaringizni bitta ekranda kuzatib boring.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon" style="background:var(--accent-dim);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div><div class="stat-value">3</div><div class="stat-label">Ulangan akkaunt</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--mint-dim);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/></svg></div><div class="stat-value">7</div><div class="stat-label">Faol avto xabar</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:var(--amber-dim);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/></svg></div><div class="stat-value">4</div><div class="stat-label">Faol kuzatuv</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:rgba(255,126,182,.14);"><svg viewBox="0 0 24 24" fill="none" stroke="#FF7EB6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg></div><div class="stat-value">128</div><div class="stat-label">Olmoslar 💎</div></div>
+    </div>
+
+    <div class="limit-bar-wrap">
+      <div class="limit-row">
+        <div class="limit-top"><span>Avto xabarlar limiti</span><span>7 / 10</span></div>
+        <div class="limit-track"><div class="limit-fill" style="width:70%;"></div></div>
+      </div>
+      <div class="limit-row">
+        <div class="limit-top"><span>Avto javoblar limiti</span><span>3 / 5</span></div>
+        <div class="limit-track"><div class="limit-fill" style="width:60%;"></div></div>
+      </div>
+      <div class="limit-row">
+        <div class="limit-top"><span>Kuzatuvlar limiti</span><span>4 / 5</span></div>
+        <div class="limit-track"><div class="limit-fill" style="width:80%;"></div></div>
+      </div>
+    </div>
+    <p style="font-size:13px; color:var(--text-faint); margin-top:4px;">⭐ Faol tarif: <strong style="color:var(--text)">PRO</strong> · Tugash sanasi: 12 kun qoldi</p>
+  </section>
+
+  <section id="tariflar">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Narxlar</div>
+      <h2>Tariflar</h2>
+      <p class="sec-desc">Ehtiyojingizga mos tarifni tanlang. Istalgan vaqtda yangi kun qo'shib uzaytirishingiz mumkin.</p>
+    </div>
+    <div class="pricing">
+      <div class="price-card">
+        <div class="price-tier">Boshlang'ich</div>
+        <h3>🆓 Bepul</h3>
+        <div class="price-feats">
+          <div class="price-feat"><span>Akkauntlar</span><span>1 ta</span></div>
+          <div class="price-feat"><span>Avto xabarlar</span><span>1 ta</span></div>
+          <div class="price-feat"><span>Avto javoblar</span><span>1 ta</span></div>
+          <div class="price-feat"><span>Kuzatuvlar</span><span>1 ta</span></div>
+          <div class="price-feat"><span>Mention</span><span>✅</span></div>
+        </div>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">Ommabop</div>
+        <div class="price-tier">O'rta</div>
+        <h3>⭐ PRO</h3>
+        <div class="price-feats">
+          <div class="price-feat"><span>Akkauntlar</span><span>5 ta</span></div>
+          <div class="price-feat"><span>Avto xabarlar</span><span>10 ta</span></div>
+          <div class="price-feat"><span>Avto javoblar</span><span>5 ta</span></div>
+          <div class="price-feat"><span>Kuzatuvlar</span><span>5 ta</span></div>
+          <div class="price-feat"><span>Mention</span><span>✅</span></div>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Maksimal</div>
+        <h3>👑 VIP</h3>
+        <div class="price-feats">
+          <div class="price-feat"><span>Akkauntlar</span><span>20 ta</span></div>
+          <div class="price-feat"><span>Avto xabarlar</span><span>Cheksiz</span></div>
+          <div class="price-feat"><span>Avto javoblar</span><span>Cheksiz</span></div>
+          <div class="price-feat"><span>Kuzatuvlar</span><span>Cheksiz</span></div>
+          <div class="price-feat"><span>Mention</span><span>✅</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item" style="margin-top:16px;">
+      <button class="accordion-btn">Tarif qanday sotib olinadi va uzaytiriladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="accordion-panel"><div class="accordion-panel-inner">
+        <p style="margin-bottom:8px;"><strong style="color:var(--text)">Sotib olish:</strong> "💎 Ta'rif olish" → tarifni tanlang → to'lov usulini tanlang (pul yoki olmos) → chekni yuboring → admin tasdiqlaydi va tarif faollashadi.</p>
+        <p><strong style="color:var(--text)">Uzaytirish:</strong> faol tarifingiz bo'lsa, "Uzaytirish" tugmasi orqali mavjud muddatga yangi kun qo'shishingiz mumkin.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section id="xavfsizlik">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Diqqat</div>
+      <h2>Xavfsizlik va ogohlantirishlar</h2>
+      <p class="sec-desc">Bot Telegram'ning rasmiy API'lari orqali ishlaydi — barcha amallar SIZNING akkauntingiz nomidan bajariladi, shu sababli Telegram cheklovlari ham sizga tegishli bo'ladi.</p>
+    </div>
+    <div class="sec-cols">
+      <div class="sec-col forbid">
+        <h4>🚫 Taqiqlangan amallar</h4>
+        <ul>
+          <li>Spam yuborish</li>
+          <li>Firibgarlik maqsadida foydalanish</li>
+          <li>Boshqa odamlarning akkauntlarini ruxsatsiz ulash</li>
+          <li>Telegram qoidalarini buzish</li>
+        </ul>
+      </div>
+      <div class="sec-col know">
+        <h4>⚠️ Bilishingiz kerak</h4>
+        <ul>
+          <li>Barcha amallar sizning akkauntingiz nomidan bajariladi</li>
+          <li>FloodWait cheklovlari sizga ham tegishli</li>
+          <li>Tez-tez xabar yuborish akkauntni vaqtincha bloklashi mumkin</li>
+          <li>Yangi akkauntlarda limitlar qattiqroq</li>
+        </ul>
+      </div>
+      <div class="sec-col tip">
+        <h4>✅ Tavsiyalar</h4>
+        <ul>
+          <li>Intervallarni juda kichik qilmang (kamida 60 soniya)</li>
+          <li>Bir vaqtda ko'p akkaunt ishlatmang</li>
+          <li>Tabiiy foydalanuvchi kabi harakat qiling</li>
+        </ul>
+      </div>
+    </div>
+    <div class="disclaimer" style="margin-top:16px;">
+      <strong>AUTO XABARCHIM</strong> Telegram'ning rasmiy API'lari orqali ishlaydi va Telegram qoidalarini chetlab o'tmaydi. Akkauntga qo'llaniladigan har qanday cheklov yoki bloklash Telegram xavfsizlik tizimi tomonidan amalga oshiriladi. Bot ishlab chiquvchilari Telegram tomonidan qo'llanilgan cheklovlar uchun javobgar hisoblanmaydi.
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Savol-javob</div>
+      <h2>Ko'p so'raladigan savollar</h2>
+    </div>
+    <div id="faqList">
+      <div class="accordion-item">
+        <button class="accordion-btn">Akkauntim bloklanadimi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">Agar Telegram qoidalariga va yuqoridagi xavfsizlik tavsiyalariga amal qilsangiz — yo'q.</div></div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">Nechta akkaunt ulash mumkin? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">Tarifingizga qarab: Bepul — 1 ta, PRO — 5 ta, VIP — 20 ta.</div></div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">Xabarlar qancha vaqtda yuboriladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">Siz Avto xabar sozlashda belgilagan interval bo'yicha.</div></div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">Bot ishlamay qolsa nima qilish kerak? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner"><span class="inline-code">/start</span> tugmasini bosing yoki adminga yozing.</div></div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">Olmoslarni qanday olaman? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">Referal havolangiz orqali do'stlaringizni taklif qilib yoki admin tomonidan berilishi orqali.</div></div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">Tarif muddati tugasa nima bo'ladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">Premium imkoniyatlar o'chadi, ammo barcha sozlamalaringiz va tarixingiz saqlanib qoladi.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="yordam">
+    <div class="support-card">
+      <h2>Savol yoki muammo bormi?</h2>
+      <p>Qo'llab-quvvatlash xizmati bilan to'g'ridan-to'g'ri bog'laning — har doim yordam berishga tayyormiz.</p>
+      <div class="support-btns">
+        <a class="support-btn" href="https://t.me/ixlosli_dasturchi" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          @ixlosli_dasturchi bilan bog'lanish
+        </a>
+        <button class="support-btn outline" id="copyUsername">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Username nusxalash
+        </button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>AUTO XABARCHIM · To'liq qo'llanma</footer>
+
+<script>
+  const particlesEl = document.getElementById('particles');
+  const particleColors = ['var(--accent-2)','var(--mint)','var(--accent)'];
+  for(let i=0;i<26;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random()*3;
+    p.style.width = size+'px';
+    p.style.height = size+'px';
+    p.style.left = Math.random()*100+'%';
+    p.style.bottom = (Math.random()*40)+'px';
+    p.style.background = particleColors[i % particleColors.length];
+    p.style.setProperty('--drift', (Math.random()*60-30)+'px');
+    p.style.animationDuration = (6 + Math.random()*6)+'s';
+    p.style.animationDelay = (Math.random()*6)+'s';
+    particlesEl.appendChild(p);
+  }
+
+  const glow = document.querySelector('.hero-glow');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if(glow) glow.style.transform = `translateY(${y*0.25}px)`;
+  }, { passive:true });
+
+  const progressBar = document.getElementById('progressBar');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive:true });
+  updateProgress();
+
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const sunPath = '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>';
+  const brightPath = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  themeToggle.addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeIcon.innerHTML = isDark ? brightPath : sunPath;
+  });
+
+  const sections = document.querySelectorAll('main > section[id]');
+  const pills = document.querySelectorAll('.nav-pill');
+  function setActive(){
+    let current = sections[0]?.id;
+    const offset = 140;
+    sections.forEach(sec => { if (sec.getBoundingClientRect().top - offset <= 0) current = sec.id; });
+    pills.forEach(p => p.classList.toggle('active', p.getAttribute('href') === '#' + current));
+  }
+  document.addEventListener('scroll', setActive, { passive:true });
+  setActive();
+  pills.forEach(p => {
+    p.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(p.getAttribute('href'));
+      if(target){
+        const y = target.getBoundingClientRect().top + window.scrollY - 118;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
+
+  function jump(id){
+    const target = document.getElementById(id);
+    if(target){
+      const y = target.getBoundingClientRect().top + window.scrollY - 118;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.accordion-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.accordion-item').classList.toggle('open');
+    });
+  });
+
+  function flashCopied(el){
+    el.classList.add('copied');
+    const original = el.innerHTML;
+    el.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+    setTimeout(() => { el.innerHTML = original; el.classList.remove('copied'); }, 1400);
+  }
+  document.querySelectorAll('.copy-btn[data-copy]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.getAttribute('data-copy');
+      navigator.clipboard?.writeText(text).catch(()=>{});
+      flashCopied(btn);
+    });
+  });
+  document.getElementById('copyUsername')?.addEventListener('click', function(){
+    navigator.clipboard?.writeText('@ixlosli_dasturchi').catch(()=>{});
+    const original = this.innerHTML;
+    this.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Nusxalandi!';
+    setTimeout(() => { this.innerHTML = original; }, 1600);
+  });
+
+  if (window.Telegram && window.Telegram.WebApp) {
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+  }
+</script>
+
+</body>
+</html>
