@@ -1,1472 +1,1808 @@
 <!DOCTYPE html>
-<html lang="uz" data-theme="dark">
+<html lang="uz" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>AUTO XABARCHIM — Boshqaruv markazi</title>
+<meta name="theme-color" content="#EEF4F2">
+<title>Auto Xabarchim — Qo'llanma</title>
+<meta name="description" content="Auto Xabarchim qo'llanmasi: har bir funksiya oddiy tilda, misollar bilan tushuntirilgan.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#080A0F;
-    --bg-grad:
-      radial-gradient(ellipse 900px 500px at 12% -8%, rgba(255,138,61,.16), transparent 60%),
-      radial-gradient(ellipse 900px 600px at 100% 15%, rgba(34,211,176,.13), transparent 55%),
-      radial-gradient(ellipse 700px 500px at 50% 100%, rgba(185,140,255,.08), transparent 60%),
-      #080A0F;
-    --surface:#11151C;
-    --surface-2:#161B24;
-    --surface-3:#1B212C;
-    --border:#242B37;
-    --border-soft:#1A2029;
-    --amber:#FF8A3D;
-    --amber-2:#FFB169;
-    --amber-dim:rgba(255,138,61,.14);
-    --teal:#22D3B0;
-    --teal-dim:rgba(34,211,176,.13);
-    --violet:#B98CFF;
-    --violet-dim:rgba(185,140,255,.13);
-    --pink:#FF6FA8;
-    --pink-dim:rgba(255,111,168,.13);
-    --danger:#FF5C5C;
-    --danger-dim:rgba(255,92,92,.12);
-    --text:#F4F1EA;
-    --text-muted:#98A0AE;
-    --text-faint:#5B6472;
-    --radius:20px;
-    --font-display:'Sora', sans-serif;
-    --font-body:'Manrope', sans-serif;
-    --font-mono:'IBM Plex Mono', monospace;
-  }
-  html[data-theme="light"]{
-    --bg:#F6F5F1;
-    --bg-grad:
-      radial-gradient(ellipse 900px 500px at 12% -8%, rgba(255,138,61,.12), transparent 60%),
-      radial-gradient(ellipse 900px 600px at 100% 15%, rgba(34,211,176,.10), transparent 55%),
-      #F6F5F1;
-    --surface:#FFFFFF;
-    --surface-2:#F0EEE6;
-    --surface-3:#E9E6DC;
-    --border:#E2DFD3;
-    --border-soft:#EAE7DC;
-    --amber-dim:rgba(255,138,61,.10);
-    --teal-dim:rgba(34,211,176,.12);
-    --violet-dim:rgba(185,140,255,.12);
-    --pink-dim:rgba(255,111,168,.12);
-    --danger-dim:rgba(255,92,92,.10);
-    --text:#181A1E;
-    --text-muted:#5F6673;
-    --text-faint:#93998F;
-  }
+/* ============================================================
+   AUTO XABARCHIM — QO'LLANMA
+   Palitra: Rishtan sopol idishlari (kobalt · feruza · zafaron)
+   ============================================================ */
+:root{
+  --paper:#EDF3F1;
+  --paper-2:#E3EDEA;
+  --card:#FFFFFF;
+  --card-2:#F5FAF9;
+  --line:#D9E6E2;
+  --line-2:#C7DAD5;
 
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg-grad);
-    color:var(--text);
-    font-family:var(--font-body);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    padding-bottom:60px;
-    min-height:100vh;
-    transition:background .3s ease, color .3s ease;
-    overflow-x:hidden;
-  }
-  ::selection{background:var(--amber-dim);color:var(--text);}
-  @media (prefers-reduced-motion: reduce){ *{animation-duration:.001s !important; transition-duration:.001s !important;} }
-  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
-  .reveal.in{opacity:1; transform:translateY(0);}
+  --ink:#0D2130;
+  --ink-2:#496375;
+  --ink-3:#87A0AD;
 
-  #progressBar{position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg, var(--amber), var(--teal)); z-index:100; transition:width .1s linear;}
+  --cobalt:#2450C8;
+  --cobalt-soft:#E6ECFC;
+  --turq:#0C948D;
+  --turq-soft:#DBF1EF;
+  --saffron:#D18B12;
+  --saffron-soft:#FBEFD8;
+  --pom:#C43F37;
+  --pom-soft:#FAE4E2;
+  --plum:#7B4BC4;
+  --plum-soft:#EFE7FB;
 
-  .topbar{
-    position:sticky; top:0; z-index:50;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:14px 20px;
-    background:color-mix(in srgb, var(--bg) 80%, transparent);
-    backdrop-filter: blur(16px);
-    border-bottom:1px solid var(--border-soft);
-  }
-  .brand{display:flex; align-items:center; gap:10px;}
-  .brand-mark{
-    width:34px; height:34px; border-radius:10px;
-    background:linear-gradient(140deg, var(--amber), var(--pink));
-    display:flex; align-items:center; justify-content:center;
-    position:relative; flex-shrink:0;
-  }
-  .brand-mark svg{width:17px; height:17px;}
-  .brand-mark::after{
-    content:''; position:absolute; inset:-4px; border-radius:13px; border:1px solid var(--amber);
-    opacity:.5; animation:ring-pulse 2.6s ease-out infinite;
-  }
-  @keyframes ring-pulse{0%{transform:scale(.85); opacity:.6;} 100%{transform:scale(1.35); opacity:0;}}
-  .brand-name{font-family:var(--font-display); font-weight:700; font-size:15px; letter-spacing:.2px;}
-  .brand-sub{font-family:var(--font-mono); font-size:9.5px; color:var(--text-faint); letter-spacing:1.2px; margin-top:1px;}
-  .top-actions{display:flex; align-items:center; gap:8px;}
-  .status-pill{
-    display:flex; align-items:center; gap:7px;
-    font-family:var(--font-mono); font-size:10.5px; color:var(--teal);
-    background:var(--teal-dim); border:1px solid rgba(34,211,176,.3);
-    padding:6px 11px; border-radius:100px; white-space:nowrap; letter-spacing:.4px;
-  }
-  .status-dot{width:6px; height:6px; border-radius:50%; background:var(--teal); animation:pulseDot 1.8s ease-in-out infinite; flex-shrink:0;}
-  @keyframes pulseDot{0%,100%{opacity:1; box-shadow:0 0 0 0 rgba(34,211,176,.5);} 50%{opacity:.5; box-shadow:0 0 0 4px rgba(34,211,176,0);}}
-  .theme-toggle{
-    width:34px; height:34px; border-radius:10px; border:1px solid var(--border-soft);
-    background:var(--surface); color:var(--text); display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transition:border-color .2s ease;
-  }
-  .theme-toggle:hover{border-color:var(--amber);}
-  .theme-toggle svg{width:16px; height:16px;}
+  --shadow-s:0 1px 2px rgba(13,33,48,.05), 0 4px 14px -8px rgba(13,33,48,.14);
+  --shadow-m:0 2px 6px rgba(13,33,48,.06), 0 18px 40px -24px rgba(13,33,48,.28);
 
-  .nav-scroll{
-    position:sticky; top:63px; z-index:40;
-    display:flex; gap:8px; overflow-x:auto;
-    padding:12px 20px; background:color-mix(in srgb, var(--bg) 72%, transparent); backdrop-filter: blur(16px);
-    border-bottom:1px solid var(--border-soft); scrollbar-width:none;
-  }
-  .nav-scroll::-webkit-scrollbar{display:none;}
-  .nav-pill{
-    flex-shrink:0; font-size:12.5px; font-weight:600; color:var(--text-muted);
-    background:var(--surface); border:1px solid var(--border-soft);
-    padding:8px 14px; border-radius:100px; text-decoration:none;
-    transition:all .2s ease; white-space:nowrap;
-  }
-  .nav-pill:hover, .nav-pill.active{ color:var(--bg); border-color:var(--amber); background:var(--amber); }
-  html[data-theme="light"] .nav-pill.active{color:#fff;}
+  --r-lg:22px;
+  --r-md:16px;
+  --r-sm:11px;
 
-  main{max-width:760px; margin:0 auto; padding:0 20px;}
+  --f-display:'Bricolage Grotesque', system-ui, sans-serif;
+  --f-body:'Onest', system-ui, -apple-system, sans-serif;
+  --f-mono:'JetBrains Mono', ui-monospace, monospace;
 
-  /* ---------- HERO / SIGNAL TOWER ---------- */
-  .hero{ position:relative; padding:52px 0 40px; text-align:center; overflow:hidden; }
-  #radarWrap{ position:relative; width:190px; height:190px; margin:0 auto 22px; display:flex; align-items:center; justify-content:center; }
-  .radar-ring{ position:absolute; border-radius:50%; border:1px solid rgba(255,138,61,.35); animation:radarPulse 3.2s ease-out infinite; }
-  .radar-ring:nth-child(1){animation-delay:0s;}
-  .radar-ring:nth-child(2){animation-delay:1.06s;}
-  .radar-ring:nth-child(3){animation-delay:2.13s;}
-  @keyframes radarPulse{
-    0%{ width:60px; height:60px; opacity:.9; border-color:rgba(255,138,61,.55); }
-    100%{ width:190px; height:190px; opacity:0; border-color:rgba(34,211,176,.05); }
-  }
-  .tower-core{
-    position:relative; z-index:2; width:72px; height:72px; border-radius:22px;
-    background:linear-gradient(150deg, var(--amber), var(--pink));
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 0 0 7px var(--amber-dim), 0 25px 45px -14px rgba(255,138,61,.55);
-    animation:coreFloat 4.5s ease-in-out infinite;
-  }
-  @keyframes coreFloat{ 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-5px) rotate(-2deg);} }
-  .tower-core svg{width:32px; height:32px;}
-  .packet{position:absolute; width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal); opacity:0;}
-  .packet.p1{animation:flyOut1 3s ease-in infinite;}
-  .packet.p2{animation:flyOut2 3s ease-in infinite .9s;}
-  .packet.p3{animation:flyOut3 3s ease-in infinite 1.8s;}
-  @keyframes flyOut1{ 0%{opacity:0; transform:translate(0,0);} 8%{opacity:1;} 100%{opacity:0; transform:translate(85px,-55px);} }
-  @keyframes flyOut2{ 0%{opacity:0; transform:translate(0,0);} 8%{opacity:1;} 100%{opacity:0; transform:translate(-90px,-30px);} }
-  @keyframes flyOut3{ 0%{opacity:0; transform:translate(0,0);} 8%{opacity:1;} 100%{opacity:0; transform:translate(20px,90px);} }
+  --wrap:720px;
+}
+html[data-theme="dark"]{
+  --paper:#08151F;
+  --paper-2:#0C1D2A;
+  --card:#0F2432;
+  --card-2:#142E3D;
+  --line:#1E3D4E;
+  --line-2:#2A4D60;
 
-  .eyebrow{
-    font-family:var(--font-mono); font-size:11px; letter-spacing:1.5px; color:var(--teal);
-    text-transform:uppercase; font-weight:600; display:inline-flex; align-items:center; gap:7px; margin-bottom:14px;
-  }
-  h1{ font-family:var(--font-display); font-weight:800; font-size:clamp(30px, 7.5vw, 45px); letter-spacing:-0.8px; line-height:1.1; margin-bottom:14px; }
-  h1 span{ background:linear-gradient(120deg, var(--amber) 10%, var(--pink) 60%, var(--violet) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .hero-content p.lead-p{ color:var(--text-muted); font-size:15.5px; max-width:480px; margin:0 auto; }
+  --ink:#E9F1F2;
+  --ink-2:#A2BAC5;
+  --ink-3:#6D8A99;
 
-  .console-line{
-    margin:22px auto 0; max-width:420px; font-family:var(--font-mono); font-size:12.5px; color:var(--teal);
-    background:var(--surface); border:1px solid var(--border-soft); border-radius:12px; padding:11px 16px;
-    text-align:left; display:flex; align-items:center; gap:8px; min-height:20px;
-  }
-  .console-line::before{content:'❯'; color:var(--amber); font-weight:700; flex-shrink:0;}
-  #consoleText{white-space:nowrap; overflow:hidden;}
-  .caret{display:inline-block; width:7px; height:14px; background:var(--teal); margin-left:1px; animation:blink 1s step-end infinite; vertical-align:-2px;}
-  @keyframes blink{50%{opacity:0;}}
+  --cobalt:#7BA0FF;
+  --cobalt-soft:#152A4E;
+  --turq:#3FD1C6;
+  --turq-soft:#0C3431;
+  --saffron:#F5BC58;
+  --saffron-soft:#3A2B0F;
+  --pom:#FF8078;
+  --pom-soft:#3C1815;
+  --plum:#B694F5;
+  --plum-soft:#2A1E45;
 
-  .hero-cta{ display:flex; gap:10px; justify-content:center; margin-top:26px; flex-wrap:wrap; }
-  .btn{
-    display:inline-flex; align-items:center; gap:8px; font-family:var(--font-body); font-weight:700; font-size:14px;
-    padding:12px 20px; border-radius:100px; text-decoration:none; border:1px solid transparent; cursor:pointer;
-    transition:transform .2s ease, box-shadow .2s ease;
-  }
-  .btn-primary{ background:linear-gradient(120deg, var(--amber), var(--pink)); color:#0a0a0a; box-shadow:0 12px 30px -10px rgba(255,138,61,.55); }
-  .btn-primary:hover{ transform:translateY(-2px); }
-  .btn-ghost{ background:var(--surface); color:var(--text); border-color:var(--border-soft); }
-  .btn-ghost:hover{ border-color:var(--amber); }
+  --shadow-s:0 1px 2px rgba(0,0,0,.3), 0 6px 18px -10px rgba(0,0,0,.6);
+  --shadow-m:0 2px 8px rgba(0,0,0,.35), 0 22px 44px -26px rgba(0,0,0,.8);
+}
 
-  .hero-badges{display:flex; gap:8px; justify-content:center; margin-top:22px; flex-wrap:wrap;}
-  .hero-badge{
-    font-family:var(--font-mono); font-size:10.5px; font-weight:600; color:var(--text-muted);
-    background:var(--surface); border:1px solid var(--border-soft); padding:6px 12px; border-radius:100px;
-  }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:16px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  padding-bottom:48px;
+  transition:background .25s ease,color .25s ease;
+}
+::selection{background:var(--saffron-soft);color:var(--ink);}
+:focus-visible{outline:2.5px solid var(--cobalt);outline-offset:3px;border-radius:6px;}
+img,svg{display:block;max-width:100%;}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+a{color:var(--cobalt);}
 
-  section{padding:44px 0; border-top:1px solid var(--border-soft);}
-  section:first-of-type{border-top:none;}
-  .sec-head{margin-bottom:22px;}
-  .sec-eyebrow{ font-family:var(--font-mono); font-size:11px; letter-spacing:1.2px; color:var(--text-faint); text-transform:uppercase; font-weight:600; margin-bottom:8px; }
-  h2{ font-family:var(--font-display); font-weight:700; font-size:23px; letter-spacing:-.3px; }
-  .sec-desc{color:var(--text-muted); font-size:14.5px; margin-top:8px; max-width:560px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+  html{scroll-behavior:auto;}
+}
 
-  /* ---------- QUICKSTART ---------- */
-  .quickstart{display:grid; grid-template-columns:1fr; gap:12px;}
-  @media(min-width:640px){ .quickstart{grid-template-columns:repeat(3,1fr);} }
-  .qs-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:20px; position:relative; overflow:hidden; }
-  .qs-card::before{content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:linear-gradient(180deg, var(--amber), var(--teal));}
-  .qs-num{ font-family:var(--font-mono); font-size:26px; font-weight:700; color:var(--amber); opacity:.9; margin-bottom:10px; }
-  .qs-card h3{font-family:var(--font-display); font-size:15px; font-weight:700; margin-bottom:6px;}
-  .qs-card p{color:var(--text-muted); font-size:13.5px;}
+/* ---------- Sarlavha tipografiyasi ---------- */
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:700;line-height:1.14;letter-spacing:-.02em;}
+h1{font-size:clamp(31px,8vw,48px);font-weight:800;letter-spacing:-.035em;}
+h2{font-size:clamp(23px,5.4vw,30px);}
+h3{font-size:19px;}
+h4{font-size:15.5px;letter-spacing:-.01em;}
 
-  /* ---------- TABS ---------- */
-  .tabs{display:flex; gap:8px; margin-bottom:18px; background:var(--surface); border:1px solid var(--border-soft); border-radius:100px; padding:5px; width:fit-content;}
-  .tab-btn{ font-family:var(--font-body); font-size:13px; font-weight:700; color:var(--text-muted); background:transparent; border:none; padding:9px 16px; border-radius:100px; cursor:pointer; transition:all .2s ease; }
-  .tab-btn.active{ background:linear-gradient(120deg, var(--amber), var(--pink)); color:#0a0a0a; }
-  .tab-panel{display:none;}
-  .tab-panel.active{display:block; animation:fadeIn .3s ease;}
-  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+/* ---------- O'qish chizig'i ---------- */
+#bar{position:fixed;inset:0 auto auto 0;height:3px;width:0;z-index:120;
+  background:linear-gradient(90deg,var(--cobalt),var(--turq) 55%,var(--saffron));transition:width .12s linear;}
 
-  .steps{display:flex; flex-direction:column; gap:2px;}
-  .step{ display:flex; gap:16px; padding:16px 0; border-bottom:1px solid var(--border-soft); }
-  .step:last-child{border-bottom:none;}
-  .step-num{ font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--amber); background:var(--amber-dim); border:1px solid rgba(255,138,61,.28); width:28px; height:28px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
-  .step-body h3{font-family:var(--font-display); font-size:14.5px; font-weight:700; margin-bottom:4px;}
-  .step-body p{color:var(--text-muted); font-size:13.5px;}
+/* ---------- Yuqori panel ---------- */
+.top{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:11px 18px;
+  background:color-mix(in srgb,var(--paper) 86%,transparent);
+  backdrop-filter:blur(14px) saturate(1.3);
+  -webkit-backdrop-filter:blur(14px) saturate(1.3);
+  border-bottom:1px solid var(--line);
+}
+.logo{display:flex;align-items:center;gap:10px;min-width:0;}
+.logo-tile{
+  width:36px;height:36px;border-radius:12px;flex-shrink:0;position:relative;
+  background:var(--cobalt);display:grid;place-items:center;overflow:hidden;
+}
+.logo-tile::after{content:"";position:absolute;inset:0;
+  background:conic-gradient(from 45deg,transparent 0 25%,rgba(255,255,255,.14) 0 50%,transparent 0 75%,rgba(255,255,255,.14) 0);
+  background-size:12px 12px;}
+.logo-tile svg{width:19px;height:19px;position:relative;z-index:1;}
+.logo-txt b{display:block;font-family:var(--f-display);font-size:15px;font-weight:800;letter-spacing:-.02em;line-height:1.2;}
+.logo-txt span{display:block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;}
+.icon-btn{
+  width:36px;height:36px;border-radius:11px;border:1px solid var(--line);
+  background:var(--card);display:grid;place-items:center;flex-shrink:0;
+  transition:border-color .18s,transform .18s;
+}
+.icon-btn:hover{border-color:var(--cobalt);}
+.icon-btn:active{transform:scale(.93);}
+.icon-btn svg{width:17px;height:17px;}
 
-  .callout{ background:var(--amber-dim); border:1px solid rgba(255,138,61,.3); border-radius:var(--radius); padding:18px 20px; display:flex; gap:13px; margin-top:16px; }
-  .callout.danger{ background:var(--danger-dim); border-color:rgba(255,92,92,.3); }
-  .callout.mint{ background:var(--teal-dim); border-color:rgba(34,211,176,.3); }
-  .callout.violet{ background:var(--violet-dim); border-color:rgba(185,140,255,.3); }
-  .callout-icon{ width:32px; height:32px; border-radius:10px; flex-shrink:0; background:rgba(255,138,61,.15); border:1px solid rgba(255,138,61,.3); display:flex; align-items:center; justify-content:center; }
-  .callout.danger .callout-icon{background:rgba(255,92,92,.15); border-color:rgba(255,92,92,.3);}
-  .callout.mint .callout-icon{background:rgba(34,211,176,.15); border-color:rgba(34,211,176,.3);}
-  .callout.violet .callout-icon{background:rgba(185,140,255,.15); border-color:rgba(185,140,255,.3);}
-  .callout-icon svg{width:16px; height:16px; stroke:var(--amber);}
-  .callout.danger .callout-icon svg{stroke:var(--danger);}
-  .callout.mint .callout-icon svg{stroke:var(--teal);}
-  .callout.violet .callout-icon svg{stroke:var(--violet);}
-  .callout p{color:var(--text-muted); font-size:13.5px; line-height:1.6;}
-  .callout strong{color:var(--text);}
+/* ---------- Bo'limlar tasmasi ---------- */
+.rail{
+  position:sticky;top:59px;z-index:90;
+  display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;
+  padding:10px 18px;
+  background:color-mix(in srgb,var(--paper) 84%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.rail::-webkit-scrollbar{display:none;}
+.rail a{
+  flex-shrink:0;font-size:13px;font-weight:600;text-decoration:none;
+  color:var(--ink-2);background:var(--card);border:1px solid var(--line);
+  padding:7px 13px;border-radius:99px;white-space:nowrap;transition:all .18s;
+}
+.rail a:hover{border-color:var(--line-2);}
+.rail a.on{background:var(--ink);border-color:var(--ink);color:var(--paper);}
 
-  /* ---------- MODULE CARDS (signal / frequency style) ---------- */
-  .modules{display:grid; grid-template-columns:1fr; gap:12px;}
-  @media(min-width:560px){.modules{grid-template-columns:1fr 1fr;}}
-  .module-card{
-    background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:20px;
-    position:relative; overflow:hidden; cursor:pointer; transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
-    text-align:left; width:100%;
-  }
-  .module-card:hover{ border-color:var(--card-accent, var(--amber)); transform:translateY(-3px) scale(1.01); box-shadow:0 16px 34px -18px var(--card-accent, var(--amber)); }
-  .module-card::before{ content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--card-accent, var(--amber)); opacity:.85; }
-  .module-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
-  .module-icon-row{display:flex; align-items:center; gap:10px;}
-  .module-icon{ width:38px; height:38px; border-radius:11px; background:var(--card-accent-dim, var(--amber-dim)); border:1px solid var(--card-accent-border, rgba(255,138,61,.25)); display:flex; align-items:center; justify-content:center; }
-  .module-icon svg{width:18px; height:18px; stroke:var(--card-accent, var(--amber));}
-  .module-code{font-family:var(--font-mono); font-size:10.5px; font-weight:700; color:var(--card-accent, var(--amber)); letter-spacing:.5px;}
-  .module-code span{color:var(--text-faint); font-weight:500;}
-  .freq-bars{display:flex; align-items:flex-end; gap:2px; height:16px;}
-  .freq-bars i{width:3px; border-radius:2px; background:var(--card-accent, var(--amber)); opacity:.75; animation:freqMove 1.4s ease-in-out infinite;}
-  .freq-bars i:nth-child(1){height:40%; animation-delay:0s;}
-  .freq-bars i:nth-child(2){height:100%; animation-delay:.15s;}
-  .freq-bars i:nth-child(3){height:65%; animation-delay:.3s;}
-  .freq-bars i:nth-child(4){height:85%; animation-delay:.45s;}
-  @keyframes freqMove{0%,100%{transform:scaleY(.5);} 50%{transform:scaleY(1);}}
-  .module-card h3{font-family:var(--font-display); font-size:16px; font-weight:700; margin-bottom:7px;}
-  .module-card p{color:var(--text-muted); font-size:13.5px;}
-  .module-jump{font-family:var(--font-mono); font-size:11px; color:var(--card-accent, var(--amber)); margin-top:12px; display:flex; align-items:center; gap:5px;}
-  .new-tag{ position:absolute; top:14px; right:16px; font-family:var(--font-mono); font-size:9px; font-weight:700; letter-spacing:.6px; color:#0a0a0a; background:linear-gradient(120deg,var(--pink),var(--violet)); padding:3px 8px; border-radius:100px; z-index:2; }
+/* ---------- Kontent ---------- */
+main{max-width:var(--wrap);margin:0 auto;padding:0 18px;}
+section{padding:46px 0;border-top:1px solid var(--line);scroll-margin-top:112px;}
+section:first-of-type{border-top:none;}
 
-  .detail-block{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:22px; margin-bottom:16px; scroll-margin-top:135px; position:relative; }
-  .detail-head{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
-  .detail-icon{ width:44px; height:44px; border-radius:13px; background:var(--card-accent-dim, var(--amber-dim)); border:1px solid var(--card-accent-border, rgba(255,138,61,.25)); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .detail-icon svg{width:21px; height:21px; stroke:var(--card-accent, var(--amber));}
-  .detail-head h3{font-family:var(--font-display); font-size:18px; font-weight:700;}
-  .detail-head .module-code{display:block; margin-top:2px;}
-  .detail-block > p.lead{color:var(--text-muted); font-size:14px; margin-bottom:16px;}
+.kicker{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--turq);margin-bottom:11px;
+}
+.kicker::before{content:"";width:16px;height:1.5px;background:var(--turq);border-radius:2px;}
+.lede{color:var(--ink-2);font-size:15.5px;margin-top:11px;max-width:56ch;}
+.head{margin-bottom:24px;}
 
-  .subfeature{ border:1px solid var(--border-soft); border-radius:14px; padding:16px 18px; margin-bottom:12px; background:var(--surface-2); }
-  .subfeature-head{display:flex; align-items:center; gap:9px; margin-bottom:8px;}
-  .subfeature-head h4{font-family:var(--font-display); font-size:14.5px; font-weight:700;}
-  .subfeature p{font-size:13px; color:var(--text-muted);}
+/* ---------- Naqsh tasmasi (bir marta, hero ostida) ---------- */
+.band{
+  height:9px;border-radius:99px;margin:26px 0 0;
+  background:
+    repeating-linear-gradient(135deg,var(--cobalt) 0 9px,transparent 9px 18px),
+    repeating-linear-gradient(45deg,var(--turq) 0 9px,transparent 9px 18px),
+    var(--saffron);
+  opacity:.85;
+}
 
-  .table-wrap{overflow-x:auto; border-radius:12px; border:1px solid var(--border-soft); margin-bottom:6px;}
-  table{width:100%; border-collapse:collapse; font-size:13px; min-width:420px;}
-  thead th{ text-align:left; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.5px; text-transform:uppercase; color:var(--text-faint); background:var(--surface-2); padding:10px 14px; white-space:nowrap; }
-  tbody td{padding:11px 14px; border-top:1px solid var(--border-soft); color:var(--text-muted);}
-  tbody tr td:first-child{color:var(--text); font-weight:600;}
-  tbody code, .inline-code{ font-family:var(--font-mono); font-size:12px; background:var(--surface-2); padding:2px 7px; border-radius:6px; color:var(--amber-2); }
+/* ---------- Hero ---------- */
+.hero{padding:34px 0 46px;}
+.hero h1{margin-bottom:14px;}
+.hero h1 em{font-style:normal;color:var(--cobalt);}
+.hero p.big{font-size:16.5px;color:var(--ink-2);max-width:52ch;}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-weight:700;font-size:14.5px;padding:12px 20px;border-radius:99px;
+  text-decoration:none;border:1.5px solid transparent;transition:transform .18s,box-shadow .18s;
+}
+.btn:active{transform:translateY(1px) scale(.99);}
+.btn-1{background:var(--ink);color:var(--paper);box-shadow:var(--shadow-s);}
+.btn-2{background:var(--card);color:var(--ink);border-color:var(--line-2);}
+.btn svg{width:16px;height:16px;}
 
-  .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 16px;}
-  .chip{ font-size:12.5px; font-weight:600; padding:7px 13px; border-radius:100px; background:var(--surface-2); border:1px solid var(--border-soft); color:var(--text-muted); }
+/* ---------- Telefon oynasi (imzo element) ---------- */
+.phone{
+  margin:30px auto 0;max-width:330px;
+  border:1px solid var(--line-2);border-radius:26px;background:var(--card);
+  box-shadow:var(--shadow-m);overflow:hidden;
+}
+.phone-bar{
+  display:flex;align-items:center;gap:9px;padding:11px 14px;
+  border-bottom:1px solid var(--line);background:var(--card-2);
+}
+.avatar{
+  width:29px;height:29px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;
+  font-size:13px;background:var(--turq-soft);border:1px solid var(--turq);
+}
+.phone-bar b{font-size:13.5px;font-family:var(--f-display);font-weight:700;display:block;line-height:1.3;}
+.phone-bar i{font-style:normal;font-size:10.5px;color:var(--turq);font-family:var(--f-mono);}
+.phone-body{
+  padding:14px;display:flex;flex-direction:column;gap:9px;
+  background:
+    radial-gradient(circle at 18% 12%,var(--turq-soft),transparent 46%),
+    radial-gradient(circle at 84% 78%,var(--cobalt-soft),transparent 44%),
+    var(--card);
+  min-height:212px;
+}
 
-  .accordion-item{ border:1px solid var(--border-soft); border-radius:13px; margin-bottom:8px; overflow:hidden; background:var(--surface-2); }
-  .accordion-btn{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; background:none; border:none; text-align:left; cursor:pointer; font-family:var(--font-body); font-size:13.5px; font-weight:700; color:var(--text); }
-  .accordion-btn .chevron{ width:16px; height:16px; flex-shrink:0; transition:transform .25s ease; stroke:var(--text-muted); }
-  .accordion-item.open .chevron{transform:rotate(180deg);}
-  .accordion-panel{ max-height:0; overflow:hidden; transition:max-height .35s ease; }
-  .accordion-item.open .accordion-panel{max-height:900px;}
-  .accordion-panel-inner{padding:0 16px 16px; font-size:13.5px; color:var(--text-muted); line-height:1.7;}
+/* ---------- Chat pufakchalari (butun sahifada ishlatiladi) ---------- */
+.chat{display:flex;flex-direction:column;gap:8px;}
+.bub{
+  max-width:82%;padding:9px 13px;border-radius:16px;font-size:13.5px;line-height:1.5;
+  box-shadow:var(--shadow-s);word-break:break-word;
+}
+.bub.in{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:5px;}
+.bub.out{align-self:flex-end;background:var(--cobalt);color:#fff;border-bottom-right-radius:5px;border:1px solid var(--cobalt);}
+.bub.sys{
+  align-self:center;max-width:94%;text-align:center;background:var(--saffron-soft);
+  border:1px dashed var(--saffron);color:var(--ink-2);font-size:12px;box-shadow:none;border-radius:11px;
+}
+.bub .who{display:block;font-size:10.5px;font-weight:700;letter-spacing:.02em;opacity:.72;margin-bottom:2px;}
+.bub.out .who{color:#fff;}
+.bub code{font-family:var(--f-mono);font-size:12px;background:rgba(125,150,165,.16);padding:1px 5px;border-radius:5px;}
+.bub.out code{background:rgba(255,255,255,.22);}
+.typing{display:inline-flex;gap:4px;align-items:center;height:14px;}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--ink-3);animation:blip 1.3s infinite;}
+.typing i:nth-child(2){animation-delay:.18s;}
+.typing i:nth-child(3){animation-delay:.36s;}
+@keyframes blip{0%,60%,100%{opacity:.28;transform:translateY(0);}30%{opacity:1;transform:translateY(-3px);}}
 
-  .cmd-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--surface-2); border:1px solid var(--border-soft); border-radius:12px; padding:11px 14px; margin-bottom:8px; }
-  .cmd-left{display:flex; align-items:center; gap:12px; min-width:0;}
-  .cmd-code{ font-family:var(--font-mono); font-size:13px; color:var(--teal); background:var(--teal-dim); padding:5px 10px; border-radius:7px; flex-shrink:0; }
-  .cmd-desc{font-size:13px; color:var(--text-muted);}
-  .copy-btn{ flex-shrink:0; width:30px; height:30px; border-radius:8px; border:1px solid var(--border-soft); background:var(--surface); color:var(--text-muted); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s ease; }
-  .copy-btn:hover{border-color:var(--amber); color:var(--amber);}
-  .copy-btn svg{width:14px; height:14px;}
-  .copy-btn.copied{color:var(--teal); border-color:var(--teal);}
+.demo{
+  border:1px solid var(--line);border-radius:var(--r-md);background:var(--card-2);
+  padding:13px;margin:14px 0;
+}
+.demo-tag{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:10px;display:block;
+}
 
-  /* ---------- STATS ---------- */
-  .stats-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-  @media(min-width:560px){.stats-grid{grid-template-columns:repeat(3,1fr);}}
-  .stat-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:14px; padding:16px; }
-  .stat-icon{width:30px; height:30px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;}
-  .stat-icon svg{width:15px; height:15px;}
-  .stat-value{font-family:var(--font-display); font-size:22px; font-weight:800;}
-  .stat-label{font-size:12px; color:var(--text-muted); margin-top:2px;}
-  .limit-bar-wrap{margin-top:18px;}
-  .limit-row{margin-bottom:14px;}
-  .limit-top{display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:6px;}
-  .limit-top span:first-child{color:var(--text); font-weight:600;}
-  .limit-top span:last-child{font-family:var(--font-mono); color:var(--text-muted); font-size:11.5px;}
-  .limit-track{height:7px; border-radius:100px; background:var(--surface-2); overflow:hidden;}
-  .limit-fill{height:100%; border-radius:100px; background:linear-gradient(90deg, var(--amber), var(--teal)); width:0%; transition:width 1.1s cubic-bezier(.2,.7,.3,1);}
+/* ---------- Kartochkalar ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow-s);}
+.grid{display:grid;gap:12px;}
+@media(min-width:600px){.g2{grid-template-columns:1fr 1fr;}.g3{grid-template-columns:repeat(3,1fr);}}
 
-  /* ---------- PRICING ---------- */
-  .pricing{display:grid; grid-template-columns:1fr; gap:14px;}
-  @media(min-width:700px){.pricing{grid-template-columns:repeat(3,1fr);}}
-  .price-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius); padding:22px; position:relative; }
-  .price-card.featured{ border-color:var(--amber); box-shadow:0 20px 45px -20px rgba(255,138,61,.5); }
-  .price-badge{ position:absolute; top:-11px; right:20px; background:linear-gradient(120deg,var(--amber),var(--pink)); color:#0a0a0a; font-size:11px; font-weight:700; padding:4px 12px; border-radius:100px; font-family:var(--font-mono); }
-  .price-tier{font-family:var(--font-mono); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--text-faint); margin-bottom:6px;}
-  .price-card h3{font-family:var(--font-display); font-size:20px; font-weight:800; margin-bottom:16px;}
-  .price-feats{display:flex; flex-direction:column; gap:10px;}
-  .price-feat{display:flex; justify-content:space-between; font-size:13px; padding-bottom:10px; border-bottom:1px solid var(--border-soft);}
-  .price-feat:last-child{border-bottom:none; padding-bottom:0;}
-  .price-feat span:first-child{color:var(--text-muted);}
-  .price-feat span:last-child{color:var(--text); font-weight:700; font-family:var(--font-mono); font-size:12.5px;}
-  .price-note{font-size:11.5px; color:var(--text-faint); margin-top:14px; line-height:1.5;}
+/* ---------- Qadamlar ---------- */
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:0;}
+.steps li{
+  counter-increment:s;list-style:none;display:flex;gap:14px;
+  padding:14px 0;border-bottom:1px solid var(--line);
+}
+.steps li:last-child{border-bottom:none;padding-bottom:0;}
+.steps li::before{
+  content:counter(s);flex-shrink:0;
+  width:26px;height:26px;border-radius:9px;display:grid;place-items:center;
+  font-family:var(--f-mono);font-size:12px;font-weight:600;
+  background:var(--acc-soft,var(--cobalt-soft));color:var(--acc,var(--cobalt));
+}
+.steps li b{display:block;font-weight:600;font-size:14.5px;line-height:1.45;}
+.steps li span{display:block;color:var(--ink-2);font-size:13.5px;margin-top:2px;}
 
-  .pay-methods{display:grid; grid-template-columns:1fr; gap:12px; margin-top:16px;}
-  @media(min-width:560px){.pay-methods{grid-template-columns:1fr 1fr;}}
-  .pay-card{background:var(--surface-2); border:1px solid var(--border-soft); border-radius:16px; padding:16px 18px;}
-  .pay-card h4{font-family:var(--font-display); font-size:14px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:7px;}
-  .pay-card p{font-size:13px; color:var(--text-muted);}
+/* ---------- Eslatmalar ---------- */
+.note{
+  display:flex;gap:12px;padding:15px 16px;border-radius:var(--r-md);
+  background:var(--cobalt-soft);border:1px solid color-mix(in srgb,var(--cobalt) 26%,transparent);
+  font-size:13.8px;line-height:1.6;color:var(--ink-2);margin-top:14px;
+}
+.note b,.note strong{color:var(--ink);}
+.note .ic{flex-shrink:0;font-size:17px;line-height:1.3;}
+.note.warn{background:var(--pom-soft);border-color:color-mix(in srgb,var(--pom) 30%,transparent);}
+.note.tip{background:var(--turq-soft);border-color:color-mix(in srgb,var(--turq) 28%,transparent);}
+.note.gold{background:var(--saffron-soft);border-color:color-mix(in srgb,var(--saffron) 34%,transparent);}
 
-  .sec-cols{display:grid; grid-template-columns:1fr; gap:12px;}
-  @media(min-width:700px){.sec-cols{grid-template-columns:repeat(3,1fr);}}
-  .sec-col{border-radius:var(--radius); padding:18px; border:1px solid;}
-  .sec-col.forbid{background:var(--danger-dim); border-color:rgba(255,92,92,.28);}
-  .sec-col.know{background:var(--amber-dim); border-color:rgba(255,138,61,.28);}
-  .sec-col.tip{background:var(--teal-dim); border-color:rgba(34,211,176,.28);}
-  .sec-col h4{font-family:var(--font-display); font-size:14px; margin-bottom:12px; display:flex; align-items:center; gap:7px;}
-  .sec-col ul{list-style:none; display:flex; flex-direction:column; gap:9px;}
-  .sec-col li{font-size:13px; color:var(--text-muted); display:flex; gap:8px; align-items:flex-start;}
-  .sec-col li::before{content:'—'; color:var(--text-faint); flex-shrink:0;}
+/* ---------- Yig'iluvchi bloklar ---------- */
+details{border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);margin-top:9px;overflow:hidden;}
+details[open]{background:var(--card);}
+summary{
+  padding:13px 15px;font-weight:600;font-size:14px;cursor:pointer;list-style:none;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{
+  content:"";width:8px;height:8px;flex-shrink:0;
+  border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);
+  transform:rotate(45deg) translateY(-2px);transition:transform .22s;
+}
+details[open] summary::after{transform:rotate(-135deg) translateY(-2px);}
+.det-body{padding:0 15px 15px;font-size:13.8px;color:var(--ink-2);}
+.det-body > *:first-child{margin-top:0;}
 
-  .disclaimer{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; font-size:13.5px; color:var(--text-muted); line-height:1.7; }
-  .disclaimer strong{color:var(--text); font-weight:700;}
+/* ---------- Jadval ---------- */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-md);margin:12px 0;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:13.4px;min-width:400px;background:var(--card);}
+th{
+  text-align:left;padding:10px 13px;background:var(--card-2);color:var(--ink-3);
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;
+  border-bottom:1px solid var(--line);white-space:nowrap;
+}
+td{padding:11px 13px;border-top:1px solid var(--line);color:var(--ink-2);vertical-align:top;}
+tr td:first-child{color:var(--ink);font-weight:600;white-space:nowrap;}
 
-  .support-card{ background:linear-gradient(160deg, var(--surface-2), var(--surface)); border:1px solid var(--border); border-radius:var(--radius); padding:28px 22px; text-align:center; position:relative; overflow:hidden;}
-  .support-card h2{margin-bottom:8px;}
-  .support-card p{color:var(--text-muted); font-size:14px; margin-bottom:20px;}
-  .support-btns{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
-  .support-btn{ display:inline-flex; align-items:center; gap:9px; background:linear-gradient(120deg,var(--amber),var(--pink)); color:#0a0a0a; font-weight:700; font-size:14.5px; padding:13px 24px; border-radius:100px; text-decoration:none; transition:transform .2s ease, box-shadow .2s ease; box-shadow:0 10px 30px -8px rgba(255,138,61,.5); border:none; cursor:pointer; }
-  .support-btn:hover{ transform:translateY(-2px); }
-  .support-btn.outline{ background:transparent; color:var(--text); border:1px solid var(--border-soft); box-shadow:none; }
-  .support-btn svg{width:17px; height:17px;}
+/* ---------- Kichik elementlar ---------- */
+.pill{
+  display:inline-block;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:99px;
+  background:var(--card);border:1px solid var(--line);color:var(--ink-2);
+}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0;}
+kbd{
+  font-family:var(--f-body);font-size:12.8px;font-weight:600;padding:3px 9px;border-radius:8px;
+  background:var(--card-2);border:1px solid var(--line-2);color:var(--ink);white-space:nowrap;
+  display:inline-block;
+}
+.mono{font-family:var(--f-mono);font-size:12.8px;background:var(--card-2);border:1px solid var(--line);
+  padding:2px 7px;border-radius:6px;color:var(--cobalt);}
+mark{background:var(--saffron-soft);color:var(--ink);padding:0 3px;border-radius:4px;}
 
-  footer{ text-align:center; padding:32px 20px 10px; color:var(--text-faint); font-size:12px; font-family:var(--font-mono); }
+/* ---------- Modul kartochkalari ---------- */
+.modgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:6px;}
+@media(min-width:600px){.modgrid{grid-template-columns:repeat(3,1fr);}}
+.modjump{
+  display:flex;align-items:center;gap:9px;text-align:left;width:100%;
+  padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--card);
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+.modjump:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:var(--shadow-s);}
+.modjump em{font-style:normal;font-size:19px;line-height:1;flex-shrink:0;}
+.modjump b{font-size:13px;font-weight:600;line-height:1.3;}
+.modjump .new{
+  font-family:var(--f-mono);font-size:8.5px;letter-spacing:.1em;color:var(--pom);
+  display:block;margin-top:1px;font-weight:600;
+}
 
-  .tip{ position:relative; border-bottom:1px dotted var(--text-faint); cursor:help; }
-  .tip .tip-bubble{
-    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px);
-    background:var(--surface-3); border:1px solid var(--border); color:var(--text); font-size:12px; font-family:var(--font-body);
-    padding:8px 11px; border-radius:9px; width:210px; text-align:left; line-height:1.5;
-    opacity:0; pointer-events:none; transition:all .18s ease; z-index:30; box-shadow:0 10px 24px -10px rgba(0,0,0,.5);
-  }
-  .tip:hover .tip-bubble{opacity:1; transform:translateX(-50%) translateY(0);}
+.mod{
+  border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);
+  padding:22px 20px;margin-top:16px;scroll-margin-top:118px;box-shadow:var(--shadow-s);
+  position:relative;overflow:hidden;
+}
+.mod::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--acc);}
+.mod-head{display:flex;gap:13px;align-items:flex-start;margin-bottom:4px;}
+.mod-head em{
+  font-style:normal;font-size:22px;width:44px;height:44px;flex-shrink:0;border-radius:13px;
+  background:var(--acc-soft);display:grid;place-items:center;
+}
+.mod-head h3{margin-bottom:2px;}
+.mod-head p{font-size:13.5px;color:var(--acc);font-weight:600;}
+.mod-why{margin-top:14px;font-size:15px;}
+.mini{
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:20px 0 9px;font-weight:600;
+}
+
+/* ---------- Lug'at ---------- */
+.search{
+  display:flex;align-items:center;gap:10px;padding:12px 15px;
+  border:1.5px solid var(--line-2);border-radius:99px;background:var(--card);margin-bottom:14px;
+}
+.search input{
+  border:none;outline:none;background:none;font:inherit;font-size:15px;color:var(--ink);
+  width:100%;
+}
+.search input::placeholder{color:var(--ink-3);}
+.search svg{width:17px;height:17px;flex-shrink:0;stroke:var(--ink-3);}
+.term{
+  border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);margin-bottom:8px;overflow:hidden;
+}
+.term summary{align-items:flex-start;}
+.term summary .t-main{display:block;}
+.term summary b{display:block;font-family:var(--f-display);font-size:15.5px;font-weight:700;}
+.term summary span{display:block;font-size:13px;color:var(--ink-2);font-weight:400;margin-top:1px;}
+.term .det-body p + p{margin-top:9px;}
+#noterm{
+  display:none;text-align:center;padding:26px;color:var(--ink-3);font-size:14px;
+  border:1px dashed var(--line-2);border-radius:var(--r-md);
+}
+
+/* ---------- Tarif ---------- */
+.tier{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--card);padding:20px;box-shadow:var(--shadow-s);}
+.tier.hi{border-color:var(--saffron);box-shadow:0 0 0 3px var(--saffron-soft),var(--shadow-s);}
+.tier h3{margin-bottom:3px;}
+.tier .sub{font-size:13px;color:var(--ink-2);margin-bottom:14px;}
+.tier ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.tier li{display:flex;gap:9px;font-size:13.8px;color:var(--ink-2);align-items:flex-start;}
+.tier li b{color:var(--ink);font-weight:600;}
+.tier li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acc,var(--turq));margin-top:8px;flex-shrink:0;}
+
+/* ---------- Ro'yxatlar ---------- */
+.dots{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.dots li{display:flex;gap:10px;font-size:13.8px;color:var(--ink-2);align-items:flex-start;}
+.dots li::before{content:"—";color:var(--ink-3);flex-shrink:0;}
+.dots li b{color:var(--ink);}
+
+/* ---------- Yordam ---------- */
+.help{
+  border:1px solid var(--line);border-radius:var(--r-lg);padding:28px 22px;text-align:center;
+  background:linear-gradient(160deg,var(--card-2),var(--card));box-shadow:var(--shadow-s);
+}
+.help h2{margin-bottom:8px;}
+.help p{color:var(--ink-2);font-size:14.5px;max-width:44ch;margin:0 auto 20px;}
+
+footer{
+  text-align:center;padding:34px 18px 8px;color:var(--ink-3);
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;
+}
+
+/* ---------- Ochilish animatsiyasi ---------- */
+.up{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
+.up.seen{opacity:1;transform:none;}
+
+/* ---------- Toast ---------- */
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);
+  background:var(--ink);color:var(--paper);font-size:13.5px;font-weight:600;
+  padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;
+  transition:all .25s ease;z-index:200;box-shadow:var(--shadow-m);
+}
+#toast.show{opacity:1;transform:translate(-50%,0);}
 </style>
 </head>
 <body>
+<div id="bar"></div>
 
-<div id="progressBar"></div>
-
-<div class="topbar">
-  <div class="brand">
-    <div class="brand-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 16 0"/><path d="M8 12a4 4 0 0 1 8 0"/><circle cx="12" cy="12" r="1.4" fill="#0a0a0a"/></svg>
+<header class="top">
+  <div class="logo">
+    <div class="logo-tile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 12a8 8 0 0 1 16 0"/><path d="M8 12a4 4 0 0 1 8 0"/><circle cx="12" cy="12" r="1.3" fill="#fff" stroke="none"/>
+      </svg>
     </div>
-    <div>
-      <div class="brand-name">AUTO XABARCHIM</div>
-      <div class="brand-sub">BOSHQARUV MARKAZI</div>
+    <div class="logo-txt">
+      <b>Auto Xabarchim</b>
+      <span>Qo'llanma</span>
     </div>
   </div>
-  <div class="top-actions">
-    <div class="status-pill"><span class="status-dot"></span>TIZIM FAOL</div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Rejimni almashtirish" title="Kunduzgi/tungi rejim">
-      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-    </button>
-  </div>
-</div>
+  <button class="icon-btn" id="theme" aria-label="Yorug' va qorong'i rejim">
+    <svg id="theme-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
+</header>
 
-<nav class="nav-scroll" id="navScroll">
-  <a href="#hero" class="nav-pill">Bosh sahifa</a>
-  <a href="#quickstart" class="nav-pill">Tezkor boshlash</a>
-  <a href="#ulash" class="nav-pill">Akkaunt ulash</a>
-  <a href="#modullar" class="nav-pill">Modullar</a>
-  <a href="#statistika" class="nav-pill">Statistika</a>
-  <a href="#tariflar" class="nav-pill">Tariflar</a>
-  <a href="#xavfsizlik" class="nav-pill">Xavfsizlik</a>
-  <a href="#faq" class="nav-pill">FAQ</a>
-  <a href="#yordam" class="nav-pill">Yordam</a>
+<nav class="rail" id="rail">
+  <a href="#boshi">Boshi</a>
+  <a href="#nima">Bu nima?</a>
+  <a href="#ulash">Akkaunt ulash</a>
+  <a href="#modullar">9 ta modul</a>
+  <a href="#lugat">Lug'at</a>
+  <a href="#statistika">Statistika</a>
+  <a href="#tarif">Tarif va olmos</a>
+  <a href="#xavfsizlik">Xavfsizlik</a>
+  <a href="#savollar">Savollar</a>
+  <a href="#yordam">Yordam</a>
 </nav>
 
 <main>
 
-  <section class="hero" id="hero">
-    <div id="radarWrap">
-      <div class="radar-ring"></div>
-      <div class="radar-ring"></div>
-      <div class="radar-ring"></div>
-      <span class="packet p1"></span>
-      <span class="packet p2"></span>
-      <span class="packet p3"></span>
-      <div class="tower-core">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 12a8 8 0 0 1 16 0"/><path d="M8 12a4 4 0 0 1 8 0"/><circle cx="12" cy="12" r="1.6" fill="#0a0a0a"/>
-        </svg>
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" id="boshi">
+  <span class="kicker">Oddiy tilda qo'llanma</span>
+  <h1>Telegramingiz siz uxlab yotganingizda ham <em>ishlab turadi</em>.</h1>
+  <p class="big">
+    Auto Xabarchim — bu sizning Telegram akkauntingizga biriktiriladigan yordamchi.
+    Xabar yuborish, javob berish, tabriklash, media yuklab olish kabi kundalik ishlarni
+    o'zi bajaradi. Bir marta sozlaysiz — keyin unutasiz.
+  </p>
+
+  <div class="cta">
+    <a href="#nima" class="btn btn-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      Nimadan boshlay?
+    </a>
+    <a href="#modullar" class="btn btn-2">9 ta modulni ko'rish</a>
+  </div>
+
+  <div class="phone">
+    <div class="phone-bar">
+      <div class="avatar">🤖</div>
+      <div>
+        <b>Auto Xabarchim</b>
+        <i id="live">ishlamoqda…</i>
       </div>
     </div>
-    <div class="hero-content">
-      <div class="eyebrow"><span class="status-dot" style="background:var(--teal)"></span>Telegram avtomatlashtirish tizimi</div>
-      <h1>Akkauntingiz nomidan<br><span>24/7 ishlaydigan signal markazi</span></h1>
-      <p class="lead-p">Xabar yuborish, javob berish, kuzatuv, tabriklash, uzatish va bezovtalovchi chatlardan himoya — barchasi bitta joydan boshqariladi. Bir marta sozlang, qolganini markaz o'zi bajaradi.</p>
+    <div class="phone-body chat" id="demo-hero">
+      <div class="bub in"><span class="who">Do'stingiz · 03:14</span>Assalomu alaykum, narxlarni ayta olasizmi?</div>
+      <div class="bub out">Va alaykum assalom! Narxlar ro'yxatini hozir yuboraman 👇</div>
+      <div class="bub sys">🤖 Avto javob moduli — siz uxlab yotgan payt javob berdi</div>
+      <div class="bub in" id="typing-row"><span class="typing"><i></i><i></i><i></i></span></div>
+    </div>
+  </div>
 
-      <div class="console-line"><span id="consoleText"></span><span class="caret"></span></div>
+  <div class="band"></div>
+</section>
 
-      <div class="hero-cta">
-        <a href="#quickstart" class="btn btn-primary">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18l15-9L5 3Z"/></svg>
-          Tezkor boshlash
-        </a>
-        <a href="#modullar" class="btn btn-ghost">8 ta modulni ko'rish</a>
+<!-- ═══════════════ BU NIMA ═══════════════ -->
+<section id="nima">
+  <div class="head">
+    <span class="kicker">Asosiy tushuncha</span>
+    <h2>Bu aslida nima?</h2>
+    <p class="lede">Bir daqiqada tushunib olasiz. Keyin qolgan hamma narsa oson bo'ladi.</p>
+  </div>
+
+  <div class="card">
+    <p style="font-size:15.5px;">
+      Tasavvur qiling: sizga o'xshab yozadigan, sizning telefoningizni bilgan,
+      lekin <b>hech qachon charchamaydigan yordamchingiz</b> bor. Siz unga bir marta
+      aytasiz — «har juma kuni do'stlarimga tabrik yubor» yoki «kimdir yozsa, shu matnni javob qil» —
+      va u shuni yillar davomida bajarib turadi.
+    </p>
+    <p style="font-size:15.5px;margin-top:12px;">
+      Auto Xabarchim aynan shu. Farqi shundaki, u <b>alohida bot emas</b> —
+      u <b>sizning o'z akkauntingiz</b> orqali ishlaydi.
+    </p>
+  </div>
+
+  <div class="note gold">
+    <span class="ic">⚠️</span>
+    <div>
+      <b>Eng muhim jumla:</b> barcha xabarlar sizning ismingiz va rasmingiz bilan chiqadi.
+      Do'stingiz «bu bot yozdi» deb o'ylamaydi — u siz yozgan deb biladi.
+      Shuning uchun matnlarni o'zingiz yozgandek yozing, va Telegram qoidalariga rioya qiling.
+    </div>
+  </div>
+
+  <h4 class="mini">Bot va userbot — farqi nima?</h4>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>&nbsp;</th><th>Oddiy bot</th><th>Auto Xabarchim</th></tr></thead>
+      <tbody>
+        <tr><td>Kim yozadi</td><td>Alohida @bot akkaunti</td><td>Siz o'zingiz</td></tr>
+        <tr><td>Guruhga qo'shish</td><td>Alohida qo'shish kerak</td><td>Siz allaqachon a'zosiz</td></tr>
+        <tr><td>Shaxsiy chatga yozish</td><td>Odam avval botga yozishi shart</td><td>Cheklov yo'q</td></tr>
+        <tr><td>Ko'rinishi</td><td>Yoniga «bot» yozuvi chiqadi</td><td>Oddiy odam kabi</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="mini">Uch qadamda ishga tushadi</h4>
+  <ol class="steps" style="--acc:var(--turq);--acc-soft:var(--turq-soft);">
+    <li><b>Akkauntingizni ulaysiz</b><span>Telefon raqam yoki QR kod orqali — bir daqiqalik ish.</span></li>
+    <li><b>Kerakli modulni tanlaysiz</b><span>9 tasi bor. Hammasini emas, faqat kerakligini yoqing.</span></li>
+    <li><b>Sozlab, «✅ Tasdiqlash» bosasiz</b><span>Shu zahoti ishlay boshlaydi. Botni yopib qo'ysangiz ham to'xtamaydi.</span></li>
+  </ol>
+</section>
+
+<!-- ═══════════════ AKKAUNT ULASH ═══════════════ -->
+<section id="ulash">
+  <div class="head">
+    <span class="kicker">Birinchi qadam</span>
+    <h2>Akkauntni qanday ulasa bo'ladi?</h2>
+    <p class="lede">
+      Bu — Telegramga kompyuterdan kirganingizga o'xshaydi. Parolingiz hech qayerga
+      berilmaydi, Telegramning o'z tizimi orqali ruxsat beriladi.
+    </p>
+  </div>
+
+  <div class="card">
+    <h4 style="margin-bottom:10px;">📞 1-usul — telefon raqam orqali</h4>
+    <ol class="steps" style="--acc:var(--cobalt);--acc-soft:var(--cobalt-soft);">
+      <li><b>«➕ Akkaunt qo'shish» tugmasini bosing</b></li>
+      <li><b>«📞 Telefon orqali» ni tanlang</b></li>
+      <li><b>Raqamingizni yozing</b><span>Ko'rinishi: <span class="mono">+998901234567</span></span></li>
+      <li><b>Telegram yuborgan kodni kiriting</b><span>Kodni <mark>chiziqcha bilan</mark> yozing: <span class="mono">1-2-3-4-5</span>. Nega? Telegram oddiy yozilgan kodni «bu kodni kimgadir berdi» deb o'ylab, kodni bekor qilib yuborishi mumkin.</span></li>
+      <li><b>2FA parolingizni kiriting</b><span>Faqat sizda ikki bosqichli parol yoqilgan bo'lsa so'raladi.</span></li>
+      <li><b>Tayyor ✅</b><span>Akkaunt ro'yxatda 🟢 belgisi bilan chiqadi.</span></li>
+    </ol>
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <h4 style="margin-bottom:10px;">📷 2-usul — QR kod orqali</h4>
+    <ol class="steps" style="--acc:var(--plum);--acc-soft:var(--plum-soft);">
+      <li><b>«➕ Akkaunt qo'shish» → «📷 QR kod»</b></li>
+      <li><b>«QR kod yaratish» ni bosing</b><span>Ekranda kvadrat rasm paydo bo'ladi.</span></li>
+      <li><b>Telefoningizda Telegramni oching</b><span>Sozlamalar → Qurilmalar → «Kompyuter qurilmasini ulash».</span></li>
+      <li><b>Kamerani QR kodga to'g'rilang</b></li>
+      <li><b>Tayyor ✅</b></li>
+    </ol>
+    <div class="note tip">
+      <span class="ic">💡</span>
+      <div>QR usuli tezroq, chunki kod kutib o'tirmaysiz. 2FA paroli yoqilganlar uchun ham qulayroq.</div>
+    </div>
+  </div>
+
+  <h4 class="mini">Bilib qo'ying</h4>
+  <ul class="dots">
+    <li><b>Bitta akkaunt — bitta egaga.</b> Agar raqam boshqa foydalanuvchida ulangan bo'lsa, ikkinchi marta ulanmaydi.</li>
+    <li><b>Nechta akkaunt ulash mumkinligi tarifingizga bog'liq.</b> Aniq sonni botdagi «📊 Statistika» bo'limida ko'rasiz.</li>
+    <li><b>Istalgan payt uzasiz.</b> Telegram → Sozlamalar → Qurilmalar → kerakli seansni o'chirsangiz, aloqa uziladi.</li>
+    <li><b>Ulanish yo'qolsa</b> akkaunt 🔴 bo'lib qoladi va modullar to'xtaydi — qaytadan ulang.</li>
+  </ul>
+</section>
+
+<!-- ═══════════════ MODULLAR ═══════════════ -->
+<section id="modullar">
+  <div class="head">
+    <span class="kicker">Asosiy qism</span>
+    <h2>9 ta modul — har biri bitta ishni bajaradi</h2>
+    <p class="lede">
+      Hammasini birdan yoqish shart emas. O'zingizga keragini tanlang.
+      Har bir modul boshqasidan mustaqil ishlaydi.
+    </p>
+  </div>
+
+  <div class="modgrid">
+    <button class="modjump" style="--acc:var(--cobalt)" data-go="m1"><em>💌</em><b>Avto xabar</b></button>
+    <button class="modjump" style="--acc:var(--turq)" data-go="m2"><em>🤖</em><b>Avto javob</b></button>
+    <button class="modjump" style="--acc:var(--plum)" data-go="m3"><em>👀</em><b>Avto kuzatuv</b></button>
+    <button class="modjump" style="--acc:var(--saffron)" data-go="m4"><em>🎉</em><b>Avto tabrik</b></button>
+    <button class="modjump" style="--acc:var(--plum)" data-go="m5"><em>📢</em><b>Mention</b></button>
+    <button class="modjump" style="--acc:var(--pom)" data-go="m6"><em>🚫</em><b>Bloklash</b></button>
+    <button class="modjump" style="--acc:var(--turq)" data-go="m7"><em>🔁</em><b>Avto uzatish</b></button>
+    <button class="modjump" style="--acc:var(--cobalt)" data-go="m8"><em>📥</em><b>Media olish<span class="new">YANGI</span></b></button>
+    <button class="modjump" style="--acc:var(--saffron)" data-go="m9"><em>👥</em><b>Referal</b></button>
+  </div>
+
+  <!-- ─── 1. AVTO XABAR ─── -->
+  <article class="mod" id="m1" style="--acc:var(--cobalt);--acc-soft:var(--cobalt-soft);">
+    <div class="mod-head">
+      <em>💌</em>
+      <div><h3>Avto xabar</h3><p>Bir marta yozasiz — o'zi qayta-qayta yuboradi</p></div>
+    </div>
+
+    <p class="mod-why">
+      Siz bitta xabar tayyorlaysiz va «qaysi chatlarga» hamda «qancha vaqtda bir marta»
+      yuborilishini aytasiz. Shundan keyin u belgilangan vaqtda o'zi yuborib turadi —
+      telefoningiz o'chiq bo'lsa ham.
+    </p>
+
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol — reklama guruhlari</span>
+      <div class="chat">
+        <div class="bub sys">Siz sozladingiz: matn + 5 ta guruh + har 1 soatda</div>
+        <div class="bub out"><span class="who">Siz · 09:00</span>📱 iPhone 15 sotiladi. Holati zo'r, kafolati bor. Yozing 👉 @siz</div>
+        <div class="bub out"><span class="who">Siz · 10:00</span>📱 iPhone 15 sotiladi. Holati zo'r, kafolati bor. Yozing 👉 @siz</div>
+        <div class="bub sys">…va shu tarzda siz to'xtatmaguningizcha davom etadi</div>
       </div>
-      <div class="hero-badges">
-        <span class="hero-badge">💌 Avto xabar</span>
-        <span class="hero-badge">🤖 Avto javob</span>
-        <span class="hero-badge">👀 Avto kuzatuv</span>
-        <span class="hero-badge">🎉 Avto tabrik</span>
-        <span class="hero-badge">📣 Mention</span>
-        <span class="hero-badge">🚫 Bloklash</span>
-        <span class="hero-badge">🔁 Avto uzatish</span>
-        <span class="hero-badge">👥 Referal</span>
+    </div>
+
+    <h4 class="mini">Qanday sozlanadi</h4>
+    <ol class="steps">
+      <li><b>«💌 Avto xabar» → akkauntni tanlang</b></li>
+      <li><b>«📝 Xabar yaratish»</b></li>
+      <li><b>Kontent turini tanlang</b><span>Oddiy matn · Rasm · Rasm+matn · Video · Video+matn · Stiker · Gift</span></li>
+      <li><b>Xabarni botga yuboring</b><span>Nimani yuborsangiz, o'shani ko'chirib tarqatadi.</span></li>
+      <li><b>Chat turini tanlang</b><span>👥 Guruhlar · 👤 Shaxsiy · 📢 Kanallar · 🌐 Barchasi</span></li>
+      <li><b>Aniq chatlarni belgilang</b><span>Ro'yxatdan bosib tanlaysiz. «Hammasini tanlash» tugmasi ham bor.</span></li>
+      <li><b>Intervalni tanlang</b><span>3 daq · 5 daq · 15 daq · 30 daq · 1 soat · 3 soat, yoki qo'lda (eng kami 60 soniya).</span></li>
+      <li><b>Matn stilini tanlang</b><span>Oddiy, qalin, qiya, spoiler va h.k.</span></li>
+      <li><b>«✅ Tasdiqlash»</b><span>Shu zahoti birinchi xabar ketadi.</span></li>
+    </ol>
+
+    <details>
+      <summary>Yaratgandan keyin nima qila olaman?</summary>
+      <div class="det-body">
+        <div class="tbl"><table><tbody>
+          <tr><td>✏️ Tahrirlash</td><td>Matnni o'zgartirasiz — chatlar va interval o'sha-o'sha qoladi</td></tr>
+          <tr><td>🎨 Style</td><td>Matn ko'rinishini almashtirasiz</td></tr>
+          <tr><td>⏸️ To'xtatish</td><td>Vaqtincha pauza. O'chirilmaydi, keyin davom ettirasiz</td></tr>
+          <tr><td>▶️ Davom etish</td><td>Pauzadan qaytarish</td></tr>
+          <tr><td>🔄 Qayta yuborish</td><td>Navbatni kutmasdan hoziroq yuborish</td></tr>
+          <tr><td>📊 Batafsil</td><td>Nechta yuborilgani, oxirgi va keyingi vaqt</td></tr>
+          <tr><td>🗑 O'chirish</td><td>Butunlay o'chirish (tasdiq so'raydi)</td></tr>
+        </tbody></table></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Rasm yuborganda nima sodir bo'ladi? («Bridge» tizimi)</summary>
+      <div class="det-body">
+        <p>Rasm yoki videoni har bir chatga qaytadan yuklash internetni ham, vaqtni ham behuda sarflaydi.
+        Shuning uchun tizim rasmni <b>bir marta</b> o'z ichki xotirasiga joylaydi, keyin o'sha nusxani
+        barcha chatlarga tarqatadi. Bu «ko'prik» (bridge) deb ataladi.</p>
+        <p>Siz uchun bu ko'rinmaydi — shunchaki tez ishlaydi.</p>
+      </div>
+    </details>
+
+    <div class="note warn">
+      <span class="ic">🐢</span>
+      <div><b>Intervalni juda kichik qilmang.</b> Har 3 daqiqada 20 ta guruhga xabar yuborish
+      Telegramga «bu odam spam qilyapti» degan taassurot beradi. 15 daqiqa va undan yuqorisi xavfsizroq.</div>
+    </div>
+  </article>
+
+  <!-- ─── 2. AVTO JAVOB ─── -->
+  <article class="mod" id="m2" style="--acc:var(--turq);--acc-soft:var(--turq-soft);">
+    <div class="mod-head">
+      <em>🤖</em>
+      <div><h3>Avto javob</h3><p>Kimdir yozsa — siz bandligingizda o'zi javob beradi</p></div>
+    </div>
+
+    <p class="mod-why">
+      Shaxsiy chatlaringizni kuzatib turadi. Kimdir xabar yozsa, siz oldindan
+      tayyorlab qo'ygan javob avtomatik ketadi. Uch xil ishlash usuli bor.
+    </p>
+
+    <div class="tbl"><table>
+      <thead><tr><th>Usul</th><th>Qachon javob beradi</th><th>Kimga mos</th></tr></thead>
+      <tbody>
+        <tr><td>🔄 Default</td><td>Har qanday xabarga</td><td>«Bandman, keyinroq javob beraman»</td></tr>
+        <tr><td>🔑 Kalit so'zli</td><td>Faqat siz belgilagan so'z yozilsa</td><td>«narx» deganga narxlar ro'yxati</td></tr>
+        <tr><td>👋 Yangi user</td><td>Odam birinchi marta yozganda</td><td>Xush kelibsiz xabari</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol — kalit so'zli javob</span>
+      <div class="chat">
+        <div class="bub sys">Kalit so'z: <b>narx</b> · Moslik: O'xshash</div>
+        <div class="bub in"><span class="who">Mijoz</span>Assalomu alaykum, <b>narx</b>i qancha?</div>
+        <div class="bub out">Va alaykum assalom! 📋 Narxlar:<br>• Kichik — 50 000 so'm<br>• Katta — 90 000 so'm</div>
+        <div class="bub in"><span class="who">Boshqa odam</span>Salom, qalaysiz?</div>
+        <div class="bub sys">🤫 Javob berilmadi — «narx» so'zi yo'q edi</div>
       </div>
     </div>
-  </section>
 
-  <section id="quickstart">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Boshlash</div>
-      <h2>3 qadamda ishga tushiring</h2>
-      <p class="sec-desc">Sozlash bir necha daqiqa vaqt oladi — undan keyin markaz butunlay avtomatik ishlaydi, siz faqat natijani kuzatasiz.</p>
-    </div>
-    <div class="quickstart reveal">
-      <div class="qs-card">
-        <div class="qs-num">01</div>
-        <h3>Akkaunt ulang</h3>
-        <p>"➕ Akkaunt qo'shish" orqali Telegram akkauntingizni markazga ulang — telefon raqam yoki QR kod bilan.</p>
+    <h4 class="mini">Qanday sozlanadi</h4>
+    <ol class="steps">
+      <li><b>«🤖 Avto javob» → akkauntni tanlang</b></li>
+      <li><b>«🤖 Javob yaratish»</b></li>
+      <li><b>Javob turini tanlang</b><span>Default, Kalit so'zli yoki Yangi user.</span></li>
+      <li><b>Javob matnini yozing</b></li>
+      <li><b>Kalit so'zli bo'lsa — so'zlarni yozing</b><span>Bir nechtasini vergul bilan ajrating: <span class="mono">narx, narxi, qancha</span></span></li>
+      <li><b>Moslik turini tanlang</b><span>O'xshash · Aniq mos · Regex — pastda tushuntirilgan.</span></li>
+      <li><b>Qaysi chatlarda ishlashini belgilang</b></li>
+      <li><b>Stilni tanlang va «✅ Tasdiqlang»</b></li>
+    </ol>
+
+    <details>
+      <summary>Moslik turlari — qaysi birini tanlay?</summary>
+      <div class="det-body">
+        <div class="tbl"><table>
+          <thead><tr><th>Tur</th><th>Ma'nosi</th><th>Misol</th></tr></thead>
+          <tbody>
+            <tr><td>🔍 O'xshash</td><td>So'z gapning <b>ichida</b> bo'lsa yetarli</td><td>«narx» → «narxi qancha?» ham topiladi</td></tr>
+            <tr><td>🎯 Aniq mos</td><td>Xabar <b>faqat</b> o'sha so'zdan iborat bo'lsa</td><td>«narx» → faqat «narx» deb yozilsa</td></tr>
+            <tr><td>📐 Regex</td><td>Maxsus qidiruv qolipi (tajribalilar uchun)</td><td><span class="mono">^buyurtma \d+</span> → «buyurtma 123»</td></tr>
+          </tbody>
+        </table></div>
+        <p style="margin-top:10px;"><b>Maslahat:</b> ishonchingiz komil bo'lmasa — <b>O'xshash</b> ni tanlang.
+        Odamlar har xil yozadi, aniq moslik ko'p holatda ishlamay qoladi.</p>
       </div>
-      <div class="qs-card">
-        <div class="qs-num">02</div>
-        <h3>Modul tanlang</h3>
-        <p>8 ta modul ichidan kerakligini tanlang: xabar, javob, kuzatuv, tabrik, mention, bloklash, uzatish yoki referal.</p>
+    </details>
+
+    <div class="note tip">
+      <span class="ic">🔄</span>
+      <div><b>«Reset hisob»</b> tugmasi javob sonini noldan boshlaydi — statistikani tozalash uchun qulay.</div>
+    </div>
+  </article>
+
+  <!-- ─── 3. AVTO KUZATUV ─── -->
+  <article class="mod" id="m3" style="--acc:var(--plum);--acc-soft:var(--plum-soft);">
+    <div class="mod-head">
+      <em>👀</em>
+      <div><h3>Avto kuzatuv</h3><p>Chatdagi harakatlarni sezadi va javob qaytaradi</p></div>
+    </div>
+
+    <p class="mod-why">
+      Avto javob <b>xabar kelganda</b> ishlaydi. Avto kuzatuv esa <b>boshqa harakatlarni</b> —
+      xabar tahrirlanganini, o'chirilganini, media yuborilganini sezadi.
+      Eng foydalisi: kimdir xabarini o'chirsa ham, siz o'sha matnni ko'rasiz.
+    </p>
+
+    <div class="tbl"><table>
+      <thead><tr><th>Hodisa</th><th>Nima bo'ladi</th></tr></thead>
+      <tbody>
+        <tr><td>✏️ Edit</td><td>Xabar tahrirlansa — siz yozgan matn bilan javob qaytadi</td></tr>
+        <tr><td>🗑 Delete</td><td>Xabar o'chirilsa — o'chirilgan matn sizga ko'rsatiladi</td></tr>
+        <tr><td>📸 Media</td><td>Rasm yoki video yuborilsa javob beradi</td></tr>
+        <tr><td>🤩 Stiker</td><td>Stiker yuborilsa javob beradi</td></tr>
+        <tr><td>👍 Reaksiya</td><td>Xabarlarga avtomatik emoji qo'yadi</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol — o'chirilgan xabarni ko'rish</span>
+      <div class="chat">
+        <div class="bub in"><span class="who">Do'stingiz</span>Pulni ertaga qaytaraman</div>
+        <div class="bub sys">Do'stingiz xabarni o'chirdi 🗑</div>
+        <div class="bub out">👀 O'chirilgan xabar:<br>📝 «Pulni ertaga qaytaraman»</div>
       </div>
-      <div class="qs-card">
-        <div class="qs-num">03</div>
-        <h3>Sozlang va yoqing</h3>
-        <p>Kerakli sozlamalarni kiriting va "✅ Tasdiqlash" tugmasini bosing — modul shu zahoti ishga tushadi.</p>
+    </div>
+
+    <h4 class="mini">Qanday sozlanadi</h4>
+    <ol class="steps">
+      <li><b>«👀 Avto kuzatuv» → akkauntni tanlang</b></li>
+      <li><b>«👁 Watcher yaratish»</b><span>Watcher = «kuzatuvchi qoida».</span></li>
+      <li><b>Hodisalarni belgilang</b><span>Bir nechtasini birga tanlash mumkin.</span></li>
+      <li><b>Har biriga javob matnini yozing</b><span>Yoki tayyor matnni qoldiring.</span></li>
+      <li><b>Reaksiya sozlamalari</b><span>Emoji va ehtimollik (25% / 50% / 75% / 100%).</span></li>
+      <li><b>Qayerda ishlashini tanlang</b><span>🌐 Barcha shaxsiy chatlarda yoki 👤 faqat tanlanganlarida.</span></li>
+      <li><b>Cooldown vaqtini belgilang</b><span>Bitta odamga qayta-qayta javob bermaslik uchun.</span></li>
+      <li><b>Stilni tanlang va «✅ Tasdiqlang»</b></li>
+    </ol>
+
+    <details>
+      <summary>Ehtimollik nima degani?</summary>
+      <div class="det-body">
+        <p>Reaksiya har bir xabarga qo'yilsa, g'alati ko'rinadi — bu odam emas, mashina ekani sezilib qoladi.</p>
+        <p>Ehtimollik shuni hal qiladi. <b>50%</b> tanlasangiz, taxminan har ikkinchi xabarga reaksiya
+        qo'yiladi, boshqasiga qo'yilmaydi — tasodifiy tarzda. <b>100%</b> esa hammasiga qo'yadi.</p>
+        <p><b>Maslahat:</b> tabiiy ko'rinishi uchun 25–50% eng yaxshisi.</p>
+      </div>
+    </details>
+  </article>
+
+  <!-- ─── 4. AVTO TABRIK ─── -->
+  <article class="mod" id="m4" style="--acc:var(--saffron);--acc-soft:var(--saffron-soft);">
+    <div class="mod-head">
+      <em>🎉</em>
+      <div><h3>Avto tabrik</h3><p>Muhim kunlarni endi hech qachon unutmaysiz</p></div>
+    </div>
+
+    <p class="mod-why">
+      Ichida ikkita mustaqil tabrik bor: <b>tug'ilgan kun</b> (kunini o'zi topadi) va
+      <b>juma tabrigi</b> (har hafta belgilangan vaqtda). Ikkalasini alohida yoqasiz.
+    </p>
+
+    <div class="grid g2">
+      <div class="card" style="padding:17px;">
+        <h4 style="margin-bottom:7px;">🎂 Tug'ilgan kun</h4>
+        <p style="font-size:13.8px;color:var(--ink-2);">
+          Kontaktlaringiz orasidan bugun kimning tug'ilgan kuni ekanini o'zi aniqlaydi
+          va tabrikni o'sha odamga yuboradi. Bir odamga <b>yiliga bir marta</b> —
+          takror bezovta qilmaydi.
+        </p>
+      </div>
+      <div class="card" style="padding:17px;">
+        <h4 style="margin-bottom:7px;">🕌 Juma tabrigi</h4>
+        <p style="font-size:13.8px;color:var(--ink-2);">
+          Har juma kuni, siz belgilagan soatda tabrik ketadi.
+          Odatiy vaqt — <b>ertalab 05:00</b> (Toshkent vaqti), lekin o'zgartira olasiz.
+        </p>
       </div>
     </div>
-  </section>
 
-  <section id="ulash">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Boshlash</div>
-      <h2>Akkaunt qanday ulanadi?</h2>
-      <p class="sec-desc">Ikkita usuldan birini tanlang — ikkalasi ham xavfsiz, rasmiy Telegram tizimi orqali ishlaydi va bir necha soniya vaqt oladi.</p>
-    </div>
-
-    <div class="reveal">
-    <div class="tabs" role="tablist">
-      <button class="tab-btn active" data-tab="phone">📞 Telefon raqam</button>
-      <button class="tab-btn" data-tab="qr">📷 QR kod</button>
-    </div>
-
-    <div class="tab-panel active" id="tab-phone">
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><div class="step-body"><h3>"➕ Akkaunt qo'shish" tugmasini bosing</h3></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-body"><h3>"📞 Telefon orqali" ni tanlang</h3></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-body"><h3>Raqamingizni kiriting</h3><p>Format: <span class="inline-code">+998XXXXXXXXX</span></p></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-body"><h3>Tasdiqlash kodini yuboring</h3><p>Telegram sizga kod yuboradi — uni <span class="inline-code">1-2-3-4-5</span> formatida kiriting.</p></div></div>
-        <div class="step"><div class="step-num">5</div><div class="step-body"><h3>2FA parolini kiriting (agar yoqilgan bo'lsa)</h3></div></div>
-        <div class="step"><div class="step-num">6</div><div class="step-body"><h3>Tayyor!</h3><p>Akkaunt muvaffaqiyatli ulandi ✅</p></div></div>
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol — ismni o'zi qo'yadi</span>
+      <div class="chat">
+        <div class="bub sys">Siz yozgan matn: «Tug'ilgan kuningiz bilan, <b>{name}</b>! 🎂»</div>
+        <div class="bub out"><span class="who">→ Azizga</span>Tug'ilgan kuningiz bilan, Aziz! 🎂</div>
+        <div class="bub out"><span class="who">→ Nodiraga</span>Tug'ilgan kuningiz bilan, Nodira! 🎂</div>
       </div>
-      <p style="font-size:13px; color:var(--text-faint); margin-top:12px;">Kimlar uchun qulay: <strong style="color:var(--text-muted)">ko'pchilik foydalanuvchilar uchun</strong></p>
     </div>
 
-    <div class="tab-panel" id="tab-qr">
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><div class="step-body"><h3>"➕ Akkaunt qo'shish" tugmasini bosing</h3></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-body"><h3>"📷 QR kod" ni tanlang</h3></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-body"><h3>"QR kod yaratish" ni bosing</h3></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-body"><h3>Telefoningizda: Telegram → Sozlamalar → Qurilmalar</h3><p>"Desktop qurilmasini ulash" bo'limini oching.</p></div></div>
-        <div class="step"><div class="step-num">5</div><div class="step-body"><h3>QR kodni skanerlang</h3></div></div>
-        <div class="step"><div class="step-num">6</div><div class="step-body"><h3>Tayyor!</h3><p>Akkaunt muvaffaqiyatli ulandi ✅</p></div></div>
+    <h4 class="mini">Qanday sozlanadi</h4>
+    <ol class="steps">
+      <li><b>«🎉 Avto tabrik» → akkauntni tanlang</b></li>
+      <li><b>🎂 yoki 🕌 — qaysi birini sozlashni tanlang</b></li>
+      <li><b>«✏️ Matnni tahrirlash» — tabrik matnini yozing</b><span>Ichiga <span class="mono">{name}</span> qo'ysangiz, o'sha joyga odamning ismi yoziladi.</span></li>
+      <li><b>Kontent turini tanlang</b><span>Matn · Rasm+matn · Video+matn · Stiker</span></li>
+      <li><b>Kimlarga yuborilishini belgilang</b><span>🌐 Hammaga yoki 👤 tanlangan kishilarga.</span></li>
+      <li><b>Juma tabrigida — vaqtni tanlang</b><span>Tayyor vaqtlardan yoki qo'lda <span class="mono">HH:MM</span> ko'rinishida.</span></li>
+      <li><b>«✅ Yoqish»</b></li>
+    </ol>
+
+    <div class="pills">
+      <span class="pill">🧪 Sinov yuborish — avval o'zingizga</span>
+      <span class="pill">📅 Yaqin tug'ilgan kunlar ro'yxati</span>
+      <span class="pill">⏸️ Istalgan payt to'xtatish</span>
+    </div>
+
+    <div class="note">
+      <span class="ic">🎂</span>
+      <div><b>Tug'ilgan kunni qayerdan biladi?</b> Faqat Telegram profilida sanasini
+      ochiq qo'ygan odamlarni ko'ra oladi. Profilida yozilmagan bo'lsa — bila olmaydi,
+      va bu tabiiy: Telegramning o'zi ham ko'rsatmaydi.</div>
+    </div>
+  </article>
+
+  <!-- ─── 5. MENTION ─── -->
+  <article class="mod" id="m5" style="--acc:var(--plum);--acc-soft:var(--plum-soft);">
+    <div class="mod-head">
+      <em>📢</em>
+      <div><h3>Mention</h3><p>Guruhdagi hammani birma-bir chaqiradi</p></div>
+    </div>
+
+    <p class="mod-why">
+      Guruhda muhim e'lon bor, lekin hech kim ko'rmayapti? Mention — bu odamlarni
+      <b>@ belgisi bilan chaqirish</b>. Chaqirilgan odamga bildirishnoma boradi va u
+      albatta ko'radi. Modul buni yuzlab a'zoga ketma-ket, o'zi bajaradi.
+    </p>
+
+    <div class="note warn">
+      <span class="ic">📍</span>
+      <div><b>Diqqat — bu modul boshqacha ishlaydi.</b> Buyruqni botga emas,
+      <b>guruhning o'zida</b>, ulangan akkauntingizdan yozasiz. Botdagi bo'lim faqat sozlash uchun.</div>
+    </div>
+
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol — guruhda</span>
+      <div class="chat">
+        <div class="bub out"><span class="who">Siz guruhda yozdingiz</span><code>.u Yig'ilish 18:00 da!</code></div>
+        <div class="bub sys">Buyruq xabari darhol o'chirildi — guruh toza qoladi</div>
+        <div class="bub out">Yig'ilish 18:00 da!<br>@aziz @nodira @bekzod @malika …</div>
+        <div class="bub out">Yig'ilish 18:00 da!<br>@shahzod @dilnoza @jasur @kamola …</div>
+        <div class="bub sys">20 tadan guruhlab yuboradi — Telegram cheklamasligi uchun</div>
       </div>
-      <p style="font-size:13px; color:var(--text-faint); margin-top:12px;">Kimlar uchun qulay: <strong style="color:var(--text-muted)">2FA yoqilgan foydalanuvchilar uchun</strong></p>
     </div>
 
-    <div class="callout">
-      <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg></div>
-      <p><strong>Bir akkaunt faqat bitta foydalanuvchiga ulanishi mumkin.</strong> Agar akkaunt boshqa foydalanuvchida allaqachon ulangan bo'lsa, uni qayta ulab bo'lmaydi. Har bir tarifda ulash mumkin bo'lgan akkauntlar soni cheklangan (pastdagi Tariflar bo'limiga qarang).</p>
-    </div>
-    </div>
-  </section>
+    <h4 class="mini">Buyruqlar</h4>
+    <div class="tbl"><table>
+      <thead><tr><th>Buyruq</th><th>Vazifasi</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">.u</span></td><td>Guruhdagi <b>barcha</b> a'zolarni chaqiradi</td></tr>
+        <tr><td><span class="mono">.uo</span></td><td>Faqat <b>hozir onlayn</b> bo'lganlarni chaqiradi</td></tr>
+        <tr><td><span class="mono">.u matn</span></td><td>Matn bilan birga chaqiradi</td></tr>
+        <tr><td><span class="mono">.uo matn</span></td><td>Matn bilan onlaynlarni chaqiradi</td></tr>
+        <tr><td><span class="mono">.su</span></td><td>Ketayotgan chaqiruvni <b>darhol to'xtatadi</b></td></tr>
+      </tbody>
+    </table></div>
 
-  <section id="modullar">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Funksiyalar</div>
-      <h2>8 ta kuchli modul</h2>
-      <p class="sec-desc">Har bir modul akkauntingiz nomidan mustaqil ishlaydi va bir-biridan mustaqil sozlanadi. Batafsil ko'rish uchun kartochkani bosing.</p>
+    <h4 class="mini">Botdagi sozlamalar</h4>
+    <ol class="steps">
+      <li><b>«📢 Mention» → akkauntni tanlang</b></li>
+      <li><b>🟢 / 🔴 — modulni yoqing yoki o'chiring</b></li>
+      <li><b>⚡ Yuborish tezligini tanlang</b><span>1 · 2 · 3 · 4 · 5 · 7 · 10 soniya. Bu — har bir guruh orasidagi kutish.</span></li>
+    </ol>
+
+    <div class="pills">
+      <span class="pill">Ko'pi bilan 1000 kishi</span>
+      <span class="pill">20 tadan guruhlab</span>
+      <span class="pill">Telegram sekinlashtirsa — o'zi kutadi</span>
+      <span class="pill">Har akkauntga alohida sozlama</span>
     </div>
-    <div class="modules reveal">
-      <button class="module-card" onclick="jump('detail-xabar')" style="--card-accent:var(--amber); --card-accent-dim:var(--amber-dim); --card-accent-border:rgba(255,138,61,.25);">
-        <div class="module-top">
-          <div class="module-icon-row">
-            <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></div>
-            <div class="module-code">MOD-01</div>
-          </div>
-          <div class="freq-bars"><i></i><i></i><i></i><i></i></div>
+
+    <div class="note tip">
+      <span class="ic">🛡</span>
+      <div><b>Aqlli himoya.</b> Agar akkauntingiz avval Telegramdan «sekinroq» ogohlantirishi olgan bo'lsa,
+      modul buni eslab qoladi va keyingi safar o'zi sekinroq ishlaydi. Tezlikni 1 soniyaga qo'yish
+      o'rniga 3 soniya qoldirgan xavfsizroq.</div>
+    </div>
+  </article>
+
+  <!-- ─── 6. BLOKLASH ─── -->
+  <article class="mod" id="m6" style="--acc:var(--pom);--acc-soft:var(--pom-soft);">
+    <div class="mod-head">
+      <em>🚫</em>
+      <div><h3>Bloklash</h3><p>Telegram bloki ishlamagan joyda ishlaydi</p></div>
+    </div>
+
+    <p class="mod-why">
+      Ba'zi kanal va botlar siz ularni tark etsangiz ham, hatto bloklasangiz ham
+      xabar yozishda davom etadi. Bu Telegramning o'ziga xos xatosi.
+      Bu modul boshqa yo'ldan boradi: <b>kelgan xabarni darhol o'chirib tashlaydi</b>.
+    </p>
+
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol</span>
+      <div class="chat">
+        <div class="bub sys">Ro'yxatga qo'shildi: «Aksiya kanali»</div>
+        <div class="bub in"><span class="who">Aksiya kanali · 22:41</span>🔥 CHEGIRMA! Faqat bugun…</div>
+        <div class="bub sys">🚫 0,5 soniyada o'chirildi — siz ko'rmadingiz ham</div>
+        <div class="bub out"><span class="who">Sizning chatingiz</span>Toza va sokin ✨</div>
+      </div>
+    </div>
+
+    <h4 class="mini">Ro'yxatga qo'shishning 3 yo'li</h4>
+    <div class="tbl"><table>
+      <thead><tr><th>Usul</th><th>Qanday</th><th>Qulaylik</th></tr></thead>
+      <tbody>
+        <tr><td>📨 Forward</td><td>O'sha chatdan istalgan xabarni botga forward qilasiz</td><td>Eng oson</td></tr>
+        <tr><td>🆔 ID / username</td><td><span class="mono">@nomi</span> yoki raqamli ID ni yozasiz</td><td>Nomini bilsangiz</td></tr>
+        <tr><td>📂 Ro'yxatdan</td><td>Chatlaringiz ro'yxatidan tanlaysiz</td><td>Eng ishonchli</td></tr>
+      </tbody>
+    </table></div>
+
+    <details>
+      <summary>Qo'shgandan keyin nima bo'ladi?</summary>
+      <div class="det-body">
+        <ol class="steps" style="--acc:var(--pom);--acc-soft:var(--pom-soft);">
+          <li><b>Yangi xabar keladi</b></li>
+          <li><b>Modul uni bir zumda sezadi</b></li>
+          <li><b>Xabar o'chiriladi</b><span>Imkon bo'lsa ikkala tarafdan ham.</span></li>
+          <li><b>Hech kimga javob yozilmaydi</b><span>Qarshi taraf hech narsani sezmaydi.</span></li>
+        </ol>
+        <p style="margin-top:12px;">«📋 Bloklanganlar ro'yxati» bo'limida har bir chat nomi, turi va
+        nechta xabar o'chirilgani ko'rinadi. <b>⏸️ To'xtatish</b> yoki <b>🗑 O'chirish</b> bilan
+        istalgan payt ro'yxatdan chiqarasiz.</p>
+      </div>
+    </details>
+
+    <div class="note warn">
+      <span class="ic">ℹ️</span>
+      <div><b>100% kafolat yo'q.</b> Ba'zi kanallarda Telegram xabarni o'chirishga ruxsat bermaydi.
+      Bunday holatda modul harakat qiladi, lekin muvaffaqiyat kafolatlanmaydi.</div>
+    </div>
+  </article>
+
+  <!-- ─── 7. AVTO UZATISH ─── -->
+  <article class="mod" id="m7" style="--acc:var(--turq);--acc-soft:var(--turq-soft);">
+    <div class="mod-head">
+      <em>🔁</em>
+      <div><h3>Avto uzatish</h3><p>Bir chatga kelgan xabarni boshqalariga o'tkazadi</p></div>
+    </div>
+
+    <p class="mod-why">
+      Bitta <b>manba chat</b> tanlaysiz va bir nechta <b>qabul qiluvchi chat</b> belgilaysiz.
+      Manbaga yangi xabar tushishi bilan — matnmi, rasmi, videomi, farqi yo'q —
+      u avtomatik ravishda hammasiga uzatiladi.
+    </p>
+
+    <div class="note tip">
+      <span class="ic">🔍</span>
+      <div><b>Avto xabardan farqi:</b> Avto xabar — <b>siz yozgan</b> bitta matnni takror-takror yuboradi.
+      Avto uzatish — <b>boshqa birov yozgan</b> yangi xabarlarni ko'chiradi. Matn yozib o'tirmaysiz.</div>
+    </div>
+
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol — yangiliklarni tarqatish</span>
+      <div class="chat">
+        <div class="bub sys">Manba: «Ish e'lonlari» kanali → 4 ta guruhga</div>
+        <div class="bub in"><span class="who">Ish e'lonlari</span>Toshkentda dasturchi kerak. Maosh kelishilgan holda.</div>
+        <div class="bub out"><span class="who">→ 1-guruh</span>Toshkentda dasturchi kerak. Maosh kelishilgan holda.</div>
+        <div class="bub out"><span class="who">→ 2-guruh</span>Toshkentda dasturchi kerak. Maosh kelishilgan holda.</div>
+        <div class="bub sys">…va qolgan guruhlarga ham, o'zi</div>
+      </div>
+    </div>
+
+    <h4 class="mini">Qanday sozlanadi</h4>
+    <ol class="steps">
+      <li><b>«🔁 Avto uzatish» → akkauntni tanlang</b></li>
+      <li><b>«📡 Uzatish yaratish»</b></li>
+      <li><b>1-bosqich: manba chatni tanlang</b><span>Avval turi (guruh / shaxsiy / kanal / barchasi), keyin aniq chat. Faqat <b>bitta</b> manba.</span></li>
+      <li><b>2-bosqich: qabul qiluvchilarni tanlang</b><span>Bu yerda <b>bir nechtasini</b> belgilash mumkin.</span></li>
+      <li><b>3-bosqich: uzatish usulini tanlang</b></li>
+      <li><b>«✅ Tasdiqlash»</b></li>
+    </ol>
+
+    <div class="tbl"><table>
+      <thead><tr><th>Usul</th><th>Qanday ko'rinadi</th></tr></thead>
+      <tbody>
+        <tr><td>🔁 Original</td><td>Tepasida «Forwarded from…» yozuvi bo'ladi — manba ko'rinib turadi</td></tr>
+        <tr><td>📋 Nusxa</td><td>Manba haqida hech qanday iz qolmaydi — xuddi siz yozgandek</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="note">
+      <span class="ic">🧩</span>
+      <div>Bitta akkauntda <b>bir nechta qoida</b> bo'lishi mumkin: bir kanaldan ko'p guruhga,
+      yoki bir nechta manbadan bitta «yig'ish» guruhingizga.</div>
+    </div>
+  </article>
+
+  <!-- ─── 8. MEDIA OLISH ─── -->
+  <article class="mod" id="m8" style="--acc:var(--cobalt);--acc-soft:var(--cobalt-soft);">
+    <div class="mod-head">
+      <em>📥</em>
+      <div>
+        <h3>Media olish <span class="pill" style="background:var(--pom-soft);border-color:var(--pom);color:var(--pom);font-size:10px;padding:3px 9px;vertical-align:4px;">YANGI</span></h3>
+        <p>Saqlashga ruxsat berilmagan rasm va videolarni oling</p>
+      </div>
+    </div>
+
+    <p class="mod-why">
+      Ba'zi kanallarda «saqlash» tugmasi o'chirilgan bo'ladi — rasmni yuklab ololmaysiz.
+      Bu modul yechim beradi: kerakli xabarga <b>javob (reply)</b> qilib
+      <b>«yukla»</b> deb yozasiz — o'sha fayl botga, o'zingizga keladi.
+    </p>
+
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol — uch harakat</span>
+      <div class="chat">
+        <div class="bub in"><span class="who">Kanal</span>🎬 [video — saqlash taqiqlangan]</div>
+        <div class="bub out"><span class="who">Siz o'sha videoga reply qildingiz</span>yukla</div>
+        <div class="bub sys">✅ «yukla» xabaringiz chatdan o'chirildi — hech kim ko'rmaydi</div>
+        <div class="bub in"><span class="who">Bot sizga yubordi</span>🎬 Video tayyor</div>
+      </div>
+    </div>
+
+    <h4 class="mini">Nimalarni yuklab beradi</h4>
+    <div class="pills">
+      <span class="pill">🖼 Rasm</span><span class="pill">🎬 Video</span><span class="pill">⭕ Aylana video</span>
+      <span class="pill">🎵 Musiqa</span><span class="pill">🎤 Ovozli xabar</span><span class="pill">🎨 Stiker</span>
+      <span class="pill">📹 GIF</span><span class="pill">📄 Hujjat</span><span class="pill">📝 Matn</span>
+      <span class="pill">📸 Story (istoriya)</span>
+    </div>
+
+    <h4 class="mini">Ishlatish tartibi</h4>
+    <ol class="steps">
+      <li><b>«📥 Media olish» → akkauntni tanlang</b><span>Bo'lim 🟢 yoqilgan bo'lishi kerak.</span></li>
+      <li><b>Istalgan chatga kiring</b><span>Guruh, kanal, shaxsiy — farqi yo'q.</span></li>
+      <li><b>Kerakli xabarga «reply» qiling</b><span>Xabarni bosib ushlab turing → «Javob berish».</span></li>
+      <li><b>Javob matni sifatida «yukla» deb yozing</b><span>Katta-kichik harf muhim emas.</span></li>
+      <li><b>Fayl botga keladi</b><span>Sizning «yukla» xabaringiz esa chatdan o'chib ketadi.</span></li>
+    </ol>
+
+    <details>
+      <summary>Story (istoriya) ni qanday yuklayman?</summary>
+      <div class="det-body">
+        <p>Ikki yo'li bor:</p>
+        <p><b>1-yo'l — reply.</b> Istoriyaga javob yozib «yukla» deysiz.</p>
+        <p><b>2-yo'l — forward (osonroq).</b> Istoriyani to'g'ridan-to'g'ri <b>botga forward qiling</b> —
+        hech narsa yozish shart emas, o'zi topib yuklab beradi.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>«Yukla» so'zining boshqa variantlari bormi?</summary>
+      <div class="det-body">
+        <p>Ha. Quyidagilarning istalgani ishlaydi:</p>
+        <div class="pills">
+          <span class="pill mono">yukla</span><span class="pill mono">yukl</span>
+          <span class="pill mono">yükle</span><span class="pill mono">download</span>
         </div>
-        <h3>💌 Avto xabar</h3>
-        <p>Belgilangan vaqt oralig'ida tanlangan chatlarga avtomatik xabar yuborib turadi.</p>
-        <div class="module-jump">Batafsil ko'rish →</div>
-      </button>
+      </div>
+    </details>
 
-      <button class="module-card" onclick="jump('detail-javob')" style="--card-accent:var(--teal); --card-accent-dim:var(--teal-dim); --card-accent-border:rgba(34,211,176,.25);">
-        <div class="module-top">
-          <div class="module-icon-row">
-            <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-            <div class="module-code">MOD-02</div>
-          </div>
-          <div class="freq-bars"><i></i><i></i><i></i><i></i></div>
-        </div>
-        <h3>🤖 Avto javob</h3>
-        <p>Kiruvchi shaxsiy xabarlarga avtomatik javob beradi — 3 xil rejimda ishlaydi.</p>
-        <div class="module-jump">Batafsil ko'rish →</div>
-      </button>
+    <div class="note gold">
+      <span class="ic">📦</span>
+      <div><b>Fayl hajmi tarifga bog'liq.</b> Har bir tarifda «shuncha MB gacha» chegarasi bor.
+      Fayl chegaradan katta bo'lsa, bot buni aytadi va yuklamaydi.
+      Umumiy tizim chegarasi — <b>300 MB</b>. Aniq chegarangizni «💎 Ta'rif olish» bo'limida ko'rasiz.</div>
+    </div>
+  </article>
 
-      <button class="module-card" onclick="jump('detail-kuzatuv')" style="--card-accent:var(--violet); --card-accent-dim:var(--violet-dim); --card-accent-border:rgba(185,140,255,.25);">
-        <div class="module-top">
-          <div class="module-icon-row">
-            <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/></svg></div>
-            <div class="module-code">MOD-03</div>
-          </div>
-          <div class="freq-bars"><i></i><i></i><i></i><i></i></div>
-        </div>
-        <h3>👀 Avto kuzatuv</h3>
-        <p>Chatlardagi tahrirlash, o'chirish, media, stiker hodisalarini kuzatib avtomatik reaksiya beradi.</p>
-        <div class="module-jump">Batafsil ko'rish →</div>
-      </button>
-
-      <button class="module-card" onclick="jump('detail-tabrik')" style="--card-accent:#FFC857; --card-accent-dim:rgba(255,200,87,.14); --card-accent-border:rgba(255,200,87,.28);">
-        <div class="module-top">
-          <div class="module-icon-row">
-            <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7a2.5 2.5 0 1 0-2.5-2.5A2.5 2.5 0 0 0 12 7ZM12 7a2.5 2.5 0 1 1 2.5-2.5A2.5 2.5 0 0 1 12 7Z"/></svg></div>
-            <div class="module-code">MOD-04</div>
-          </div>
-          <div class="freq-bars"><i></i><i></i><i></i><i></i></div>
-        </div>
-        <h3>🎉 Avto tabrik</h3>
-        <p>Tug'ilgan kunlarni o'zi biladi va har juma kuni tabrik yuboradi — ikkalasi ham to'liq avtomatik.</p>
-        <div class="module-jump">Batafsil ko'rish →</div>
-      </button>
-
-      <button class="module-card" onclick="jump('detail-mention')" style="--card-accent:#FF7EB6; --card-accent-dim:rgba(255,126,182,.14); --card-accent-border:rgba(255,126,182,.25);">
-        <div class="module-top">
-          <div class="module-icon-row">
-            <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-            <div class="module-code">MOD-05</div>
-          </div>
-          <div class="freq-bars"><i></i><i></i><i></i><i></i></div>
-        </div>
-        <h3>📣 Mention</h3>
-        <p>Guruh a'zolarini oddiy buyruq bilan birma-bir chaqiradi, xabar avtomatik o'chib ketadi.</p>
-        <div class="module-jump">Batafsil ko'rish →</div>
-      </button>
-
-      <button class="module-card" onclick="jump('detail-bloklash')" style="--card-accent:var(--danger); --card-accent-dim:var(--danger-dim); --card-accent-border:rgba(255,92,92,.28);">
-        <div class="module-top">
-          <div class="module-icon-row">
-            <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 4.9 19.1 19.1"/><circle cx="12" cy="12" r="10"/></svg></div>
-            <div class="module-code">MOD-06</div>
-          </div>
-          <div class="freq-bars"><i></i><i></i><i></i><i></i></div>
-        </div>
-        <h3>🚫 Bloklash</h3>
-        <p>Tark etganingizdan keyin ham yozayotgan bezovta chatlarni butunlay susaytiradi.</p>
-        <div class="module-jump">Batafsil ko'rish →</div>
-      </button>
-
-      <button class="module-card" onclick="jump('detail-uzatish')" style="--card-accent:#4FC3F7; --card-accent-dim:rgba(79,195,247,.14); --card-accent-border:rgba(79,195,247,.28);">
-        <span class="new-tag">YANGI</span>
-        <div class="module-top">
-          <div class="module-icon-row">
-            <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2 21 6 17 10"/><path d="M3 12v-2a4 4 0 0 1 4-4h14"/><path d="M7 22 3 18 7 14"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg></div>
-            <div class="module-code">MOD-07</div>
-          </div>
-          <div class="freq-bars"><i></i><i></i><i></i><i></i></div>
-        </div>
-        <h3>🔁 Avto uzatish</h3>
-        <p>Bitta manba chatdagi har bir yangi xabarni boshqa chatlarga avtomatik uzatib turadi.</p>
-        <div class="module-jump">Batafsil ko'rish →</div>
-      </button>
-
-      <button class="module-card" onclick="jump('detail-referal')" style="--card-accent:#7DE0C4; --card-accent-dim:rgba(125,224,196,.14); --card-accent-border:rgba(125,224,196,.28);">
-        <span class="new-tag">YANGI</span>
-        <div class="module-top">
-          <div class="module-icon-row">
-            <div class="module-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-            <div class="module-code">MOD-08</div>
-          </div>
-          <div class="freq-bars"><i></i><i></i><i></i><i></i></div>
-        </div>
-        <h3>👥 Referal</h3>
-        <p>Do'stlaringizni taklif qiling, har biri uchun olmos oling va tariflarga sarflang.</p>
-        <div class="module-jump">Batafsil ko'rish →</div>
-      </button>
+  <!-- ─── 9. REFERAL ─── -->
+  <article class="mod" id="m9" style="--acc:var(--saffron);--acc-soft:var(--saffron-soft);">
+    <div class="mod-head">
+      <em>👥</em>
+      <div><h3>Referal</h3><p>Do'st taklif qiling — olmos yig'ing — tarif oling</p></div>
     </div>
 
-    <!-- MOD-01 -->
-    <div class="detail-block" id="detail-xabar">
-      <div class="detail-head" style="--card-accent:var(--amber); --card-accent-dim:var(--amber-dim); --card-accent-border:rgba(255,138,61,.25);">
-        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></div>
-        <div>
-          <h3>💌 Avto xabar — to'liq qo'llanma</h3>
-          <span class="module-code">MOD-01</span>
-        </div>
-      </div>
-      <p class="lead">Akkauntingiz orqali tanlangan chatlarga avtomatik xabar yuboradi. Siz faqat matnni, target chatlarni va vaqt oralig'ini belgilaysiz — qolganini markaz o'zi bajaradi.</p>
+    <p class="mod-why">
+      Sizga shaxsiy havola beriladi. O'sha havola orqali kelgan har bir yangi odam uchun
+      <b>5 ta olmos 💎</b> olasiz. Olmoslarni tarifga almashtirasiz — pul to'lamasdan.
+    </p>
 
-      <div class="accordion-item">
-        <button class="accordion-btn">Ishlatish tartibi (10 qadam) <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <thead><tr><th>#</th><th>Harakat</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td>Asosiy menyudan <code>💌 Avto xabar</code> ni bosing</td></tr>
-              <tr><td>2</td><td>Ishlatmoqchi bo'lgan akkauntni tanlang</td></tr>
-              <tr><td>3</td><td><code>📝 Xabar yaratish</code> ni bosing</td></tr>
-              <tr><td>4</td><td>Kontent turini tanlang (pastdagi ro'yxatga qarang)</td></tr>
-              <tr><td>5</td><td>Xabarni markaz qabul qilishi uchun yuboring</td></tr>
-              <tr><td>6</td><td>Target turini tanlang: guruh, shaxsiy chat, kanal yoki barchasi</td></tr>
-              <tr><td>7</td><td>Qaysi chatlarga yuborilishini belgilang</td></tr>
-              <tr><td>8</td><td>Yuborish intervalini tanlang</td></tr>
-              <tr><td>9</td><td>Matn stilini tanlang (Bold, Italic, Spoiler va h.k.)</td></tr>
-              <tr><td>10</td><td><code>✅ Tasdiqlang</code> — xabar ishga tushadi</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-btn">Kontent turlari va interval <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="chip-row">
-            <span class="chip">📝 Oddiy matn</span><span class="chip">🖼 Rasm</span><span class="chip">🖼 Rasm + matn</span>
-            <span class="chip">🎬 Video</span><span class="chip">🎬 Video + matn</span><span class="chip">🎨 Stiker</span><span class="chip">🎁 Gift</span>
-          </div>
-          <p>Interval variantlari: <span class="inline-code">3 daqiqa</span>, <span class="inline-code">15 daqiqa</span>, <span class="inline-code">1 soat</span> yoki <span class="inline-code">qo'lda kiritish</span>.</p>
-        </div></div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-btn">Xabar yaratilgandan keyingi boshqaruv <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <thead><tr><th>Tugma</th><th>Vazifasi</th></tr></thead>
-            <tbody>
-              <tr><td>✏️ Tahrirlash</td><td>Xabar matnini o'zgartirish</td></tr>
-              <tr><td>🎨 Style</td><td>Matn ko'rinishini o'zgartirish</td></tr>
-              <tr><td>⏸️ To'xtatish</td><td>Vaqtincha to'xtatib turish</td></tr>
-              <tr><td>▶️ Davom etish</td><td>Qayta ishga tushirish</td></tr>
-              <tr><td>🔄 Qayta yuborish</td><td>Darhol yuborishni boshlash</td></tr>
-              <tr><td>🗑 O'chirish</td><td>Butunlay o'chirish</td></tr>
-              <tr><td>📊 Batafsil</td><td>To'liq statistikani ko'rish</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="callout mint" style="margin-top:14px;">
-        <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg></div>
-        <p>Media (rasm, video, stiker) yuborganingizda markaz <span class="tip">"Bridge" tizimi<span class="tip-bubble">Xabarni avval markaz o'z ichki chatiga ko'chirib, keyin barcha targetlarga forward qiladi — bu jarayon avtomatik va sizga ko'rinmaydi.</span></span> orqali xabarni oldin o'z ichiga ko'chiradi, so'ng targetlarga forward qiladi.</p>
+    <div class="demo">
+      <span class="demo-tag">Hayotiy misol</span>
+      <div class="chat">
+        <div class="bub out"><span class="who">Siz do'stingizga</span>Zo'r bot topdim, sinab ko'r 👉 t.me/…?start=ref1a2b3c</div>
+        <div class="bub sys">Do'stingiz havolani bosib <code>/start</code> qildi</div>
+        <div class="bub in"><span class="who">Bot sizga</span>💎 +5 olmos! Jami: 25 olmos</div>
       </div>
     </div>
 
-    <!-- MOD-02 -->
-    <div class="detail-block" id="detail-javob">
-      <div class="detail-head" style="--card-accent:var(--teal); --card-accent-dim:var(--teal-dim); --card-accent-border:rgba(34,211,176,.25);">
-        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <div>
-          <h3>🤖 Avto javob — to'liq qo'llanma</h3>
-          <span class="module-code">MOD-02</span>
-        </div>
-      </div>
-      <p class="lead">Tanlangan shaxsiy chatlarni kuzatib, kimdir sizga xabar yozganda avtomatik javob beradi. 3 xil rejimda ishlaydi.</p>
+    <h4 class="mini">Qanday ishlatiladi</h4>
+    <ol class="steps">
+      <li><b>«👥 Referal» ni bosing</b><span>Havolangiz avtomatik yaratiladi.</span></li>
+      <li><b>«📤 Do'stlarga yuborish»</b><span>Telegram ulashuv oynasi ochiladi — kimga yuborishni tanlaysiz.</span></li>
+      <li><b>Yoki «📋 Linkni nusxalash»</b><span>Havolani nusxalab, istalgan joyga qo'yasiz.</span></li>
+      <li><b>Do'stingiz havola orqali kirib <span class="mono">/start</span> bossa — bonus keladi</b></li>
+    </ol>
 
-      <div class="table-wrap"><table>
-        <thead><tr><th>Rejim</th><th>Qachon javob beradi</th><th>Misol</th></tr></thead>
+    <div class="note gold">
+      <span class="ic">💎</span>
+      <div><b>Olmosning eng katta afzalligi:</b> «💎 Ta'rif olish» bo'limida olmos bilan to'lasangiz,
+      chek yuborish va admin tasdig'ini kutish shart emas — tarif <b>bir zumda</b> yoqiladi.</div>
+    </div>
+
+    <div class="note warn">
+      <span class="ic">🚫</span>
+      <div>O'zingizga o'zingiz havola yuborsangiz bonus hisoblanmaydi.
+      Bir odam uchun bonus faqat <b>bir marta</b> beriladi.</div>
+    </div>
+  </article>
+</section>
+
+<!-- ═══════════════ LUG'AT ═══════════════ -->
+<section id="lugat">
+  <div class="head">
+    <span class="kicker">Tushunmagan so'zingiz bormi?</span>
+    <h2>Lug'at — har bir atama oddiy tilda</h2>
+    <p class="lede">
+      Botda uchraydigan barcha notanish so'zlar shu yerda tushuntirilgan.
+      Qidiruvga yozing yoki ustiga bosib oching.
+    </p>
+  </div>
+
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="search" id="q" placeholder="Masalan: interval, cooldown, spoiler…" autocomplete="off">
+  </div>
+
+  <div id="terms">
+
+    <details class="term"><summary><span class="t-main"><b>Sessiya (akkaunt ulash)</b><span>Telegramga «yangi qurilma» sifatida kirish</span></span></summary><div class="det-body">
+      <p>Telegramga kompyuterdan kirganingizni tasavvur qiling — telefoningiz ham, kompyuteringiz ham
+      bir vaqtda ishlaydi. Sessiya ana shu «qo'shimcha qurilma» degani.</p>
+      <p>Auto Xabarchim ham xuddi shunday qo'shimcha qurilma sifatida ulanadi. Parolingiz saqlanmaydi —
+      Telegramning o'z tizimi ruxsat beradi.</p>
+      <p><b>Nazorat sizda:</b> Telegram → Sozlamalar → Qurilmalar bo'limida bu seansni ko'rasiz va
+      istagan payt o'chirib tashlaysiz.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Userbot</b><span>Bot emas — sizning o'z akkauntingiz</span></span></summary><div class="det-body">
+      <p>Oddiy bot — bu alohida akkaunt, yoniga «bot» yozuvi chiqadi va odamga birinchi
+      bo'lib yoza olmaydi.</p>
+      <p>Userbot esa — <b>sizning akkauntingiz</b>, faqat dastur boshqaradi. Shuning uchun
+      guruhlaringizga yoza oladi, shaxsiy chatlarga yoza oladi va odamlar buni siz deb biladi.</p>
+      <p>Bu — modulning kuchi ham, mas'uliyati ham. Nima yozilishini o'zingiz nazorat qiling.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>2FA — ikki bosqichli parol</b><span>Telegramdagi qo'shimcha himoya paroli</span></span></summary><div class="det-body">
+      <p>Telegramda kod (SMS) dan tashqari yana bir parol qo'yish mumkin. Yoqilgan bo'lsa,
+      birov kodni bilib qolsa ham akkauntingizga kira olmaydi.</p>
+      <p>Akkauntni ulaganingizda bot shu parolni bir marta so'raydi — bu normal holat,
+      chunki Telegramning o'zi shuni talab qiladi.</p>
+      <p>2FA sizda yo'q bo'lsa, bu qadam umuman chiqmaydi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Target (nishon chat)</b><span>Xabar <em>qayerga</em> boradi</span></span></summary><div class="det-body">
+      <p>Target — bu «manzil». Xabar aynan qaysi guruh, kanal yoki shaxsiy chatga yuborilishini bildiradi.</p>
+      <p>Tanlashda avval <b>turi</b> so'raladi:</p>
+      <div class="tbl"><table><tbody>
+        <tr><td>👥 Guruhlar</td><td>Faqat guruhlar ro'yxati chiqadi</td></tr>
+        <tr><td>👤 Shaxsiy chatlar</td><td>Faqat odamlar bilan yozishmalar</td></tr>
+        <tr><td>📢 Kanallar</td><td>Faqat kanallar</td></tr>
+        <tr><td>🌐 Barchasi</td><td>Hammasi bir ro'yxatda</td></tr>
+      </tbody></table></div>
+      <p>Keyin ro'yxatdan aniq chatlarni belgilaysiz. Bir nechtasini birga tanlash mumkin.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Manba chat</b><span>Xabar <em>qayerdan</em> olinadi</span></span></summary><div class="det-body">
+      <p>Faqat «🔁 Avto uzatish» modulida uchraydi. Manba — bu kuzatiladigan chat.
+      Unga yangi xabar tushishi bilan, o'sha xabar target chatlarga uzatiladi.</p>
+      <p>Bitta qoidada <b>bitta manba</b> va <b>ko'p target</b> bo'ladi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Interval</b><span>Ikki yuborish orasidagi kutish vaqti</span></span></summary><div class="det-body">
+      <p>«Har qancha vaqtda bir marta yuborilsin?» degan savolga javob.
+      15 daqiqa tanlasangiz — soatiga 4 marta yuboriladi.</p>
+      <p><b>Eng kichik interval — 60 soniya.</b> Lekin buni tavsiya qilmaymiz.</p>
+      <p><b>Nega katta interval yaxshi?</b> Telegram tez-tez xabar yuborayotgan akkauntlarni
+      kuzatib boradi. Kichik interval + ko'p guruh = akkauntga vaqtincha cheklov qo'yilishi mumkin.
+      Sekinroq — xavfsizroq.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>FloodWait</b><span>Telegramning «sal sekinroq» ogohlantirishi</span></span></summary><div class="det-body">
+      <p>Juda tez xabar yuborilsa, Telegram akkauntni to'xtatib qo'yadi va
+      «shuncha soniya kuting» deydi. Bu — <b>bloklash emas</b>, vaqtinchalik pauza.</p>
+      <p>Tizim buni o'zi hal qiladi: kutadi, so'ng qolgan ishni davom ettiradi.
+      Sizdan hech narsa talab qilinmaydi.</p>
+      <p>Lekin bu tez-tez takrorlansa yaxshi emas — intervalni kattalashtiring va
+      bir vaqtda kam akkaunt ishlating.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Cooldown</b><span>Bitta odamga qayta javob bermaslik oynasi</span></span></summary><div class="det-body">
+      <p>Tasavvur qiling, bir odam ketma-ket 10 ta xabar yozdi. Cooldown bo'lmasa,
+      bot 10 marta bir xil javob qaytaradi — bu bezor qiladi.</p>
+      <p>Cooldown 30 soniya bo'lsa: birinchi xabarga javob beradi, keyingi 30 soniya ichidagi
+      xabarlarga <b>indamaydi</b>. 30 soniya o'tgach yana ishlaydi.</p>
+      <p>Har bir odam uchun alohida hisoblanadi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Style (matn stili)</b><span>Xabar qanday ko'rinishda chiqishi</span></span></summary><div class="det-body">
+      <p>Telegramda matnni bezash mumkin. Sakkiz tur bor:</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Stil</th><th>Ko'rinishi</th></tr></thead>
         <tbody>
-          <tr><td>🔄 Default</td><td>Har qanday xabar kelganda</td><td>"Rahmat, tez orada javob beraman"</td></tr>
-          <tr><td>🔑 Kalit so'zli</td><td>Faqat kalit so'z yozilganda</td><td>"narx" → narxlar ro'yxati</td></tr>
-          <tr><td>👋 Yangi user</td><td>Yangi user birinchi marta yozganda</td><td>"Xush kelibsiz!"</td></tr>
+          <tr><td>📄 Oddiy</td><td>Hech qanday bezaksiz</td></tr>
+          <tr><td>𝗕 Bold</td><td><b>Qalin harflar</b> — asosiy fikrni ajratish uchun</td></tr>
+          <tr><td>𝐼 Italic</td><td><i>Qiya harflar</i> — yumshoq urg'u</td></tr>
+          <tr><td>Strike</td><td><s>Ustidan chizilgan</s> — eski narx, bekor qilingan</td></tr>
+          <tr><td>📋 Code</td><td><span class="mono">Bir qatorli kod</span> — bosib nusxalash oson</td></tr>
+          <tr><td>📋 Pre</td><td>Ko'p qatorli blok — uzun matn uchun</td></tr>
+          <tr><td>❝ Blockquote</td><td>Iqtibos — chetidan chiziq bilan</td></tr>
+          <tr><td>🔒 Spoiler</td><td>Yashirin matn — bosgandagina ochiladi</td></tr>
         </tbody>
       </table></div>
+    </div></details>
 
-      <div class="accordion-item" style="margin-top:14px;">
-        <button class="accordion-btn">Ishlatish tartibi <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <tbody>
-              <tr><td>1</td><td><code>🤖 Avto javob</code> ni bosing</td></tr>
-              <tr><td>2</td><td>Akkauntni tanlang</td></tr>
-              <tr><td>3</td><td><code>🤖 Javob yaratish</code> ni bosing</td></tr>
-              <tr><td>4</td><td>Javob turini tanlang</td></tr>
-              <tr><td>5</td><td>Javob matnini kiriting</td></tr>
-              <tr><td>6</td><td>Kalit so'zli bo'lsa, so'zlarni vergul bilan yozing</td></tr>
-              <tr><td>7</td><td>Target chatlarni tanlang</td></tr>
-              <tr><td>8</td><td>Stilni tanlang</td></tr>
-              <tr><td>9</td><td><code>✅ Tasdiqlang</code></td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
+    <details class="term"><summary><span class="t-main"><b>Caption</b><span>Rasm yoki video ostidagi matn</span></span></summary><div class="det-body">
+      <p>Media yuborganingizda uning ostiga yozilgan izoh — caption deyiladi.
+      «Rasm + Matn» turini tanlasangiz, aynan shu ishlatiladi.</p>
+      <p>Stil tanlash captionga ham qo'llanadi.</p>
+    </div></details>
 
-      <div class="accordion-item">
-        <button class="accordion-btn">Kalit so'zli rejimda moslik turlari <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <thead><tr><th>Moslik</th><th>Tavsif</th><th>Misol</th></tr></thead>
-            <tbody>
-              <tr><td>🔍 O'xshash</td><td>Kalit so'z matn ichida bo'lsa</td><td>"salom" → "assalomu alaykum"da topiladi</td></tr>
-              <tr><td>🎯 Aniq mos</td><td>To'liq mos kelganda</td><td>faqat "salom" deb yozganda</td></tr>
-              <tr><td>📐 Regex</td><td>Maxsus ifoda</td><td><code>^buyurtma \d+</code> → "buyurtma 123"</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
+    <details class="term"><summary><span class="t-main"><b>Kalit so'z</b><span>Javobni ishga tushiruvchi so'z</span></span></summary><div class="det-body">
+      <p>Avto javobda: «agar odam <b>shu so'zni</b> yozsa — shu javobni ber» degani.</p>
+      <p>Bir nechtasini vergul bilan yozasiz: <span class="mono">narx, narxi, qancha, pochom</span></p>
+      <p>Odamlar bir xil narsani turlicha so'raydi — shuning uchun bir nechta variant yozgan yaxshi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>O'xshash · Aniq mos · Regex</b><span>Kalit so'z qanday solishtiriladi</span></span></summary><div class="det-body">
+      <p><b>🔍 O'xshash (contains)</b> — so'z gapning ichida bo'lsa ham topiladi.
+      «narx» kalit so'zi «Narxi qancha bo'ladi?» gapida ham ishlaydi. <mark>Ko'pchilikka shu kerak.</mark></p>
+      <p><b>🎯 Aniq mos (exact)</b> — xabar faqat o'sha so'zdan iborat bo'lishi shart.
+      «narx» deb yozilsa ishlaydi, «narxi qancha» deb yozilsa ishlamaydi.</p>
+      <p><b>📐 Regex</b> — qidiruv qolipi yozish tili. Faqat tajribalilar uchun.
+      Masalan <span class="mono">^buyurtma \d+</span> — «buyurtma» so'zi bilan boshlanib,
+      ortidan raqam kelgan xabarlarni topadi: «buyurtma 123».</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Watcher (kuzatuvchi)</b><span>Bitta kuzatuv qoidasi</span></span></summary><div class="det-body">
+      <p>Watcher — bu «nimani kuzatish» va «nima qilish» yozilgan qoida.
+      Masalan: «shaxsiy chatlarda xabar o'chirilishini kuzat → o'chirilgan matnni ko'rsat».</p>
+      <p>Bir nechta watcher yaratish mumkin, har biri alohida ishlaydi.
+      Nechta yaratish mumkinligi tarifingizga bog'liq.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Reaksiya va ehtimollik</b><span>Xabarga emoji qo'yish</span></span></summary><div class="det-body">
+      <p>Reaksiya — xabarga qo'yiladigan emoji (👍 ❤️ 🔥 …). 100 dan ortiq variant bor.</p>
+      <p><b>Ehtimollik</b> esa «nechta xabardan biriga qo'yilsin» degani:</p>
+      <ul class="dots">
+        <li><b>25%</b> — taxminan har to'rtinchi xabarga</li>
+        <li><b>50%</b> — taxminan har ikkinchisiga</li>
+        <li><b>75%</b> — ko'pchiligiga</li>
+        <li><b>100%</b> — hammasiga</li>
+      </ul>
+      <p style="margin-top:9px;">Tanlash tasodifiy bo'ladi — shuning uchun tabiiy ko'rinadi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Mention (belgilash)</b><span>Odamni @ bilan chaqirish</span></span></summary><div class="det-body">
+      <p>Guruhda kimningdir ismini @ bilan yozsangiz, unga alohida bildirishnoma boradi —
+      guruh ovozsiz qilingan bo'lsa ham ko'radi.</p>
+      <p>Mention moduli buni guruhning barcha a'zolariga ketma-ket bajaradi.
+      Muhim e'lonni hammaga yetkazish uchun eng tez yo'l.</p>
+      <p>Buyruqlar: <span class="mono">.u</span> (hamma), <span class="mono">.uo</span> (onlaynlar),
+      <span class="mono">.su</span> (to'xtatish).</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Batch (to'p-to'p yuborish)</b><span>20 tadan bo'lib chaqirish</span></span></summary><div class="det-body">
+      <p>500 kishini bitta xabarda chaqirib bo'lmaydi — Telegram ruxsat bermaydi.
+      Shuning uchun tizim ularni <b>20 tadan</b> bo'lib, ketma-ket yuboradi.</p>
+      <p>Har bir bo'lak orasida siz belgilagan tezlik (1–10 soniya) kutiladi.
+      Bir marta chaqirishda ko'pi bilan <b>1000 kishi</b> qamraladi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Reply (javob qilish)</b><span>Aniq bir xabarga javob yozish</span></span></summary><div class="det-body">
+      <p>Telegramda xabarni bosib ushlab tursangiz «Javob berish» chiqadi.
+      Shunda sizning xabaringiz o'sha xabarga bog'lanadi.</p>
+      <p>«📥 Media olish» moduli aynan shunga tayanadi: qaysi faylni yuklashni
+      reply orqali ko'rsatasiz.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Trigger so'z («yukla»)</b><span>Buyruq vazifasini bajaruvchi so'z</span></span></summary><div class="det-body">
+      <p>Trigger — «ishga tushiruvchi» degani. Media olish modulida bu so'z <b>«yukla»</b>.</p>
+      <p>Xabarga reply qilib shu so'zni yozsangiz, fayl yuklanadi.
+      Quyidagilar ham ishlaydi: <span class="mono">yukl</span>, <span class="mono">yükle</span>,
+      <span class="mono">download</span>. Katta-kichik harf farq qilmaydi.</p>
+      <p>Yuklab bo'lgach, sizning «yukla» xabaringiz chatdan o'chiriladi — chat toza qoladi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Story (istoriya)</b><span>24 soatdan keyin o'chadigan post</span></span></summary><div class="det-body">
+      <p>Telegramdagi vaqtinchalik rasm yoki video. Bir kundan keyin yo'qoladi.</p>
+      <p>Uni saqlab qolish uchun ikki yo'l bor: istoriyaga reply qilib «yukla» yozish,
+      yoki istoriyani <b>to'g'ridan-to'g'ri botga forward qilish</b> — bunda hech narsa
+      yozish shart emas.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Original va Nusxa</b><span>Uzatishning ikki usuli</span></span></summary><div class="det-body">
+      <p><b>🔁 Original (forward)</b> — xabar tepasida «Forwarded from…» yozuvi turadi.
+      Manba ko'rinadi. Muallifni ko'rsatish kerak bo'lganda foydali.</p>
+      <p><b>📋 Nusxa (copy)</b> — hech qanday iz qolmaydi, xabar xuddi siz yozgandek chiqadi.
+      Manbani ko'rsatmoqchi bo'lmaganingizda ishlatiladi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Bridge (ko'prik)</b><span>Media tez tarqatiladigan ichki usul</span></span></summary><div class="det-body">
+      <p>Rasmni 20 ta guruhga yuborish uchun uni 20 marta yuklash kerak bo'lardi — bu sekin.</p>
+      <p>Buning o'rniga tizim rasmni bir marta o'ziga ko'chirib oladi, keyin o'sha nusxani
+      hamma joyga tarqatadi. Bu ichki mexanizm «ko'prik» deb ataladi.</p>
+      <p>Siz uchun hech qanday farqi yo'q — faqat tezroq bo'ladi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>{name} — o'rin egasi</b><span>Ism avtomatik qo'yiladigan joy</span></span></summary><div class="det-body">
+      <p>Tabrik matniga <span class="mono">{name}</span> yozsangiz, yuborishda o'sha joyga
+      qabul qiluvchining ismi qo'yiladi.</p>
+      <p>Yozganingiz: <span class="mono">Tabriklayman, {name}!</span><br>
+      Aziz oladi: <b>Tabriklayman, Aziz!</b><br>
+      Nodira oladi: <b>Tabriklayman, Nodira!</b></p>
+      <p><span class="mono">{ism}</span> ham xuddi shunday ishlaydi.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Limit</b><span>Tarifingizda ruxsat etilgan miqdor</span></span></summary><div class="det-body">
+      <p>Har bir tarifda nechta akkaunt, nechta avto xabar, nechta javob va nechta kuzatuv
+      yaratish mumkinligi belgilangan. Bu — limit.</p>
+      <p>Limitga yetganingizda bot «limit tugadi» deb aytadi. Yechim: eski qoidani o'chirasiz
+      yoki kattaroq tarifga o'tasiz.</p>
+      <p><b>«Cheksiz ♾» degani</b> — hech qanday chegara yo'q.</p>
+      <p><b>Media limiti</b> boshqacha o'lchanadi — soni emas, <b>fayl hajmi (MB)</b> bilan.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Olmos 💎</b><span>Bot ichidagi pul o'rnini bosuvchi ball</span></span></summary><div class="det-body">
+      <p>Olmos — bot ichida ishlatiladigan ichki valyuta. Uni sotib olish shart emas:
+      referal orqali do'st taklif qilib yig'asiz (har biriga 5 ta). Admin ham berishi mumkin.</p>
+      <p>Yig'ilganini tarifga almashtirasiz. Olmos bilan to'lovning ustunligi —
+      <b>darhol ishlaydi</b>, hech kimni kutmaysiz.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Tarif muddati</b><span>Obunangiz qachongacha amal qiladi</span></span></summary><div class="det-body">
+      <p>Har bir pullik tarif ma'lum kunga olinadi. Muddat tugagach, kengaytirilgan
+      imkoniyatlar o'chadi.</p>
+      <p><b>Ma'lumotlaringiz yo'qolmaydi</b> — barcha sozlamalar, matnlar va ro'yxatlar joyida
+      qoladi. Tarifni yangilasangiz, hammasi qaytadan ishlaydi.</p>
+      <p>Muddat tugashini kutmasdan «🔄 Uzaytirish» tugmasi bilan kun qo'shib qo'yish mumkin.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>🟢 va 🔴 belgilari</b><span>Akkaunt yoki qoida holati</span></span></summary><div class="det-body">
+      <p><b>🟢 Faol</b> — hammasi joyida, ishlab turibdi.</p>
+      <p><b>🟡 To'xtatilgan</b> — siz o'zingiz pauza qilgansiz, xohlasangiz davom ettirasiz.</p>
+      <p><b>🔴 Nofaol</b> — aloqa uzilgan. Odatda sabab: Telegramdan seans o'chirilgan,
+      parol almashtirilgan yoki akkauntga cheklov qo'yilgan. Qayta ulash kerak.</p>
+    </div></details>
+
+    <details class="term"><summary><span class="t-main"><b>Bepul tarifdagi reklama</b><span>Xabar oxiriga qo'shiladigan qisqa qator</span></span></summary><div class="det-body">
+      <p>Bepul tarifda yuborilgan xabarlar oxiriga xizmat haqida qisqa reklama qatori qo'shiladi.
+      Bu — bepul foydalanishning o'rnini qoplaydi.</p>
+      <p>Pullik tarifda bu qator umuman qo'shilmaydi — xabarlaringiz toza chiqadi.</p>
+    </div></details>
+
+  </div>
+  <div id="noterm">Bunday atama topilmadi. Boshqacha yozib ko'ring.</div>
+</section>
+
+<!-- ═══════════════ STATISTIKA ═══════════════ -->
+<section id="statistika">
+  <div class="head">
+    <span class="kicker">Nazorat</span>
+    <h2>Statistika — hammasi bitta ekranda</h2>
+    <p class="lede">
+      «📊 Statistika» tugmasi hozirgi holatingizni to'liq ko'rsatadi:
+      nima ishlayapti, nechta yuborilgan va limitingizdan qanchasi ishlatilgan.
+    </p>
+  </div>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Ko'rsatkich</th><th>Nimani bildiradi</th></tr></thead>
+    <tbody>
+      <tr><td>📱 Akkauntlar</td><td>Nechta ulangan va nechtasi hozir 🟢 faol</td></tr>
+      <tr><td>💌 Avto xabarlar</td><td>Yaratilganlar soni · faol va jarayondagilari</td></tr>
+      <tr><td>🤖 Avto javoblar</td><td>Faol javoblar va jami nechta javob berilgani</td></tr>
+      <tr><td>👀 Kuzatuvlar</td><td>Faol watcherlar va qayd etilgan hodisalar soni</td></tr>
+      <tr><td>💎 Olmoslar</td><td>Hozirgi olmos hisobingiz</td></tr>
+      <tr><td>📨 Jami yuborilgan</td><td>Xizmatdan foydalanganingizdan buyongi umumiy son</td></tr>
+      <tr><td>⭐ Tarif</td><td>Tarif nomi va necha kun qolgani</td></tr>
+      <tr><td>▓▓▓░░ Limitlar</td><td>Har bir limitdan qanchasi ishlatilgani — chiziq ko'rinishida</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note tip">
+    <span class="ic">📈</span>
+    <div>Limit chizig'i to'lib qolgan bo'lsa, yangi qoida qo'sha olmaysiz.
+    Eski, kerak bo'lmaganini o'chirib bo'shatasiz — yoki tarifni kattalashtirasiz.</div>
+  </div>
+</section>
+
+<!-- ═══════════════ TARIF ═══════════════ -->
+<section id="tarif">
+  <div class="head">
+    <span class="kicker">Narxlar</span>
+    <h2>Tarif va olmos</h2>
+    <p class="lede">
+      Aniq raqamlar va narxlar botdagi «💎 Ta'rif olish» bo'limida ko'rsatiladi —
+      chunki ular vaqti-vaqti bilan yangilanadi. Bu yerda esa <b>nima nimani anglatishini</b> tushuntiramiz.
+    </p>
+  </div>
+
+  <div class="grid g2">
+    <div class="tier" style="--acc:var(--turq);">
+      <h3>🆓 Bepul tarif</h3>
+      <p class="sub">Ro'yxatdan o'tgan zahoti beriladi</p>
+      <ul>
+        <li>Barcha 9 ta modul <b>ochiq</b> — hech biri berkitilmagan</li>
+        <li>Faqat <b>miqdorlar kam</b>: bir nechta qoida yaratasiz</li>
+        <li>Media yuklashda <b>hajm chegarasi</b> kichikroq</li>
+        <li>Xabarlar oxiriga <b>qisqa reklama</b> qo'shiladi</li>
+      </ul>
     </div>
-
-    <!-- MOD-03 -->
-    <div class="detail-block" id="detail-kuzatuv">
-      <div class="detail-head" style="--card-accent:var(--violet); --card-accent-dim:var(--violet-dim); --card-accent-border:rgba(185,140,255,.25);">
-        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/></svg></div>
-        <div>
-          <h3>👀 Avto kuzatuv — to'liq qo'llanma</h3>
-          <span class="module-code">MOD-03</span>
-        </div>
-      </div>
-      <p class="lead">Tanlangan chatlardagi hodisalarni kuzatib, avtomatik javob yoki reaksiya qaytaradi. 5 xil hodisani kuzatish mumkin.</p>
-
-      <div class="table-wrap"><table>
-        <thead><tr><th>Hodisa</th><th>Nima bo'ladi</th></tr></thead>
-        <tbody>
-          <tr><td>✏️ Edit</td><td>Kimdir xabarni tahrirlasa → "Nega tahrirladingiz?" deb javob beradi</td></tr>
-          <tr><td>🗑 Delete</td><td>Kimdir xabarni o'chirsa → o'chirilgan xabarni ko'rsatib beradi</td></tr>
-          <tr><td>📸 Media</td><td>Rasm/video yuborsa → "Ajoyib media!" deb javob beradi</td></tr>
-          <tr><td>🤩 Stiker</td><td>Stiker yuborsa → "Zo'r stiker!" deb javob beradi</td></tr>
-          <tr><td>👍 Reaksiya</td><td>Har bir xabarga avtomatik like qo'yadi</td></tr>
-        </tbody>
-      </table></div>
-
-      <div class="accordion-item" style="margin-top:14px;">
-        <button class="accordion-btn">Ishlatish tartibi (11 qadam) <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <tbody>
-              <tr><td>1</td><td><code>👀 Avto kuzatuv</code> ni bosing</td></tr>
-              <tr><td>2</td><td>Akkauntni tanlang</td></tr>
-              <tr><td>3</td><td><code>👁 Watcher yaratish</code> ni bosing</td></tr>
-              <tr><td>4</td><td>Hodisalarni tanlang (bir nechtasini birga tanlash mumkin)</td></tr>
-              <tr><td>5</td><td>Har bir hodisa uchun javob matnini kiriting (yoki default qoldiring)</td></tr>
-              <tr><td>6</td><td>Reaksiya sozlamalarini belgilang (agar tanlangan bo'lsa)</td></tr>
-              <tr><td>7</td><td>Target rejimini tanlang: Umumiy yoki Tanlangan</td></tr>
-              <tr><td>8</td><td>Target chatlarni belgilang</td></tr>
-              <tr><td>9</td><td>Cooldown vaqtini tanlang</td></tr>
-              <tr><td>10</td><td>Stilni tanlang</td></tr>
-              <tr><td>11</td><td><code>✅ Tasdiqlang</code></td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-btn">Reaksiya sozlamalari va Cooldown <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <p style="margin-bottom:10px;">100+ emoji orasidan tanlash mumkin. Ehtimollik darajasi: <span class="inline-code">25%</span>, <span class="inline-code">50%</span>, <span class="inline-code">75%</span>, <span class="inline-code">100%</span> — har bir xabarga tasodifiy reaksiya beriladi.</p>
-          <p><span class="tip">Cooldown<span class="tip-bubble">Bir xil foydalanuvchiga qayta-qayta javob bermaslik uchun kutish vaqti. Masalan, 30 soniya belgilansa — foydalanuvchi shu vaqt ichida yana yozsa, javob berilmaydi.</span></span> — bir xil foydalanuvchiga qayta-qayta javob bermaslik uchun kutish vaqti.</p>
-        </div></div>
-      </div>
+    <div class="tier hi" style="--acc:var(--saffron);">
+      <h3>⭐ Pullik tariflar</h3>
+      <p class="sub">Bir nechta darajasi bor — botda ko'rasiz</p>
+      <ul>
+        <li>Ko'proq akkaunt, xabar, javob va kuzatuv</li>
+        <li>Kattaroq media hajmi (ba'zilarida <b>cheksiz ♾</b>)</li>
+        <li><b>Reklama yo'q</b> — xabarlar toza chiqadi</li>
+        <li>Muddati kunlarda hisoblanadi, uzaytirish mumkin</li>
+      </ul>
     </div>
+  </div>
 
-    <!-- MOD-04 -->
-    <div class="detail-block" id="detail-tabrik">
-      <div class="detail-head" style="--card-accent:#FFC857; --card-accent-dim:rgba(255,200,87,.14); --card-accent-border:rgba(255,200,87,.28);">
-        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7a2.5 2.5 0 1 0-2.5-2.5A2.5 2.5 0 0 0 12 7ZM12 7a2.5 2.5 0 1 1 2.5-2.5A2.5 2.5 0 0 1 12 7Z"/></svg></div>
-        <div>
-          <h3>🎉 Avto tabrik — to'liq qo'llanma</h3>
-          <span class="module-code">MOD-04</span>
-        </div>
-      </div>
-      <p class="lead">Muhim kunlarni endi hech qachon unutmaysiz. Ikki mustaqil tabrik turi bor — biri avtomatik aniqlanadi, ikkinchisi haftalik jadval bo'yicha yuboriladi. Ikkalasi ham har qanday tarifda cheksiz ishlaydi.</p>
+  <h4 class="mini">Har bir tarifda ko'rsatiladigan qatorlar</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Qator</th><th>Ma'nosi</th></tr></thead>
+    <tbody>
+      <tr><td>📱 Akkauntlar</td><td>Nechta Telegram akkaunt ulay olasiz</td></tr>
+      <tr><td>📨 Xabarlar</td><td>Nechta avto xabar qoidasi yarata olasiz</td></tr>
+      <tr><td>🤖 Avto javob</td><td>Nechta javob qoidasi</td></tr>
+      <tr><td>👀 Kuzatuvlar</td><td>Nechta watcher</td></tr>
+      <tr><td>⬇️ Media olish</td><td>Bitta fayl ko'pi bilan necha MB bo'lishi mumkin</td></tr>
+      <tr><td>📅 Muddati</td><td>Necha kun amal qiladi</td></tr>
+      <tr><td>💰 / 💎 Narxi</td><td>So'mda yoki olmosda</td></tr>
+    </tbody>
+  </table></div>
 
-      <div class="subfeature">
-        <div class="subfeature-head">
-          <span style="font-size:20px;">🎂</span>
-          <h4>Tug'ilgan kun tabrigi</h4>
-        </div>
-        <p>Telegram profilida tug'ilgan kunini ko'rsatgan kontaktlaringiz orasidan bugun aynan kimning tug'ilgan kuni ekanini markaz o'zi avtomatik aniqlaydi va siz yozib qo'ygan tabrik matnini o'sha kishiga yuboradi. Bir kishiga yiliga faqat bitta marta yuboriladi — qayta-qayta bezovta qilmaydi.</p>
-      </div>
-      <div class="subfeature">
-        <div class="subfeature-head">
-          <span style="font-size:20px;">🕌</span>
-          <h4>Juma tabrigi</h4>
-        </div>
-        <p>Tanlangan (yoki barcha) shaxsiy chatlaringizga har juma kuni, siz belgilagan aniq vaqtda (standart: ertalab soat <strong style="color:var(--text)">05:00, Toshkent vaqti</strong>) tabrik matni avtomatik yuboriladi — hech narsani eslab yurishingiz shart emas.</p>
-      </div>
+  <div class="note gold">
+    <span class="ic">♾</span>
+    <div><b>«Cheksiz» belgisi</b> — o'sha bo'yicha hech qanday chegara yo'q degani.
+    Masalan «Xabarlar: Cheksiz ♾» bo'lsa, xohlagancha avto xabar yaratasiz.</div>
+  </div>
 
-      <div class="accordion-item">
-        <button class="accordion-btn">Ishlatish tartibi <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <tbody>
-              <tr><td>1</td><td><code>🎉 Avto tabrik</code> ni bosing va akkauntni tanlang</td></tr>
-              <tr><td>2</td><td><code>🎂 Tug'ilgan kun tabrigi</code> yoki <code>🕌 Juma tabrigi</code> ni tanlang</td></tr>
-              <tr><td>3</td><td><code>✏️ Matnni tahrirlash</code> orqali tabrik matnini kiriting</td></tr>
-              <tr><td>4</td><td>Kontent turini tanlang: matn, rasm+matn, video+matn yoki stiker</td></tr>
-              <tr><td>5</td><td>Kimlarga yuborilishini belgilang: hammaga yoki tanlangan kishilarga</td></tr>
-              <tr><td>6</td><td>Juma tabrigi bo'lsa, yuborish vaqtini tanlang</td></tr>
-              <tr><td>7</td><td><code>✅ Yoqish</code> tugmasini bosing — tayyor!</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-btn">Shaxsiylashtirish va qo'shimcha imkoniyatlar <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <p style="margin-bottom:10px;">Tabrik matnida <span class="inline-code">{name}</span> yoki <span class="inline-code">{ism}</span> yozsangiz, u avtomatik ravishda qabul qiluvchining ismi bilan almashtiriladi. Masalan: <span class="inline-code">"Tabriklaymiz, {name}!"</span> → <span class="inline-code">"Tabriklaymiz, Aziz!"</span></p>
-          <div class="chip-row">
-            <span class="chip">🧪 Sinov yuborish (o'zingizga)</span>
-            <span class="chip">📅 Yaqin tug'ilgan kunlar ro'yxati</span>
-            <span class="chip">⏸️ Istalgan payt to'xtatish</span>
-          </div>
-        </div></div>
-      </div>
-
-      <div class="callout mint" style="margin-top:14px;">
-        <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <p><strong>Nega foydali?</strong> Har kuni kimningdir tug'ilgan kunini eslab, kalendarga belgilab yurish shart emas — markaz buni siz uchun kuzatib boradi va aynan o'sha kuni tabriklaydi. Juma kunlari esa muhim an'anani band bo'lgan kunlaringizda ham avtomatik davom ettirasiz.</p>
-      </div>
+  <h4 class="mini">To'lovning ikki yo'li</h4>
+  <div class="grid g2">
+    <div class="card">
+      <h4 style="margin-bottom:8px;">💵 Pul orqali</h4>
+      <ol class="steps" style="--acc:var(--cobalt);--acc-soft:var(--cobalt-soft);">
+        <li><b>Tarifni tanlang</b></li>
+        <li><b>To'lov rekvizitlarini oling</b></li>
+        <li><b>To'lov qiling va chekni botga yuboring</b></li>
+        <li><b>Admin tekshiradi va tasdiqlaydi</b><span>Shundan keyin tarif yoqiladi.</span></li>
+      </ol>
     </div>
-
-    <!-- MOD-05 -->
-    <div class="detail-block" id="detail-mention">
-      <div class="detail-head" style="--card-accent:#FF7EB6; --card-accent-dim:rgba(255,126,182,.14); --card-accent-border:rgba(255,126,182,.25);">
-        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
-        <div>
-          <h3>📣 Mention — to'liq qo'llanma</h3>
-          <span class="module-code">MOD-05</span>
-        </div>
-      </div>
-      <p class="lead">Guruhdagi a'zolarni birma-bir mention qilish. Sozlamalar bot menyusidan, lekin buyruqning o'zi to'g'ridan-to'g'ri kerakli guruh ichida, o'z Telegram ilovangizdan yozilishi kerak.</p>
-
-      <div class="callout" style="margin-bottom:16px;">
-        <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
-        <p><strong>Muhim:</strong> buyruqlarni bot bilan yozishmada emas, aynan mention qilmoqchi bo'lgan guruh ichida, ulangan akkauntingizning o'zidan yuboring. Markaz buyruq xabarini darhol o'chirib tashlaydi — guruh doim toza ko'rinadi.</p>
-      </div>
-
-      <div class="cmd-row">
-        <div class="cmd-left"><span class="cmd-code">.u</span><span class="cmd-desc">Barcha a'zolarni mention qilish</span></div>
-        <button class="copy-btn" data-copy=".u" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-      </div>
-      <div class="cmd-row">
-        <div class="cmd-left"><span class="cmd-code">.uo</span><span class="cmd-desc">Faqat online a'zolarni mention qilish</span></div>
-        <button class="copy-btn" data-copy=".uo" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-      </div>
-      <div class="cmd-row">
-        <div class="cmd-left"><span class="cmd-code">.su</span><span class="cmd-desc">Ishlab turgan mentionni darhol to'xtatish</span></div>
-        <button class="copy-btn" data-copy=".su" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-      </div>
-      <div class="cmd-row">
-        <div class="cmd-left"><span class="cmd-code">.u matn</span><span class="cmd-desc">"matn" bilan barchani mention qilish</span></div>
-        <button class="copy-btn" data-copy=".u Salom hammaga!" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-      </div>
-      <div class="cmd-row">
-        <div class="cmd-left"><span class="cmd-code">.uo matn</span><span class="cmd-desc">"matn" bilan onlaynlarni mention qilish</span></div>
-        <button class="copy-btn" data-copy=".uo Qanday ishlar?" aria-label="Nusxalash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-      </div>
-
-      <div class="accordion-item" style="margin-top:14px;">
-        <button class="accordion-btn">Bot menyusidagi sozlamalar <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <p style="margin-bottom:10px;"><code>📢 Mention</code> bo'limida akkauntni tanlab, quyidagilarni sozlaysiz:</p>
-          <div class="table-wrap"><table>
-            <tbody>
-              <tr><td>🟢 / 🔴 Yoqish-o'chirish</td><td>Mention modulini butunlay yoqadi yoki o'chiradi</td></tr>
-              <tr><td>⚡ Yuborish tezligi</td><td>Har bir a'zo orasidagi kutish vaqti: 1, 2, 3, 4, 5, 7 yoki 10 soniya</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="chip-row" style="margin-top:16px;">
-        <span class="chip">Maksimum 1000 foydalanuvchi</span>
-        <span class="chip">20 tadan batch bo'lib yuboriladi</span>
-        <span class="chip">FloodWait bo'lsa avtomatik kutadi</span>
-        <span class="chip">Har akkaunt uchun alohida sozlama</span>
-      </div>
+    <div class="card">
+      <h4 style="margin-bottom:8px;">💎 Olmos orqali</h4>
+      <ol class="steps" style="--acc:var(--saffron);--acc-soft:var(--saffron-soft);">
+        <li><b>Tarifni tanlang</b></li>
+        <li><b>«💎 Sotib olish» ni bosing</b></li>
+        <li><b>Tayyor — bir zumda</b><span>Chek ham, kutish ham yo'q.</span></li>
+      </ol>
     </div>
+  </div>
 
-    <!-- MOD-06 -->
-    <div class="detail-block" id="detail-bloklash">
-      <div class="detail-head" style="--card-accent:var(--danger); --card-accent-dim:var(--danger-dim); --card-accent-border:rgba(255,92,92,.28);">
-        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 4.9 19.1 19.1"/><circle cx="12" cy="12" r="10"/></svg></div>
-        <div>
-          <h3>🚫 Bloklash — to'liq qo'llanma</h3>
-          <span class="module-code">MOD-06</span>
-        </div>
-      </div>
-      <p class="lead">Ba'zi kanal, guruh yoki botlar siz ularni tark etganingizdan yoki hatto bloklaganingizdan keyin ham xabar yozishda davom etadi. Bu modul aynan shu muammoni tubdan hal qiladi va har qanday tarifda cheksiz ishlaydi.</p>
+  <div class="note">
+    <span class="ic">🔄</span>
+    <div><b>Uzaytirish.</b> Faol tarifingiz bo'lsa, «🔄 Uzaytirish» tugmasi chiqadi.
+    Bosib, mavjud muddat ustiga yangi kunlar qo'shasiz — pul yoki olmos bilan.</div>
+  </div>
+</section>
 
-      <div class="callout danger">
-        <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg></div>
-        <p><strong>Muammo nimada?</strong> Telegram'ning o'z bloklash tizimi ba'zi kanal/guruhlarda ishlamay qoladi — kanal sizni "tark etgan" bo'lib ko'rinadi, lekin xabarlar baribir kelaveradi. Bu — Telegram'ning o'ziga xos texnik xatoligi, botning emas.</p>
-      </div>
+<!-- ═══════════════ XAVFSIZLIK ═══════════════ -->
+<section id="xavfsizlik">
+  <div class="head">
+    <span class="kicker">Muhim</span>
+    <h2>Xavfsizlik — o'qib chiqing</h2>
+    <p class="lede">
+      Barcha amallar sizning akkauntingiz nomidan bajariladi.
+      Demak, Telegramning barcha qoidalari ham to'g'ridan-to'g'ri sizga tegishli.
+    </p>
+  </div>
 
-      <div class="table-wrap" style="margin-top:16px;"><table>
-        <thead><tr><th>Qo'shish usuli</th><th>Qanday ishlaydi</th></tr></thead>
-        <tbody>
-          <tr><td>📨 Forward qilish</td><td>Bezovta qiluvchi chatdan istalgan xabarni markazga forward qilasiz</td></tr>
-          <tr><td>🆔 ID/username</td><td>@username yoki raqamli ID'ni qo'lda kiritasiz</td></tr>
-          <tr><td>📂 Ro'yxatdan tanlash</td><td>Dialoglaringiz ro'yxatidan tanlaysiz (eng ishonchli usul)</td></tr>
-        </tbody>
-      </table></div>
+  <div class="card" style="border-color:color-mix(in srgb,var(--pom) 40%,transparent);background:var(--pom-soft);">
+    <h4 style="margin-bottom:11px;">🚫 Bularni qilmang</h4>
+    <ul class="dots">
+      <li><b>Spam yubormang.</b> Notanish odamlarga ko'p va tez xabar — akkauntga cheklov qo'yilishining birinchi sababi.</li>
+      <li><b>Firibgarlik uchun ishlatmang.</b> Bu jinoiy javobgarlikka olib keladi.</li>
+      <li><b>Boshqa odamning akkauntini ruxsatsiz ulamang.</b></li>
+      <li><b>Telegram qoidalarini buzmang.</b> Bot qoidalarni chetlab o'tmaydi va o'tolmaydi.</li>
+    </ul>
+  </div>
 
-      <div class="accordion-item" style="margin-top:14px;">
-        <button class="accordion-btn">Bloklangandan keyin nima bo'ladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <tbody>
-              <tr><td>1</td><td>Ushbu chatdan YANGI xabar kelgan zahoti markaz buni aniqlaydi</td></tr>
-              <tr><td>2</td><td>Xabar zudlik bilan, iloji bo'lsa ikkala tarafdan ham o'chirib tashlanadi</td></tr>
-              <tr><td>3</td><td>Hech qanday javob yozilmaydi — hech kim buni sezmaydi</td></tr>
-              <tr><td>4</td><td>Chatingiz doim toza va tinch qoladi</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
+  <div class="card" style="margin-top:12px;border-color:color-mix(in srgb,var(--turq) 40%,transparent);background:var(--turq-soft);">
+    <h4 style="margin-bottom:11px;">✅ Xavfsiz ishlash maslahatlari</h4>
+    <ul class="dots">
+      <li><b>Intervalni 5 daqiqadan kichik qilmang.</b> Ideal — 15 daqiqa va undan yuqori.</li>
+      <li><b>Yangi akkauntda ehtiyot bo'ling.</b> Telegram yangi akkauntlarni qattiqroq nazorat qiladi — avval bir necha kun oddiy foydalaning.</li>
+      <li><b>Mention tezligini 3 soniyadan past qilmang.</b></li>
+      <li><b>Bir vaqtda ko'p akkauntni yuklamang.</b></li>
+      <li><b>Xabarlaringiz odam yozgandek bo'lsin.</b> Bir xil matnni yuzta guruhga tashlash — eng sezilarli spam belgisi.</li>
+    </ul>
+  </div>
 
-      <div class="accordion-item">
-        <button class="accordion-btn">Boshqaruv <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <p>"📋 Bloklanganlar ro'yxati" bo'limida barcha qo'shilgan chatlarni, ularning nomi, turi (kanal/guruh/bot/shaxs) va nechta xabar o'chirilganini ko'rasiz. Xohlagan payt <span class="inline-code">⏸️ To'xtatish</span> yoki <span class="inline-code">🗑 O'chirish</span> orqali ro'yxatdan chiqarishingiz mumkin.</p>
-        </div></div>
-      </div>
+  <div class="note warn">
+    <span class="ic">⚖️</span>
+    <div><b>Mas'uliyat.</b> Auto Xabarchim Telegramning rasmiy imkoniyatlari orqali ishlaydi va
+    hech qanday qoidani chetlab o'tmaydi. Akkauntga qo'yiladigan har qanday cheklov Telegramning
+    o'z xavfsizlik tizimi tomonidan qo'yiladi. Xizmat ishlab chiquvchilari Telegram qo'llagan
+    cheklovlar uchun javobgar emas.</div>
+  </div>
+</section>
 
-      <div class="callout mint" style="margin-top:14px;">
-        <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <p><strong>Nega foydali?</strong> Endi har kuni o'sha bir xil bezovta qiluvchi kanalni qo'lda o'chirib yurishga hojat yo'q. Bir marta qo'shasiz — va butunlay unutasiz, chatingizni markaz siz o'rningizda tozalab boradi.</p>
-      </div>
+<!-- ═══════════════ SAVOLLAR ═══════════════ -->
+<section id="savollar">
+  <div class="head">
+    <span class="kicker">FAQ</span>
+    <h2>Ko'p beriladigan savollar</h2>
+  </div>
+
+  <details><summary>Akkauntim bloklanib qoladimi?</summary><div class="det-body">
+    <p>Yuqoridagi maslahatlarga amal qilsangiz — yo'q. Xavf tug'diradigan narsa modulning o'zi emas,
+    <b>uni qanday ishlatishingiz</b>. Sekin interval, kam guruh, tabiiy matn — muammo bo'lmaydi.</p>
+  </div></details>
+
+  <details><summary>Botni yopsam, modullar to'xtaydimi?</summary><div class="det-body">
+    <p>Yo'q. Barcha modullar serverda ishlaydi. Botni yopsangiz ham, telefoningiz o'chsa ham
+    ishlashda davom etadi.</p>
+  </div></details>
+
+  <details><summary>Nechta akkaunt ulay olaman?</summary><div class="det-body">
+    <p>Tarifingizga bog'liq. Aniq sonni «📊 Statistika» yoki «💎 Ta'rif olish» bo'limida ko'rasiz.</p>
+  </div></details>
+
+  <details><summary>Bir akkauntni ikki kishi ulasa bo'ladimi?</summary><div class="det-body">
+    <p>Yo'q. Bitta Telegram akkaunt faqat bitta foydalanuvchiga biriktiriladi.</p>
+  </div></details>
+
+  <details><summary>Avto xabar bilan Avto uzatishning farqi nima?</summary><div class="det-body">
+    <p><b>Avto xabar</b> — <b>siz yozgan</b> bitta matnni belgilangan vaqtda qayta-qayta yuboradi.</p>
+    <p><b>Avto uzatish</b> — <b>boshqa birov yozgan</b> yangi xabarlarni ko'chiradi.
+    Siz matn yozmaysiz, faqat manba va manzilni ko'rsatasiz.</p>
+  </div></details>
+
+  <details><summary>Bloklash moduli Telegram blokidan nimasi bilan farq qiladi?</summary><div class="det-body">
+    <p>Telegram bloki ba'zi kanallarda ishlamay qoladi — kanal «tark etilgan» ko'rinadi,
+    lekin xabar kelaveradi. Bu modul boshqa yo'ldan boradi: bloklashga urinmaydi,
+    <b>kelgan xabarni darhol o'chiradi</b>. Natijada chatingiz toza qoladi.</p>
+  </div></details>
+
+  <details><summary>«Yukla» yozdim, lekin hech narsa bo'lmadi. Nega?</summary><div class="det-body">
+    <p>Odatda uchta sabab bo'ladi:</p>
+    <ul class="dots">
+      <li>Modul <b>o'chirilgan</b> — «📥 Media olish» bo'limida 🟢 qilib qo'ying</li>
+      <li><b>Reply qilinmagan</b> — shunchaki «yukla» deb yozish yetarli emas, xabarga javob qilish shart</li>
+      <li>Fayl <b>tarifingizdagi hajmdan katta</b> — bunda bot buni aytadi</li>
+    </ul>
+  </div></details>
+
+  <details><summary>Tug'ilgan kunlarni qayerdan biladi?</summary><div class="det-body">
+    <p>Faqat Telegram profilida tug'ilgan sanasini ochiq qoldirgan kontaktlaringizni ko'ra oladi.
+    Profilida yozilmagan bo'lsa — bila olmaydi.</p>
+  </div></details>
+
+  <details><summary>Olmoslarni qanday yig'aman?</summary><div class="det-body">
+    <p>«👥 Referal» bo'limidagi shaxsiy havolangiz orqali do'st taklif qilib —
+    har biri uchun <b>5 olmos</b>. Admin ham berishi mumkin.</p>
+  </div></details>
+
+  <details><summary>Tarif tugasa ma'lumotlarim o'chib ketadimi?</summary><div class="det-body">
+    <p>Yo'q. Sozlamalar, matnlar, ro'yxatlar — hammasi joyida qoladi.
+    Faqat kengaytirilgan imkoniyatlar to'xtaydi. Tarifni yangilasangiz, hammasi qayta ishlaydi.</p>
+  </div></details>
+
+  <details><summary>Bot javob bermay qoldi. Nima qilay?</summary><div class="det-body">
+    <p>Avval <span class="mono">/start</span> bosib ko'ring — ko'p holatda shu yetarli.
+    Yordam bermasa, quyidagi tugma orqali adminga yozing.</p>
+  </div></details>
+</section>
+
+<!-- ═══════════════ YORDAM ═══════════════ -->
+<section id="yordam">
+  <div class="help">
+    <h2>Savolingiz qoldimi?</h2>
+    <p>Yozing — javob beramiz. Muammoni qisqacha tushuntirsangiz, tezroq hal bo'ladi.</p>
+    <div class="cta" style="justify-content:center;">
+      <a class="btn btn-1" href="https://t.me/ixlosli_dasturchi" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Adminga yozish
+      </a>
+      <button class="btn btn-2" id="copyu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        @ixlosli_dasturchi
+      </button>
     </div>
-
-    <!-- MOD-07 : YANGI -->
-    <div class="detail-block" id="detail-uzatish">
-      <div class="detail-head" style="--card-accent:#4FC3F7; --card-accent-dim:rgba(79,195,247,.14); --card-accent-border:rgba(79,195,247,.28);">
-        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2 21 6 17 10"/><path d="M3 12v-2a4 4 0 0 1 4-4h14"/><path d="M7 22 3 18 7 14"/><path d="M21 12v2a4 4 0 0 1-4 4H3"/></svg></div>
-        <div>
-          <h3>🔁 Avto uzatish — to'liq qo'llanma <span class="chip" style="margin-left:6px; background:linear-gradient(120deg,var(--pink),var(--violet)); color:#0a0a0a; border:none;">YANGI</span></h3>
-          <span class="module-code">MOD-07</span>
-        </div>
-      </div>
-      <p class="lead">Bitta manba chatdagi <strong style="color:var(--text)">har bir yangi xabarni</strong> kuzatib, uni bir yoki bir nechta boshqa chatga avtomatik uzatib turadi. Kanal yoki guruhdagi yangiliklarni boshqa joylarga qo'lda ko'chirib o'tirishga endi hojat yo'q.</p>
-
-      <div class="accordion-item">
-        <button class="accordion-btn">Qoida qanday yaratiladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <thead><tr><th>#</th><th>Harakat</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td><code>🔁 Avto uzatish</code> ni bosing va akkauntni tanlang</td></tr>
-              <tr><td>2</td><td><code>📡 Uzatish yaratish</code> ni bosing</td></tr>
-              <tr><td>3</td><td><b>1-bosqich:</b> manba chat turini tanlang — guruh, shaxsiy, kanal yoki barchasi</td></tr>
-              <tr><td>4</td><td>Ro'yxatdan aniq manba chatni tanlang</td></tr>
-              <tr><td>5</td><td><b>2-bosqich:</b> target turini tanlang va bir nechta target chatni belgilang (bir nechtasini birga tanlash mumkin)</td></tr>
-              <tr><td>6</td><td><b>3-bosqich:</b> uzatish rejimini tanlang (pastdagi jadvalga qarang)</td></tr>
-              <tr><td>7</td><td><code>✅ Tasdiqlash</code> — qoida shu zahoti ishga tushadi</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-btn">Uzatish rejimlari <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <thead><tr><th>Rejim</th><th>Nima farqi bor</th></tr></thead>
-            <tbody>
-              <tr><td>🔁 Original</td><td>Xabar tagida "Forwarded from..." yozuvi bilan keladi — manba chat ko'rinib turadi</td></tr>
-              <tr><td>📋 Nusxa</td><td>Xabar xuddi siz yozgandek, manba chat haqida hech qanday izsiz yuboriladi</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-btn">Qoidalarni boshqarish <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <p style="margin-bottom:10px;">"📋 Uzatishlar ro'yxati" bo'limida barcha yaratilgan qoidalarni ko'rasiz. Har biri uchun:</p>
-          <div class="table-wrap"><table>
-            <tbody>
-              <tr><td>🟢 / ⏸️ Yoqish-o'chirish</td><td>Qoidani vaqtincha to'xtatib qo'yish, o'chirmasdan</td></tr>
-              <tr><td>🗑 O'chirish</td><td>Qoidani butunlay o'chirish (tasdiqlash so'raladi)</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="callout" style="margin-top:14px;">
-        <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg></div>
-        <p>Bitta akkauntda bir nechta uzatish qoidasi bo'lishi mumkin — masalan, bir kanaldan bir nechta guruhga, yoki bir nechta manbadan bittagina "yig'ish" guruhingizga.</p>
-      </div>
-    </div>
-
-    <!-- MOD-08 : YANGI -->
-    <div class="detail-block" id="detail-referal">
-      <div class="detail-head" style="--card-accent:#7DE0C4; --card-accent-dim:rgba(125,224,196,.14); --card-accent-border:rgba(125,224,196,.28);">
-        <div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <div>
-          <h3>👥 Referal — to'liq qo'llanma <span class="chip" style="margin-left:6px; background:linear-gradient(120deg,var(--pink),var(--violet)); color:#0a0a0a; border:none;">YANGI</span></h3>
-          <span class="module-code">MOD-08</span>
-        </div>
-      </div>
-      <p class="lead">Do'stlaringizni markazga taklif qiling va har biri uchun bepul olmos 💎 yutib oling. Yig'ilgan olmoslarni istalgan payt tariflarga sarflashingiz mumkin.</p>
-
-      <div class="accordion-item">
-        <button class="accordion-btn">Qanday ishlaydi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">
-          <div class="table-wrap"><table>
-            <tbody>
-              <tr><td>1</td><td><code>👥 Referal</code> ni bosing — sizga shaxsiy taklif havolangiz avtomatik yaratiladi</td></tr>
-              <tr><td>2</td><td><code>📤 Do'stlarga yuborish</code> orqali to'g'ridan-to'g'ri Telegram ulashuvidan foydalaning, yoki</td></tr>
-              <tr><td>3</td><td><code>📋 Linkni nusxalash</code> orqali havolani nusxalab, xohlagan joyga joylashtiring</td></tr>
-              <tr><td>4</td><td>Do'stingiz havola orqali botga kirib <code>/start</code> bosishi bilan bonus hisoblanadi</td></tr>
-            </tbody>
-          </table></div>
-        </div></div>
-      </div>
-
-      <div class="chip-row" style="margin-top:4px;">
-        <span class="chip">🎁 Har bir taklif uchun 5 olmos</span>
-        <span class="chip">📊 Do'stlar soni va jami bonus ko'rinadi</span>
-        <span class="chip">💎 Olmos = ichki valyuta</span>
-      </div>
-
-      <div class="callout mint" style="margin-top:8px;">
-        <div class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-        <p><strong>Olmoslarni qayerga sarflasa bo'ladi?</strong> "💎 Ta'rif olish" bo'limida istalgan tarifni to'liq olmos bilan sotib olishingiz yoki mavjud tarifingizni olmos bilan uzaytirishingiz mumkin — bunda hech qanday chek yuborish yoki admin tasdig'ini kutish shart emas, tarif bir zumda faollashadi. Batafsili Tariflar bo'limida.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="statistika">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Dashboard</div>
-      <h2>Statistika</h2>
-      <p class="sec-desc">Barcha ma'lumotlaringizni bitta ekranda kuzatib boring — akkauntlar, faol modullar, limitlar va jami yuborilgan xabarlar soni.</p>
-    </div>
-    <div class="stats-grid reveal">
-      <div class="stat-card"><div class="stat-icon" style="background:var(--amber-dim);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div><div class="stat-value" data-count="3">0</div><div class="stat-label">Ulangan akkaunt (🟢 aktiv)</div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:var(--teal-dim);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/></svg></div><div class="stat-value" data-count="7">0</div><div class="stat-label">Faol avto xabar</div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:var(--violet-dim);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/></svg></div><div class="stat-value" data-count="4">0</div><div class="stat-label">Faol kuzatuv</div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:rgba(255,200,87,.14);"><svg viewBox="0 0 24 24" fill="none" stroke="#FFC857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7"/></svg></div><div class="stat-value" data-count="2">0</div><div class="stat-label">Faol avto tabrik</div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:var(--danger-dim);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 4.9 19.1 19.1"/><circle cx="12" cy="12" r="10"/></svg></div><div class="stat-value" data-count="47">0</div><div class="stat-label">O'chirilgan bezovta xabar</div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:rgba(125,224,196,.14);"><svg viewBox="0 0 24 24" fill="none" stroke="#7DE0C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg></div><div class="stat-value" data-count="128">0</div><div class="stat-label">Olmoslar 💎</div></div>
-    </div>
-
-    <div class="limit-bar-wrap reveal">
-      <div class="limit-row">
-        <div class="limit-top"><span>Akkauntlar limiti</span><span>3 / 5</span></div>
-        <div class="limit-track"><div class="limit-fill" data-width="60"></div></div>
-      </div>
-      <div class="limit-row">
-        <div class="limit-top"><span>Xabarlar limiti (yuborish)</span><span>7 / 10</span></div>
-        <div class="limit-track"><div class="limit-fill" data-width="70"></div></div>
-      </div>
-      <div class="limit-row">
-        <div class="limit-top"><span>Javoblar limiti</span><span>3 / 5</span></div>
-        <div class="limit-track"><div class="limit-fill" data-width="60"></div></div>
-      </div>
-      <div class="limit-row">
-        <div class="limit-top"><span>Kuzatuvlar limiti</span><span>4 / 5</span></div>
-        <div class="limit-track"><div class="limit-fill" data-width="80"></div></div>
-      </div>
-    </div>
-    <p style="font-size:13px; color:var(--text-faint); margin-top:4px;" class="reveal">⭐ Faol tarif: <strong style="color:var(--text)">PRO</strong> · Tugash sanasi: 12 kun qoldi · <button class="copy-btn" style="display:inline-flex; width:auto; height:auto; padding:4px 9px; vertical-align:middle;" onclick="jump('statistika')">🔄 Yangilash</button></p>
-    <p style="font-size:12.5px; color:var(--text-faint); margin-top:10px;" class="reveal">💡 Avto tabrik va Bloklash modullari limitga bog'liq emas — har qanday tarifda cheksiz ishlatishingiz mumkin. Boshqa barcha limitlar (akkaunt, xabar, javob, kuzatuv) tarifingizga qarab yangilanadi.</p>
-  </section>
-
-  <section id="tariflar">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Narxlar</div>
-      <h2>Tariflar</h2>
-      <p class="sec-desc">Ehtiyojingizga mos tarifni tanlang. Pul yoki referaldan yig'ilgan olmos bilan to'lashingiz mumkin — istalgan vaqtda yangi kun qo'shib uzaytirish ham mavjud.</p>
-    </div>
-    <div class="pricing reveal">
-      <div class="price-card">
-        <div class="price-tier">Boshlang'ich</div>
-        <h3>🆓 Bepul</h3>
-        <div class="price-feats">
-          <div class="price-feat"><span>Akkauntlar</span><span>1 ta</span></div>
-          <div class="price-feat"><span>Avto xabarlar</span><span>1 ta</span></div>
-          <div class="price-feat"><span>Avto javoblar</span><span>1 ta</span></div>
-          <div class="price-feat"><span>Kuzatuvlar</span><span>1 ta</span></div>
-          <div class="price-feat"><span>Avto tabrik / Bloklash / Mention / Uzatish / Referal</span><span>✅</span></div>
-        </div>
-        <p class="price-note">Bepul tarifda ba'zi xabarlar yoniga qisqa reklama qo'shiladi.</p>
-      </div>
-      <div class="price-card featured">
-        <div class="price-badge">Ommabop</div>
-        <div class="price-tier">O'rta</div>
-        <h3>⭐ PRO</h3>
-        <div class="price-feats">
-          <div class="price-feat"><span>Akkauntlar</span><span>5 ta</span></div>
-          <div class="price-feat"><span>Avto xabarlar</span><span>10 ta</span></div>
-          <div class="price-feat"><span>Avto javoblar</span><span>5 ta</span></div>
-          <div class="price-feat"><span>Kuzatuvlar</span><span>5 ta</span></div>
-          <div class="price-feat"><span>Avto tabrik / Bloklash / Mention / Uzatish / Referal</span><span>✅</span></div>
-        </div>
-        <p class="price-note">Reklamasiz, toza xabarlar.</p>
-      </div>
-      <div class="price-card">
-        <div class="price-tier">Maksimal</div>
-        <h3>👑 VIP</h3>
-        <div class="price-feats">
-          <div class="price-feat"><span>Akkauntlar</span><span>20 ta</span></div>
-          <div class="price-feat"><span>Avto xabarlar</span><span>Cheksiz</span></div>
-          <div class="price-feat"><span>Avto javoblar</span><span>Cheksiz</span></div>
-          <div class="price-feat"><span>Kuzatuvlar</span><span>Cheksiz</span></div>
-          <div class="price-feat"><span>Avto tabrik / Bloklash / Mention / Uzatish / Referal</span><span>✅</span></div>
-        </div>
-        <p class="price-note">Barcha limitlar cheksiz, reklamasiz.</p>
-      </div>
-    </div>
-
-    <div class="reveal">
-    <div class="pay-methods">
-      <div class="pay-card">
-        <h4>💵 Pul orqali to'lash</h4>
-        <p>Tarifni tanlang → to'lov rekvizitlarini oling → chekni bot ichida yuboring → admin tekshirib tasdiqlagach, tarif faollashadi.</p>
-      </div>
-      <div class="pay-card">
-        <h4>💎 Olmos orqali to'lash</h4>
-        <p>Referal orqali yig'ilgan olmoslaringiz yetarli bo'lsa, hech kimni kutmasdan — tarif <strong style="color:var(--text)">bir zumda, avtomatik</strong> faollashadi.</p>
-      </div>
-    </div>
-
-    <div class="accordion-item" style="margin-top:16px;">
-      <button class="accordion-btn">Tarif qanday sotib olinadi va uzaytiriladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-      <div class="accordion-panel"><div class="accordion-panel-inner">
-        <p style="margin-bottom:8px;"><strong style="color:var(--text)">Sotib olish:</strong> "💎 Ta'rif olish" → tarifni tanlang → to'lov usulini tanlang (pul yoki olmos) → pul bo'lsa chekni yuboring va admin tasdig'ini kuting, olmos bo'lsa darhol faollashadi.</p>
-        <p><strong style="color:var(--text)">Uzaytirish:</strong> faol tarifingiz bo'lsa, "🔄 Uzaytirish" tugmasi orqali (pul yoki olmos bilan) mavjud muddatga yangi kun qo'shishingiz mumkin.</p>
-      </div></div>
-    </div>
-    </div>
-  </section>
-
-  <section id="xavfsizlik">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Diqqat</div>
-      <h2>Xavfsizlik va ogohlantirishlar</h2>
-      <p class="sec-desc">Markaz Telegram'ning rasmiy API'lari orqali ishlaydi — barcha amallar SIZNING akkauntingiz nomidan bajariladi, shu sababli Telegram cheklovlari ham sizga tegishli bo'ladi.</p>
-    </div>
-    <div class="sec-cols reveal">
-      <div class="sec-col forbid">
-        <h4>🚫 Taqiqlangan amallar</h4>
-        <ul>
-          <li>Spam yuborish</li>
-          <li>Firibgarlik maqsadida foydalanish</li>
-          <li>Boshqa odamlarning akkauntlarini ruxsatsiz ulash</li>
-          <li>Telegram qoidalarini buzish</li>
-        </ul>
-      </div>
-      <div class="sec-col know">
-        <h4>⚠️ Bilishingiz kerak</h4>
-        <ul>
-          <li>Barcha amallar sizning akkauntingiz nomidan bajariladi</li>
-          <li>FloodWait cheklovlari sizga ham tegishli</li>
-          <li>Tez-tez xabar yuborish akkauntni vaqtincha bloklashi mumkin</li>
-          <li>Yangi akkauntlarda limitlar qattiqroq</li>
-          <li>Bloklash moduli xabarni o'chirishga harakat qiladi, lekin ba'zi kanallarda Telegram cheklovlari tufayli 100% kafolat berilmaydi</li>
-        </ul>
-      </div>
-      <div class="sec-col tip">
-        <h4>✅ Tavsiyalar</h4>
-        <ul>
-          <li>Intervallarni juda kichik qilmang (kamida 300 soniya)</li>
-          <li>Bir vaqtda ko'p akkaunt ishlatmang</li>
-          <li>Mention buyruqlarida yuborish tezligini kamida 2–3 soniya qilib qo'ying</li>
-          <li>Tabiiy foydalanuvchi kabi harakat qiling</li>
-        </ul>
-      </div>
-    </div>
-    <div class="disclaimer reveal" style="margin-top:16px;">
-      <strong>AUTO XABARCHIM</strong> Telegram'ning rasmiy API'lari orqali ishlaydi va Telegram qoidalarini chetlab o'tmaydi. Akkauntga qo'llaniladigan har qanday cheklov yoki bloklash Telegram xavfsizlik tizimi tomonidan amalga oshiriladi. Markaz ishlab chiquvchilari Telegram tomonidan qo'llanilgan cheklovlar uchun javobgar hisoblanmaydi.
-    </div>
-  </section>
-
-  <section id="faq">
-    <div class="sec-head reveal">
-      <div class="sec-eyebrow">Savol-javob</div>
-      <h2>Ko'p so'raladigan savollar</h2>
-    </div>
-    <div id="faqList" class="reveal">
-      <div class="accordion-item">
-        <button class="accordion-btn">Akkauntim bloklanadimi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">Agar Telegram qoidalariga va yuqoridagi xavfsizlik tavsiyalariga amal qilsangiz — yo'q.</div></div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn">Nechta akkaunt ulash mumkin? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">Tarifingizga qarab: Bepul — 1 ta, PRO — 5 ta, VIP — 20 ta.</div></div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn">Xabarlar qancha vaqtda yuboriladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">Siz Avto xabar sozlashda belgilagan interval bo'yicha.</div></div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn">Markaz tug'ilgan kunimni qayerdan biladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">Telegram profilingizda ko'rsatgan tug'ilgan kun ma'lumotidan foydalanadi — xuddi Telegram'ning o'zi "bugun kimningdir tug'ilgan kuni" deb ko'rsatgani kabi. Agar profilingizda tug'ilgan kun ko'rsatilmagan bo'lsa, markaz buni bila olmaydi.</div></div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn">Bloklash — bu oddiy Telegram blokidan nimasi bilan farq qiladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">Telegram'ning o'z bloki ba'zi kanal/guruhlarda ishlamay qoladi (kanal "tark etilgan" ko'rinadi, lekin xabar kelaveradi). Bu modul esa Telegram blokidan mustaqil ishlaydi — kelgan har bir xabarni zudlik bilan o'zi o'chirib tashlaydi, shu bilan muammoni tubdan hal qiladi.</div></div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn">Avto uzatish bilan Avto xabar nimasi bilan farq qiladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">Avto xabar — siz o'zingiz yozgan bitta xabarni belgilangan vaqt oralig'ida qayta-qayta yuboradi. Avto uzatish esa aksincha — manba chatga <b>kelgan har bir yangi xabarni</b> darhol boshqa chatlarga o'tkazadi, matnni siz yozib qo'yish shart emas.</div></div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn">Olmoslarni qanday olaman? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">"👥 Referal" bo'limidagi shaxsiy havolangiz orqali do'stlaringizni taklif qiling — har biri uchun 5 olmos beriladi. Shuningdek, admin tomonidan ham berilishi mumkin.</div></div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn">Tarif muddati tugasa nima bo'ladi? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner">Premium imkoniyatlar o'chadi, ammo barcha sozlamalaringiz va tarixingiz saqlanib qoladi.</div></div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn">Bot ishlamay qolsa nima qilish kerak? <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-        <div class="accordion-panel"><div class="accordion-panel-inner"><span class="inline-code">/start</span> tugmasini bosing yoki adminga yozing.</div></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="yordam">
-    <div class="support-card reveal">
-      <h2>Savol yoki muammo bormi?</h2>
-      <p>Qo'llab-quvvatlash xizmati bilan to'g'ridan-to'g'ri bog'laning — har doim yordam berishga tayyormiz.</p>
-      <div class="support-btns">
-        <a class="support-btn" href="https://t.me/ixlosli_dasturchi" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          @ixlosli_dasturchi bilan bog'lanish
-        </a>
-        <button class="support-btn outline" id="copyUsername">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Username nusxalash
-        </button>
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
 
 </main>
 
-<footer>AUTO XABARCHIM · Boshqaruv markazi · To'liq qo'llanma</footer>
+<footer>AUTO XABARCHIM · QO'LLANMA</footer>
+<div id="toast"></div>
 
 <script>
-  // ---------- Console typewriter ----------
-  const consoleMessages = [
-    "Xabar navbatga qo'yildi...",
-    "Guruh kuzatilmoqda...",
-    "Mention ishga tushirildi...",
-    "Tabrik jadval bo'yicha yuborildi...",
-    "Yangi xabar boshqa chatga uzatildi...",
-    "Bezovta chat susaytirildi..."
-  ];
-  const consoleEl = document.getElementById('consoleText');
-  let cIndex = 0, cChar = 0, cDeleting = false;
-  function typeLoop(){
-    const full = consoleMessages[cIndex];
-    if(!cDeleting){
-      cChar++;
-      consoleEl.textContent = full.slice(0, cChar);
-      if(cChar >= full.length){ cDeleting = true; setTimeout(typeLoop, 1500); return; }
-      setTimeout(typeLoop, 38);
-    } else {
-      cChar--;
-      consoleEl.textContent = full.slice(0, cChar);
-      if(cChar <= 0){ cDeleting = false; cIndex = (cIndex+1) % consoleMessages.length; setTimeout(typeLoop, 250); return; }
-      setTimeout(typeLoop, 18);
-    }
-  }
-  typeLoop();
+(function(){
+  "use strict";
 
-  // ---------- Progress bar ----------
-  const progressBar = document.getElementById('progressBar');
-  function updateProgress(){
-    const h = document.documentElement;
-    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
-    progressBar.style.width = scrolled + '%';
+  /* ---- O'qish chizig'i ---- */
+  var bar = document.getElementById('bar');
+  function progress(){
+    var d = document.documentElement;
+    var max = d.scrollHeight - d.clientHeight;
+    bar.style.width = (max > 0 ? (d.scrollTop / max) * 100 : 0) + '%';
   }
-  document.addEventListener('scroll', updateProgress, { passive:true });
-  updateProgress();
+  addEventListener('scroll', progress, {passive:true});
+  progress();
 
-  // ---------- Theme toggle ----------
-  const themeToggle = document.getElementById('themeToggle');
-  const themeIcon = document.getElementById('themeIcon');
-  const sunPath = '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>';
-  const brightPath = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
-  themeToggle.addEventListener('click', () => {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    themeIcon.innerHTML = isDark ? brightPath : sunPath;
+  /* ---- Rejim almashtirish ---- */
+  var moon = '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>';
+  var sun  = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  var root = document.documentElement, ic = document.getElementById('theme-ic');
+  document.getElementById('theme').addEventListener('click', function(){
+    var dark = root.getAttribute('data-theme') === 'dark';
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+    ic.innerHTML = dark ? moon : sun;
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', dark ? '#EDF3F1' : '#08151F');
   });
 
-  // ---------- Nav active state ----------
-  const sections = document.querySelectorAll('main > section[id]');
-  const pills = document.querySelectorAll('.nav-pill');
-  function setActive(){
-    let current = sections[0]?.id;
-    const offset = 145;
-    sections.forEach(sec => { if (sec.getBoundingClientRect().top - offset <= 0) current = sec.id; });
-    pills.forEach(p => p.classList.toggle('active', p.getAttribute('href') === '#' + current));
+  /* ---- Bo'limlar tasmasi ---- */
+  var secs = [].slice.call(document.querySelectorAll('main > section[id]'));
+  var links = [].slice.call(document.querySelectorAll('#rail a'));
+  var rail = document.getElementById('rail');
+  function mark(){
+    var cur = secs[0] ? secs[0].id : '';
+    secs.forEach(function(s){ if (s.getBoundingClientRect().top - 130 <= 0) cur = s.id; });
+    links.forEach(function(a){
+      var on = a.getAttribute('href') === '#' + cur;
+      if (on && !a.classList.contains('on')) {
+        a.classList.add('on');
+        var l = a.offsetLeft - rail.clientWidth / 2 + a.offsetWidth / 2;
+        rail.scrollTo({left: l, behavior: 'smooth'});
+      } else if (!on) { a.classList.remove('on'); }
+    });
   }
-  document.addEventListener('scroll', setActive, { passive:true });
-  setActive();
-  pills.forEach(p => {
-    p.addEventListener('click', e => {
+  addEventListener('scroll', mark, {passive:true});
+  mark();
+
+  function goTo(el){
+    if (!el) return;
+    var y = el.getBoundingClientRect().top + scrollY - 108;
+    scrollTo({top: y, behavior: 'smooth'});
+  }
+  links.forEach(function(a){
+    a.addEventListener('click', function(e){
       e.preventDefault();
-      const target = document.querySelector(p.getAttribute('href'));
-      if(target){
-        const y = target.getBoundingClientRect().top + window.scrollY - 122;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
+      goTo(document.querySelector(a.getAttribute('href')));
     });
   });
+  document.querySelectorAll('a[href^="#"]:not(#rail a)').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      goTo(document.querySelector(a.getAttribute('href')));
+    });
+  });
+  document.querySelectorAll('[data-go]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(document.getElementById(b.dataset.go)); });
+  });
 
-  function jump(id){
-    const target = document.getElementById(id);
-    if(target){
-      const y = target.getBoundingClientRect().top + window.scrollY - 122;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
+  /* ---- Lug'at qidiruvi ---- */
+  var q = document.getElementById('q');
+  var terms = [].slice.call(document.querySelectorAll('#terms .term'));
+  var none = document.getElementById('noterm');
+  if (q) {
+    q.addEventListener('input', function(){
+      var v = q.value.trim().toLowerCase().replace(/['`]/g, "'");
+      var hits = 0;
+      terms.forEach(function(t){
+        var txt = t.textContent.toLowerCase().replace(/['`]/g, "'");
+        var ok = !v || txt.indexOf(v) !== -1;
+        t.style.display = ok ? '' : 'none';
+        if (ok) hits++;
+        if (v && ok && v.length > 2) { t.open = true; } else if (!v) { t.open = false; }
+      });
+      none.style.display = hits ? 'none' : 'block';
+    });
   }
 
-  // ---------- Tabs ----------
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  /* ---- Ochilish animatsiyasi ---- */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); }
+    });
+  }, {threshold: 0.08, rootMargin: '0px 0px -40px 0px'});
+  document.querySelectorAll('section > .head, .card, .mod, .modgrid, .phone, .help')
+    .forEach(function(el){
+      if (el.closest('details')) return;
+      el.classList.add('up'); io.observe(el);
+    });
+  // Yig'ilgan blok ochilganda ichidagi hamma narsa ko'rinsin
+  document.querySelectorAll('details').forEach(function(d){
+    d.addEventListener('toggle', function(){
+      if (d.open) d.querySelectorAll('.up').forEach(function(x){ x.classList.add('seen'); });
     });
   });
 
-  // ---------- Accordion ----------
-  document.querySelectorAll('.accordion-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.closest('.accordion-item').classList.toggle('open');
-    });
-  });
-
-  // ---------- Copy buttons ----------
-  function flashCopied(el){
-    el.classList.add('copied');
-    const original = el.innerHTML;
-    el.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
-    setTimeout(() => { el.innerHTML = original; el.classList.remove('copied'); }, 1400);
+  /* ---- Toast + nusxalash ---- */
+  var toast = document.getElementById('toast'), tt;
+  function say(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(tt);
+    tt = setTimeout(function(){ toast.classList.remove('show'); }, 1900);
   }
-  document.querySelectorAll('.copy-btn[data-copy]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const text = btn.getAttribute('data-copy');
-      navigator.clipboard?.writeText(text).catch(()=>{});
-      flashCopied(btn);
+  var cu = document.getElementById('copyu');
+  if (cu) cu.addEventListener('click', function(){
+    var t = '@ixlosli_dasturchi';
+    if (navigator.clipboard) navigator.clipboard.writeText(t).catch(function(){});
+    say('Nusxalandi: ' + t);
+  });
+  document.querySelectorAll('.mono').forEach(function(el){
+    el.style.cursor = 'pointer';
+    el.title = 'Nusxalash uchun bosing';
+    el.addEventListener('click', function(){
+      var t = el.textContent.trim();
+      if (navigator.clipboard) navigator.clipboard.writeText(t).catch(function(){});
+      say('Nusxalandi: ' + t);
     });
   });
-  document.getElementById('copyUsername')?.addEventListener('click', function(){
-    navigator.clipboard?.writeText('@ixlosli_dasturchi').catch(()=>{});
-    const original = this.innerHTML;
-    this.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Nusxalandi!';
-    setTimeout(() => { this.innerHTML = original; }, 1600);
-  });
 
-  // ---------- Scroll reveal ----------
-  const revealEls = document.querySelectorAll('.reveal');
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){ entry.target.classList.add('in'); revealObserver.unobserve(entry.target); }
-    });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => revealObserver.observe(el));
+  /* ---- Hero namoyishi ---- */
+  var live = document.getElementById('live');
+  var states = ['ishlamoqda…', 'xabar yuborildi', 'javob berildi', 'media yuklandi', 'tabrik ketdi'];
+  var si = 0;
+  setInterval(function(){ si = (si + 1) % states.length; live.textContent = states[si]; }, 2600);
 
-  // ---------- Count-up stats ----------
-  const statEls = document.querySelectorAll('.stat-value[data-count]');
-  const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        const el = entry.target;
-        const target = parseInt(el.getAttribute('data-count'), 10);
-        let cur = 0;
-        const step = Math.max(1, Math.ceil(target / 30));
-        const timer = setInterval(() => {
-          cur += step;
-          if(cur >= target){ cur = target; clearInterval(timer); }
-          el.textContent = cur;
-        }, 30);
-        statObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.4 });
-  statEls.forEach(el => statObserver.observe(el));
-
-  // ---------- Limit bars fill ----------
-  const limitFills = document.querySelectorAll('.limit-fill[data-width]');
-  const limitObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.style.width = entry.target.getAttribute('data-width') + '%';
-        limitObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.3 });
-  limitFills.forEach(el => limitObserver.observe(el));
-
+  /* ---- Telegram WebApp ---- */
   if (window.Telegram && window.Telegram.WebApp) {
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
+    var tg = window.Telegram.WebApp;
+    tg.ready(); tg.expand();
   }
+})();
 </script>
-
 </body>
 </html>
